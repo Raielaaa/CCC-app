@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">CCC Library</string>
+
+    <string name="opening_header_1">CCC Library</string>
+    <string name="opening_header_2">
+        \"Expand Your Mind. CCC Library Registration - Your Gateway to Knowledge!\"
+    </string>
+    <string name="opening_button_login">LOGIN</string>
+    <string name="opening_button_register">REGISTER</string>
+
+    <string name="login_header_1">Welcome Back!</string>
+    <string name="login_header_2">Sign in to continue</string>
+    <string name="login_header_3">CCC Library</string>
+    <string name="login_header_4">
+        \“Embark on a Voyage of Knowledge: Sign in to Your Account and Begin Your Extraordinary Literary Journey!\”
+    </string>
+    <string name="login_email">Email ID</string>
+    <string name="login_password">Password</string>
+    <string name="login_forgot_password">Forgot your password</string>
+    <string name="login_login">LOGIN</string>
+    <string name="login_no_account">Don\'t have an account? REGISTER NOW!</string>
+</resources>
