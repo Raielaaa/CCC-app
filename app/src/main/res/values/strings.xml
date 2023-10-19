@@ -16,7 +16,7 @@
     </string>
     <string name="login_email">Email ID</string>
     <string name="login_password">Password</string>
-    <string name="login_forgot_password">Forgot your password</string>
+    <string name="login_forgot_password">Forgot your password?</string>
     <string name="login_login">LOGIN</string>
     <string name="login_no_account">Don\'t have an account? REGISTER NOW!</string>
 </resources>

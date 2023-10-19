@@ -3,15 +3,21 @@
     <style name="Base.Theme.CCCLibraryapp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:statusBarColor">#F7F7F7</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="Theme.CCCLibraryapp" parent="Base.Theme.CCCLibraryapp" />
 
+    <!-- For ImageView at fragment_login -->
     <style name="uiAccountLoginImageBG" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeBottomRight">@dimen/_150sdp</item>
         <item name="cornerSizeBottomLeft">@dimen/_150sdp</item>
+    </style>
+
+    <style name="MyFloatingActionButtonStyle">
+        <item name="android:background">@drawable/login_actionbutton_bg</item>
+        <!-- Other attributes as needed -->
     </style>
 </resources>
