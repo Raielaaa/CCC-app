@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">CCC Library</string>
 
+    <!-- Opening -->
     <string name="opening_header_1">CCC Library</string>
     <string name="opening_header_2">
         \"Expand Your Mind. CCC Library Registration - Your Gateway to Knowledge!\"
@@ -8,15 +9,37 @@
     <string name="opening_button_login">LOGIN</string>
     <string name="opening_button_register">REGISTER</string>
 
+    <!-- Login -->
     <string name="login_header_1">Welcome Back!</string>
     <string name="login_header_2">Sign in to continue</string>
     <string name="login_header_3">CCC Library</string>
     <string name="login_header_4">
         \“Embark on a Voyage of Knowledge: Sign in to Your Account and Begin Your Extraordinary Literary Journey!\”
     </string>
-    <string name="login_email">Email ID</string>
-    <string name="login_password">Password</string>
+    <string name="login_email">Email ID *</string>
+    <string name="login_password">Password *</string>
     <string name="login_forgot_password">Forgot your password?</string>
     <string name="login_login">LOGIN</string>
     <string name="login_no_account">Don\'t have an account? REGISTER NOW!</string>
+
+    <!-- Register -->
+    <string name="register_header_1">Hello!</string>
+    <string name="register_create_account">Create an account</string>
+    <string name="register_username">Username</string>
+    <string name="register_firstName">First name</string>
+    <string name="register_lastName">Last name</string>
+    <string name="register_program">Program (ex. BSIT)</string>
+    <string name="register_year">Year (ex. 3)</string>
+    <string name="register_section">Section (ex. IT6)</string>
+    <string name="register_emailID">Email ID</string>
+    <string name="register_password">Password</string>
+    <string name="register_confirm_password">Confirm password</string>
+    <string name="register_register">Register</string>
+    <string name="register_or">OR</string>
+    <string name="register_required">All fields are required, except username and password for google sign-in.</string>
+    <string name="register_existing_account">Already have an account? LOGIN</string>
+    <string name="register_password_1">At least one letter</string>
+    <string name="register_password_2">At least one capital letter</string>
+    <string name="register_password_3">At least one special character</string>
+    <string name="register_password_4">At least 8 characters</string>
 </resources>

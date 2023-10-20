@@ -29,6 +29,9 @@ class HomeAccountFragment : Fragment() {
             btnLogin.setOnClickListener {
                 findNavController().navigate(R.id.loginFragment)
             }
+            btnRegister.setOnClickListener {
+                findNavController().navigate(R.id.registerFragment)
+            }
         }
     }
 }
