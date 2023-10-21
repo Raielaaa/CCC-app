@@ -65,7 +65,7 @@
 
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button"
+                android:id="@+id/btnRegister"
                 android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:text="@string/register_or"
-                app:layout_constraintBottom_toTopOf="@+id/cardView2"
+                app:layout_constraintBottom_toTopOf="@+id/cvGoogleRegister"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -117,7 +117,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_30sdp"
-                app:layout_constraintBottom_toTopOf="@+id/button"
+                app:layout_constraintBottom_toTopOf="@+id/btnRegister"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -136,6 +136,7 @@
                         app:boxStrokeColor="@color/Theme.color">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etFirstName"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_40sdp"
                             android:drawableEnd="@drawable/register_icon_resize_name"
@@ -153,6 +154,7 @@
                         app:boxStrokeColor="@color/Theme.color">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLastName"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_40sdp"
                             android:drawableEnd="@drawable/register_icon_resize_name"
@@ -170,6 +172,7 @@
                         app:boxStrokeColor="@color/Theme.color">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etProgram"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_40sdp"
                             android:drawableEnd="@drawable/register_icon_resize_program"
@@ -206,6 +209,7 @@
                         app:boxStrokeColor="@color/Theme.color">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etSection"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_40sdp"
                             android:drawableEnd="@drawable/register_icon_resize_section"
@@ -383,6 +387,7 @@
                             android:layout_height="@dimen/_40sdp"
                             android:drawableEnd="@drawable/login_icon_resize_lock"
                             android:fontFamily="@font/poppins"
+                            android:inputType="textPassword"
                             android:hint="@string/register_password"
                             android:textSize="@dimen/_10ssp" />
 
@@ -397,10 +402,12 @@
                         app:boxStrokeColor="@color/Theme.color">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etConfirmPassword"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_40sdp"
                             android:drawableEnd="@drawable/login_icon_resize_lock"
                             android:fontFamily="@font/poppins"
+                            android:inputType="textPassword"
                             android:hint="@string/register_confirm_password"
                             android:textSize="@dimen/_10ssp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -425,7 +432,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView2"
+                android:id="@+id/cvGoogleRegister"
                 android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_35sdp"
                 app:cardCornerRadius="10dp"
@@ -489,7 +496,7 @@
         android:layout_width="@dimen/_45sdp"
         android:layout_height="@dimen/_45sdp"
         app:cardCornerRadius="100dp"
-        app:cardElevation="20dp"
+        app:cardElevation="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/guidelineBottom3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

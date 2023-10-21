@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "319826207112",
+    "project_id": "ccc-library-system",
+    "storage_bucket": "ccc-library-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319826207112:android:5022669261b27b1a541a3d",
+        "android_client_info": {
+          "package_name": "com.example.ccc_library_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_85kyHuKFYEeshdB-vEIkA3NTf_RG7Ko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

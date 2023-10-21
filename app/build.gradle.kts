@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
+    //  Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -63,4 +65,13 @@ dependencies {
     //  SSP and SDP
     implementation("com.intuit.ssp:ssp-android:1.1.0")
     implementation("com.intuit.sdp:sdp-android:1.1.0")
+
+    //  Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
+
+    //  Firebase Authentication
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+    //  Firebase FireStore
+    implementation("com.google.firebase:firebase-firestore-ktx")
 }

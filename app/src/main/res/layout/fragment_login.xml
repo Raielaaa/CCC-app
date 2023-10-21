@@ -11,7 +11,7 @@
         android:layout_width="@dimen/_45sdp"
         android:layout_height="@dimen/_45sdp"
         app:cardCornerRadius="100dp"
-        app:cardElevation="20dp"
+        app:cardElevation="30dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
