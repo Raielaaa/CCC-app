@@ -5,4 +5,5 @@
     <color name="Theme.color">#063bd4</color>
     <color name="defaultIconColor">#666666</color>
     <color name="required">#FF0000</color>
+    <color name="green">#00f700</color>
 </resources>

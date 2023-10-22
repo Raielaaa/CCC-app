@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">CCC Library</string>
 
+    <!-- General -->
+    <string name="ok">OK</string>
+    <string name="no_wifi">Internet connection required. Please check your connection.</string>
+
     <!-- Opening -->
     <string name="opening_header_1">CCC Library</string>
     <string name="opening_header_2">
@@ -39,7 +43,7 @@
     <string name="register_required">All fields are required, except Email ID and Password for google sign-in.</string>
     <string name="register_existing_account">Already have an account? LOGIN</string>
     <string name="register_password_1">At least one letter</string>
-    <string name="register_password_2">At least one capital letter</string>
+    <string name="register_password_2">At least one number</string>
     <string name="register_password_3">At least one special character</string>
     <string name="register_password_4">At least 8 characters</string>
     <string name="register_google">Continue with google</string>

@@ -5,56 +5,78 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
+import com.example.ccc_library_app.databinding.FragmentLoginBinding
+import com.example.ccc_library_app.ui.account.register.RegisterViewModel
+import com.example.ccc_library_app.ui.account.util.Resources
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@Suppress("DEPRECATION")
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentLoginBinding
+    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var registerViewModel: RegisterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        registerViewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
+
+        initNetworkDialog()
+        initClickedViews()
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun initNetworkDialog() {
+        if (!registerViewModel.isNetworkAvailable(requireContext())) {
+            //  Displays no-internet-connection dialog
+            Resources.displayCustomDialog(
+                activity = requireActivity(),
+                hostFragment = this@LoginFragment,
+                layoutDialog = R.layout.custom_dialog
+            )
+        }
+    }
+
+    private fun initClickedViews() {
+        binding.apply {
+            cvExit.setOnClickListener {
+                findNavController().navigate(R.id.homeAccountFragment)
+            }
+            btnLoginLogin.setOnClickListener {
+                val inputtedEmail: String? = etEmail.text?.toString()
+                val inputtedPassword: String? = etPassword.text?.toString()
+                if (
+                    inputtedEmail.isNullOrEmpty() ||
+                    inputtedPassword.isNullOrEmpty()
+                ) {
+                    txtInputLayoutEmail.boxStrokeColor = resources.getColor(R.color.required)
+                    txtInputLayoutPW.boxStrokeColor = resources.getColor(R.color.required)
+                    etEmail.requestFocus()
+
+                    Toast.makeText(requireContext(), "All fields are required", Toast.LENGTH_LONG).show()
+                } else {
+                    loginViewModel.validateCredentials(
+                        email = inputtedEmail,
+                        password = inputtedPassword,
+                        context = requireContext(),
+                        fragment = this@LoginFragment,
+                        etEmail = etEmail,
+                        etPassword = etPassword,
+                        txtInputLayoutEmail = txtInputLayoutEmail,
+                        txtInputLayoutPW = txtInputLayoutPW
+                    )
                 }
             }
+        }
     }
 }

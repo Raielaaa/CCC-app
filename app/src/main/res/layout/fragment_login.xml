@@ -7,7 +7,7 @@
     tools:context=".ui.account.login.LoginFragment">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cvExit"
         android:layout_width="@dimen/_45sdp"
         android:layout_height="@dimen/_45sdp"
         app:cardCornerRadius="100dp"
@@ -126,7 +126,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/txtInputLayoutEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_20sdp"
@@ -139,6 +139,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:drawableEnd="@drawable/login_icon_resize_mail"
@@ -148,7 +149,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
+        android:id="@+id/txtInputLayoutPW"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_20sdp"
@@ -158,10 +159,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/txtInputLayoutEmail">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
             android:layout_width="match_parent"
+            android:inputType="textPassword"
             android:layout_height="@dimen/_40sdp"
             android:drawableEnd="@drawable/login_icon_resize_lock"
             android:fontFamily="@font/poppins"
@@ -179,10 +182,10 @@
         android:text="@string/login_forgot_password"
         android:textSize="@dimen/_10ssp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/txtInputLayoutPW" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button"
+        android:id="@+id/btnLoginLogin"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_35sdp"
         android:layout_marginBottom="@dimen/_15sdp"
