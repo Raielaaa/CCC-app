@@ -27,10 +27,10 @@ class HomeAccountFragment : Fragment() {
     private fun initButtonFunctions() {
         binding.apply {
             btnLogin.setOnClickListener {
-                findNavController().navigate(R.id.loginFragment)
+                findNavController().navigate(R.id.action_homeAccountFragment_to_loginFragment)
             }
             btnRegister.setOnClickListener {
-                findNavController().navigate(R.id.registerFragment)
+                findNavController().navigate(R.id.action_homeAccountFragment_to_registerFragment)
             }
         }
     }

@@ -147,7 +147,11 @@ class RegisterFragment : Fragment() {
             }
 
             cvExit.setOnClickListener {
-                findNavController().navigate(R.id.homeAccountFragment)
+                findNavController().navigate(R.id.action_registerFragment_to_homeAccountFragment)
+            }
+
+            tvHaveAccount.setOnClickListener {
+                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             }
         }
     }

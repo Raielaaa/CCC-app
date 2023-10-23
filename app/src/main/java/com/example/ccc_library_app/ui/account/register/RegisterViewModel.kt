@@ -109,7 +109,7 @@ class RegisterViewModel @Inject constructor(
                                 Log.e(TAG, "insertDataToFirebaseAuth-FireStoreException: ${exception.message}", )
                             }
                         Resources.dismissDialog()
-                        fragment.findNavController().navigate(R.id.loginFragment)
+                        fragment.findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                     }
                 }.addOnFailureListener { exception ->
                     Toast.makeText(context, exception.localizedMessage, Toast.LENGTH_LONG).show()

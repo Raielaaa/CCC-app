@@ -12,7 +12,12 @@
           "package_name": "com.example.ccc_library_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "319826207112-g1nvf9fpcb09pe26bqsrhtid937hkt09.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC_85kyHuKFYEeshdB-vEIkA3NTf_RG7Ko"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319826207112-g1nvf9fpcb09pe26bqsrhtid937hkt09.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

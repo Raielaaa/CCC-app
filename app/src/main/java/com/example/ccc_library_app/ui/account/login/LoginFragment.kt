@@ -50,7 +50,7 @@ class LoginFragment : Fragment() {
     private fun initClickedViews() {
         binding.apply {
             cvExit.setOnClickListener {
-                findNavController().navigate(R.id.homeAccountFragment)
+                findNavController().navigate(R.id.action_loginFragment_to_homeAccountFragment)
             }
             btnLoginLogin.setOnClickListener {
                 val inputtedEmail: String? = etEmail.text?.toString()
@@ -76,6 +76,10 @@ class LoginFragment : Fragment() {
                         txtInputLayoutPW = txtInputLayoutPW
                     )
                 }
+            }
+
+            tvNoAccount.setOnClickListener {
+                findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
             }
         }
     }
