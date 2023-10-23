@@ -42,7 +42,7 @@ class LoginFragment : Fragment() {
             Resources.displayCustomDialog(
                 activity = requireActivity(),
                 hostFragment = this@LoginFragment,
-                layoutDialog = R.layout.custom_dialog
+                layoutDialog = R.layout.custom_dialog_no_connection
             )
         }
     }

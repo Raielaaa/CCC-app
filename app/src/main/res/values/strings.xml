@@ -4,6 +4,8 @@
     <!-- General -->
     <string name="ok">OK</string>
     <string name="no_wifi">Internet connection required. Please check your connection.</string>
+    <string name="loading">Please wait</string>
+    <string name="db_connect">Establishing a secure connection with our servers...</string>
 
     <!-- Opening -->
     <string name="opening_header_1">CCC Library</string>
@@ -29,7 +31,7 @@
     <!-- Register -->
     <string name="register_header_1">Hello!</string>
     <string name="register_create_account">Create an account</string>
-    <string name="register_username">Username</string>
+    <string name="register_username">Display name</string>
     <string name="register_firstName">First name</string>
     <string name="register_lastName">Last name</string>
     <string name="register_program">Program (ex. BSIT)</string>

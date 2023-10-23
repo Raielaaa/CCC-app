@@ -44,7 +44,7 @@ class RegisterFragment : Fragment() {
             Resources.displayCustomDialog(
                 activity = requireActivity(),
                 hostFragment = this@RegisterFragment,
-                layoutDialog = R.layout.custom_dialog
+                layoutDialog = R.layout.custom_dialog_no_connection
             )
         }
     }
@@ -127,7 +127,9 @@ class RegisterFragment : Fragment() {
                             credentialsModel.modelUsername,
                             credentialsModel.modelEmail,
                             credentialsModel.modelPassword,
-                            requireContext()
+                            requireContext(),
+                            requireActivity(),
+                            this@RegisterFragment
                         )
                     } else {
                         //  Clears entries for password and confirm password

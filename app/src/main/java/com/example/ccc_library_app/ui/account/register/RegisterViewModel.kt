@@ -1,6 +1,7 @@
 package com.example.ccc_library_app.ui.account.register
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.PorterDuff
 import android.net.ConnectivityManager
@@ -13,8 +14,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
+import com.example.ccc_library_app.ui.account.util.Resources
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,6 +26,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -68,10 +73,19 @@ class RegisterViewModel @Inject constructor(
         modelUsername: String,
         modelEmail: String,
         modelPassword: String,
-        context: Context
+        context: Context,
+        activity: Activity,
+        fragment: Fragment
     ) {
         try {
             CoroutineScope(Dispatchers.IO).launch {
+                withContext(Dispatchers.Main) {
+                    Resources.displayCustomDialog(
+                        activity = activity,
+                        hostFragment = fragment,
+                        layoutDialog = R.layout.custom_dialog_loading
+                    )
+                }
                 firebaseAuth.createUserWithEmailAndPassword(modelEmail, modelPassword).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val userID = task.result.user!!.uid
@@ -94,6 +108,8 @@ class RegisterViewModel @Inject constructor(
                                 Toast.makeText(context, exception.localizedMessage, Toast.LENGTH_LONG).show()
                                 Log.e(TAG, "insertDataToFirebaseAuth-FireStoreException: ${exception.message}", )
                             }
+                        Resources.dismissDialog()
+                        fragment.findNavController().navigate(R.id.loginFragment)
                     }
                 }.addOnFailureListener { exception ->
                     Toast.makeText(context, exception.localizedMessage, Toast.LENGTH_LONG).show()

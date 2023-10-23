@@ -12,15 +12,17 @@ import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
 
 object Resources {
+    private var dialog: Dialog? = null
+
     @SuppressLint("ObsoleteSdkInt")
     fun displayCustomDialog(
         activity: Activity,
         hostFragment: Fragment,
         layoutDialog: Int
     ) {
-        val dialog = Dialog(activity)
+        dialog = Dialog(activity)
 
-        dialog.apply {
+        dialog?.apply {
             setContentView(layoutDialog)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -30,9 +32,15 @@ object Resources {
             window!!.attributes.windowAnimations = R.style.animation
             show()
         }
-        dialog.findViewById<Button>(R.id.btnOk).setOnClickListener {
-            dialog.dismiss()
-            hostFragment.findNavController().navigate(R.id.homeAccountFragment)
-        }
+        try {
+            dialog?.findViewById<Button>(R.id.btnOk)?.setOnClickListener {
+                dialog?.dismiss()
+                hostFragment.findNavController().navigate(R.id.homeAccountFragment)
+            }
+        } catch (ignored: Exception) { }
+    }
+
+    fun dismissDialog() {
+        dialog?.dismiss()
     }
 }

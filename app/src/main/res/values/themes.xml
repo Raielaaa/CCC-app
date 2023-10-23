@@ -5,6 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="colorPrimary">@color/Theme.color</item>
     </style>
 
     <style name="Theme.CCCLibraryapp" parent="Base.Theme.CCCLibraryapp" />
