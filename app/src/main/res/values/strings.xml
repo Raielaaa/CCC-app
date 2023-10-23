@@ -49,6 +49,7 @@
     <string name="register_password_3">At least one special character</string>
     <string name="register_password_4">At least 8 characters</string>
     <string name="register_google">Continue with google</string>
+    <string name="default_web_client_id">319826207112-g1nvf9fpcb09pe26bqsrhtid937hkt09.apps.googleusercontent.com</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

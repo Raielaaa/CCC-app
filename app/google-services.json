@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "319826207112-f9of94djavv7jprp2m0enqgf796g6e7u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ccc_library_app",
+            "certificate_hash": "371409ea204f0e6bea1f4ac1d6006c7d6d6de346"
+          }
+        },
+        {
           "client_id": "319826207112-g1nvf9fpcb09pe26bqsrhtid937hkt09.apps.googleusercontent.com",
           "client_type": 3
         }

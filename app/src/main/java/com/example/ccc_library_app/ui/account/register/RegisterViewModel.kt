@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.account.util.Resources
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -35,7 +37,9 @@ class RegisterViewModel @Inject constructor(
     @Named("FirebaseAuth.Instance")
     val firebaseAuth: FirebaseAuth,
     @Named("FirebaseFireStore.Instance")
-    val firebaseFireStore: FirebaseFirestore
+    val firebaseFireStore: FirebaseFirestore,
+    @Named("GoogleSignInClient")
+    val googleSignInClient: GoogleSignInClient
 ) : ViewModel() {
     private val TAG: String = "MyTag"
 
@@ -195,5 +199,14 @@ class RegisterViewModel @Inject constructor(
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
             activeNetworkInfo != null && activeNetworkInfo.isConnected
         }
+    }
+
+    private val RC_SIGN_IN = 9001
+
+    fun signInUsingGoogle(
+        activity: Activity
+    ) {
+        val signInIntent = googleSignInClient.signInIntent
+        activity.startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 }

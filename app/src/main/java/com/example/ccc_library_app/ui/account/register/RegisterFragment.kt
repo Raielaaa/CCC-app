@@ -153,6 +153,10 @@ class RegisterFragment : Fragment() {
             tvHaveAccount.setOnClickListener {
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             }
+
+            cvGoogleRegister.setOnClickListener {
+                registerViewModel.signInUsingGoogle(requireActivity())
+            }
         }
     }
 }

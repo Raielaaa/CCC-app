@@ -6,4 +6,6 @@
     <color name="defaultIconColor">#666666</color>
     <color name="required">#FF0000</color>
     <color name="green">#00f700</color>
+    <color name="blue">#459DE4</color>
+    <color name="red">#FF0000</color>
 </resources>
