@@ -26,6 +26,7 @@ class RegisterFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
     private lateinit var registerViewModel: RegisterViewModel
     private lateinit var credentialsModel: CredentialsModel
     private lateinit var registerTermsAndCondition: RegisterTermsAndCondition
+    private lateinit var registerTermsAndConditionGoogle: RegisterTermsAndConditionGoogle
     private lateinit var sharedPreferences: SharedPreferences
     private val TAG: String = "MyTag"
 
@@ -35,6 +36,7 @@ class RegisterFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
     ): View {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
         registerViewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
+        registerTermsAndConditionGoogle = RegisterTermsAndConditionGoogle()
         sharedPreferences = requireActivity().getSharedPreferences("TermsConditionsSP", Context.MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
@@ -82,7 +84,8 @@ class RegisterFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
     private fun initializeGoogleSignInFunction() {
         binding.cvGoogleRegister.setOnClickListener {
             if (validateInputForGoogleSignIn()) {
-                registerViewModel.signInUsingGoogle(requireActivity())
+                credentialsModel = createCredentialsModel()
+                registerTermsAndConditionGoogle.show(this.requireFragmentManager(), "TermsAndConditionDialog")
             } else {
                 Toast.makeText(requireContext(), "All fields are required", Toast.LENGTH_SHORT).show()
             }
@@ -136,7 +139,13 @@ class RegisterFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
         registerTermsAndCondition.setTargetFragment(this@RegisterFragment, 0)
     }
 
-    fun insertDataToFirebase() {
+    private fun insertDataToFirebase() {
+        try {
+            credentialsModel = createCredentialsModel()
+        } catch (e: Exception) {
+            handleError(e)
+        }
+
         registerViewModel.insertDataToFirebase(
             credentialsModel.modelFirstName,
             credentialsModel.modelLastName,
@@ -248,13 +257,31 @@ class RegisterFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        Log.d(TAG, "onSharedPreferenceChanged: testListener")
         if (key == "booleanKey") {
             val value = sharedPreferences!!.getBoolean(key, false)
             if (value) {
                 insertDataToFirebase()
             } else {
                 insertDataToFirebase()
+            }
+        }
+        if (key == "booleanKeyGoogle") {
+            val value = sharedPreferences!!.getBoolean(key, false)
+
+            Resources.setGoogleSignInData(
+                listOf(
+                    credentialsModel.modelFirstName,
+                    credentialsModel.modelLastName,
+                    credentialsModel.modelProgram,
+                    credentialsModel.modelYear,
+                    credentialsModel.modelSection,
+                    credentialsModel.modelUsername
+                )
+            )
+            if (value) {
+                registerViewModel.signInUsingGoogle(requireActivity())
+            } else {
+                registerViewModel.signInUsingGoogle(requireActivity())
             }
         }
     }

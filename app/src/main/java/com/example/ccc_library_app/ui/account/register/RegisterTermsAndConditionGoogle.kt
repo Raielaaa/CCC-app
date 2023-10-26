@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import androidx.appcompat.widget.AppCompatButton
 import com.example.ccc_library_app.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class RegisterTermsAndCondition : BottomSheetDialogFragment() {
+class RegisterTermsAndConditionGoogle : BottomSheetDialogFragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: Editor
 
@@ -34,8 +35,8 @@ class RegisterTermsAndCondition : BottomSheetDialogFragment() {
         btnAccept.setOnClickListener {
             // Access the parent fragment and call its method
             editor.apply {
-                putBoolean("booleanKey",
-                    !sharedPreferences.getBoolean("booleanKey", true)
+                putBoolean("booleanKeyGoogle",
+                    !sharedPreferences.getBoolean("booleanKeyGoogle", true)
                 )
                 commit()
             }

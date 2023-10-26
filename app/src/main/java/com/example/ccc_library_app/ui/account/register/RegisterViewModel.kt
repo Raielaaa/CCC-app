@@ -122,6 +122,7 @@ class RegisterViewModel @Inject constructor(
                 }
             }
         } catch (exception: Exception) {
+            Resources.dismissDialog()
             Toast.makeText(context, exception.localizedMessage, Toast.LENGTH_LONG).show()
             Log.e(TAG, "insertDataToFirebaseAuth-root: ${exception.message}", )
         }

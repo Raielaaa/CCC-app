@@ -130,7 +130,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginEnd="@dimen/_20sdp"
                         app:boxStrokeColor="@color/Theme.color">
@@ -138,7 +138,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etFirstName"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_40sdp"
+                            android:layout_height="@dimen/_45sdp"
                             android:drawableEnd="@drawable/register_icon_resize_name"
                             android:fontFamily="@font/poppins"
                             android:hint="@string/register_firstName"
@@ -147,7 +147,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_20sdp"
@@ -156,7 +156,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etLastName"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_40sdp"
+                            android:layout_height="@dimen/_45sdp"
                             android:drawableEnd="@drawable/register_icon_resize_name"
                             android:fontFamily="@font/poppins"
                             android:hint="@string/register_lastName"
@@ -165,7 +165,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_20sdp"
@@ -174,7 +174,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etProgram"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_40sdp"
+                            android:layout_height="@dimen/_45sdp"
                             android:drawableEnd="@drawable/register_icon_resize_program"
                             android:fontFamily="@font/poppins"
                             android:hint="@string/register_program"
@@ -183,7 +183,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_20sdp"
@@ -192,7 +192,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etYear"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_40sdp"
+                            android:layout_height="@dimen/_45sdp"
                             android:inputType="number"
                             android:drawableEnd="@drawable/register_icon_resize_year"
                             android:fontFamily="@font/poppins"
@@ -202,7 +202,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_20sdp"
@@ -211,7 +211,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etSection"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_40sdp"
+                            android:layout_height="@dimen/_45sdp"
                             android:drawableEnd="@drawable/register_icon_resize_section"
                             android:fontFamily="@font/poppins"
                             android:hint="@string/register_section"
@@ -234,7 +234,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etUsername"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_40sdp"
+                            android:layout_height="@dimen/_45sdp"
                             android:drawableEnd="@drawable/register_icon_resize_user"
                             android:fontFamily="@font/poppins"
                             android:hint="@string/register_username"
@@ -257,7 +257,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etEmail"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_40sdp"
+                            android:layout_height="@dimen/_45sdp"
                             android:drawableEnd="@drawable/login_icon_resize_mail"
                             android:fontFamily="@font/poppins"
                             android:hint="@string/register_emailID"
@@ -384,7 +384,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPassword"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_40sdp"
+                            android:layout_height="@dimen/_45sdp"
                             android:drawableEnd="@drawable/login_icon_resize_lock"
                             android:fontFamily="@font/poppins"
                             android:inputType="textPassword"
@@ -396,7 +396,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutConfirmPassword"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_20sdp"
@@ -405,7 +405,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etConfirmPassword"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_40sdp"
+                            android:layout_height="@dimen/_45sdp"
                             android:drawableEnd="@drawable/login_icon_resize_lock"
                             android:fontFamily="@font/poppins"
                             android:hint="@string/register_confirm_password"
