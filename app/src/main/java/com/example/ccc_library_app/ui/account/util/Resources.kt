@@ -40,6 +40,29 @@ object Resources {
         } catch (ignored: Exception) { }
     }
 
+    fun displayCustomDialog(
+        activity: Activity,
+        layoutDialog: Int
+    ) {
+        dialog = Dialog(activity)
+
+        dialog?.apply {
+            setContentView(layoutDialog)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                window!!.setBackgroundDrawable(ResourcesCompat.getDrawable(activity.resources, R.drawable.custom_dialog_background, null))
+            window!!.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            setCancelable(false)
+            window!!.attributes.windowAnimations = R.style.animation
+            show()
+        }
+        try {
+            dialog?.findViewById<Button>(R.id.btnOk)?.setOnClickListener {
+                dialog?.dismiss()
+            }
+        } catch (ignored: Exception) { }
+    }
+
     fun dismissDialog() {
         dialog?.dismiss()
     }

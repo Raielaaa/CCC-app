@@ -27,7 +27,6 @@ class RegisterFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
     private lateinit var credentialsModel: CredentialsModel
     private lateinit var registerTermsAndCondition: RegisterTermsAndCondition
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var editor: Editor
     private val TAG: String = "MyTag"
 
     override fun onCreateView(
@@ -37,7 +36,6 @@ class RegisterFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeL
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
         registerViewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
         sharedPreferences = requireActivity().getSharedPreferences("TermsConditionsSP", Context.MODE_PRIVATE)
-        editor = sharedPreferences.edit()
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
         initializeViews()
