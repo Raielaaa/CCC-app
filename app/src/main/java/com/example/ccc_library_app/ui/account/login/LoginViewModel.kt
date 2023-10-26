@@ -1,5 +1,6 @@
 package com.example.ccc_library_app.ui.account.login
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -64,6 +65,7 @@ class LoginViewModel @Inject constructor(
                         txtInputLayoutEmail.boxStrokeColor = fragment.resources.getColor(R.color.required)
                         txtInputLayoutPW.boxStrokeColor = fragment.resources.getColor(R.color.required)
 
+                        Resources.dismissDialog()
                         Toast.makeText(
                             context,
                             "Login failed: ${task.exception.toString().substring(66, task.exception.toString().length)}",
@@ -73,5 +75,27 @@ class LoginViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    fun validateInputLogin(
+        txtInputLayoutEmail: TextInputLayout,
+        txtInputLayoutPW: TextInputLayout,
+        etEmail: TextInputEditText,
+        etPassword: TextInputEditText,
+        activity: Activity
+    ) : Boolean {
+        if (etEmail.text.toString().isEmpty()) {
+            txtInputLayoutEmail.boxStrokeColor = activity.resources.getColor(R.color.required)
+            etEmail.requestFocus()
+
+            return false
+        } else if (etPassword.text.toString().isEmpty()){
+            txtInputLayoutPW.boxStrokeColor = activity.resources.getColor(R.color.required)
+            etPassword.requestFocus()
+
+            return false
+        }
+
+        return true
     }
 }

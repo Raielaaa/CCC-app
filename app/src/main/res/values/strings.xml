@@ -50,6 +50,69 @@
     <string name="register_password_4">At least 8 characters</string>
     <string name="register_google">Continue with google</string>
     <string name="default_web_client_id">319826207112-g1nvf9fpcb09pe26bqsrhtid937hkt09.apps.googleusercontent.com</string>
+
+    <string name="terms_conditions_header">Terms and conditions</string>
+    <string name="terms_condition_date_placeholder">Last updated on August 2020</string>
+    <string name="terms_conditions_accept">Accept</string>
+    <string name="terms_conditions_decline">Decline</string>
+
+    <string name="terms_conditions_1.1">
+        1. Your acceptance of these Terms
+    </string>
+    <string name="terms_conditions_1">
+        1.1     By using, visiting, accessing and/or registering with the app (including all content available through the app), you have read, understood and agree to be bound by these Terms and the terms and conditions of our privacy policy which are incorporated in these Terms by reference. If you do not agree to be bound by these Terms (as amended from time to time), then please do not use the app.
+
+        \n\n1.2     We reserve the right to change, modify, add or delete parts of these Terms at any time and without further notice. Such amendments shall be effective upon posting the revised Terms on this app.
+
+        \n\n1.3     These Terms are binding on Members and on non-Members who access and use the app (“Users”)
+    </string>
+    <string name="terms_conditions_2.1">
+        2. Access and Use of this Website
+    </string>
+    <string name="terms_conditions_2">
+        2.1     We hereby grant you permission to use the app in accordance with these Terms, provided that (a) you use the app solely for your personal, non-commercial use (b) you will not copy or distribute any part of the app without our prior written authorisation © you will not alter, modify, edit or otherwise change any part of the Website other than as may be reasonably necessary to use the app for its intended purpose and (d) that you will comply with these Terms.
+    </string>
+    <string name="terms_conditions_3.1">
+        3. Your obligations
+    </string>
+    <string name="terms_conditions_3">
+        3.1     You agree not to use the app for any illegal purposes and agree to use it in accordance with all the relevant laws.
+
+        \n\n3.2     You agree not to upload, post on or transmit through the app any computer viruses, macro viruses, Trojan horses, worms or anything else designed to interfere with, interrupt or disrupt the normal operating procedures of a computer.
+
+        \n\n3.3     You will not post or otherwise disseminate on the app any material which is unlawful, obscene, defamatory, libellous, threatening, pornographic, harassing, hateful, racially offensive, or encourages conduct that would be considered a criminal offence, give rise to civil liability, violate any law, or is otherwise inappropriate (“Offensive Material”).
+
+        \n\n3.4     You will not use the app in a manner that may cause the app to be interrupted, damaged, rendered less efficient or such that the effectiveness or functionality of the app is any way impaired.
+
+        \n\n3.5     You agree that you will not collect, collate or gather any personally identifiable information from the app and agree that you will not use the communication systems provided by the app for any commercial solicitation purposes.
+
+        \n\n3.6     You will not use the app in any manner which violates or infringes the rights of any person, firm or company (including, but not limited to, intellectual property rights, confidentiality rights and privacy rights).
+
+        \n\n3.7     You agree that in the event that you have any right, claim or action against any User arising out of the User’s use of the app, then you will pursue such right, claim or action independently of, and without recourse to us, except that if you notify us of any abuse of the app which results in your right, claim or action (for example, you inform us of an offending article which is defamatory of or offensive about you, setting out the specific statement concerned, where it was posted and an explanation as to why it is defamatory or offensive about you), then we shall remove, delete, modify or alter (as appropriate) the posting in question and may terminate the offending User’s account if appropriate and at our sole discretion.
+
+        \n\n3.8     You agree that our content, trademarks, copyright, patents, logos, domain names and other related intellectual property rights belong to us and/or our affiliates or licensors and you will not do any act that infringes those rights.
+    </string>
+    <string name="terms_conditions_4.1">
+        4. Third Party Links
+    </string>
+    <string name="terms_conditions_4">
+        4.1     We may provide links to third party websites or resources on our app. You hereby agree that we are not responsible or liable for the availability of such external websites or resources and acknowledge that we do not endorse and are not responsible or liable for the practices and contents (including defamatory, libellous and infringing content) in any the third party websites or resources, including (without limitation) any advertising, products or other materials or services on or available from such websites or resources, nor for any damage, loss or offence caused or alleged to be caused by, or in connection with the use of or reliance on any such content, goods or services available on such websites and resources.
+    </string>
+    <string name="terms_conditions_5.1">
+        5. Data Protection
+    </string>
+    <string name="terms_conditions_5">
+        5.1     We aim to comply with the applicable Data Protection legislation from time to time in place.
+
+        \n\n5.2     We will disclose your personal data if we are requested to do so by law or by any regulatory or governmental authority, or upon receipt of a court order or a legitimate request by a third party (for example, the police) in investigating illegal activities to provide information concerning your activities on the Website.
+
+        \n\n5.3     We reserve the right to notify or provide information to the relevant authority if we believe that you have carried out or are in the process of carrying out any illegal activity.
+
+        \n\n5.4     If you agree (during the registration process or when entering competitions and other activities) to receive information/offers, etc from other companies (for example marketing and advertising companies), then we may pass your personal information and/or your activities on the app to other companies.
+
+        \n\n5.5     We reserve the right to store and use your personal data solely for our own internal purposes and we reserve the right to access, monitor and retrieve password protected information in order to fulfil our obligations, both legal and as established under these Terms.
+    </string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

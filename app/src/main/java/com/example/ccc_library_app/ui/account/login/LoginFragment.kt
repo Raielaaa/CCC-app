@@ -1,11 +1,11 @@
 package com.example.ccc_library_app.ui.account.login
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
@@ -14,7 +14,6 @@ import com.example.ccc_library_app.ui.account.register.RegisterViewModel
 import com.example.ccc_library_app.ui.account.util.Resources
 import dagger.hilt.android.AndroidEntryPoint
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
@@ -25,20 +24,19 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         registerViewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
 
-        initNetworkDialog()
-        initClickedViews()
+        initializeNetworkDialog()
+        initializeClickedViews()
+        binding.etEmail.requestFocus()
 
         return binding.root
     }
 
-    private fun initNetworkDialog() {
+    private fun initializeNetworkDialog() {
         if (!registerViewModel.isNetworkAvailable(requireContext())) {
-            //  Displays no-internet-connection dialog
             Resources.displayCustomDialog(
                 activity = requireActivity(),
                 hostFragment = this@LoginFragment,
@@ -47,40 +45,48 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun initClickedViews() {
+    private fun initializeClickedViews() {
         binding.apply {
             cvExit.setOnClickListener {
                 findNavController().navigate(R.id.action_loginFragment_to_homeAccountFragment)
             }
             btnLoginLogin.setOnClickListener {
-                val inputtedEmail: String? = etEmail.text?.toString()
-                val inputtedPassword: String? = etPassword.text?.toString()
-                if (
-                    inputtedEmail.isNullOrEmpty() ||
-                    inputtedPassword.isNullOrEmpty()
-                ) {
-                    txtInputLayoutEmail.boxStrokeColor = resources.getColor(R.color.required)
-                    txtInputLayoutPW.boxStrokeColor = resources.getColor(R.color.required)
-                    etEmail.requestFocus()
-
-                    Toast.makeText(requireContext(), "All fields are required", Toast.LENGTH_LONG).show()
-                } else {
-                    loginViewModel.validateCredentials(
-                        email = inputtedEmail,
-                        password = inputtedPassword,
-                        context = requireContext(),
-                        fragment = this@LoginFragment,
-                        etEmail = etEmail,
-                        etPassword = etPassword,
-                        txtInputLayoutEmail = txtInputLayoutEmail,
-                        txtInputLayoutPW = txtInputLayoutPW
-                    )
-                }
+                handleLoginButtonClick()
             }
-
             tvNoAccount.setOnClickListener {
                 findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
             }
+        }
+    }
+
+    private fun handleLoginButtonClick() {
+        val inputtedEmail: String? = binding.etEmail.text?.toString()
+        val inputtedPassword: String? = binding.etPassword.text?.toString()
+
+        if (loginViewModel.validateInputLogin(
+                binding.txtInputLayoutEmail,
+                binding.txtInputLayoutPW,
+                binding.etEmail,
+                binding.etPassword,
+                requireActivity()
+            )
+        ) {
+            if (inputtedEmail != null && inputtedPassword != null) {
+                loginViewModel.validateCredentials(
+                    email = inputtedEmail,
+                    password = inputtedPassword,
+                    context = requireContext(),
+                    fragment = this@LoginFragment,
+                    etEmail = binding.etEmail,
+                    etPassword = binding.etPassword,
+                    txtInputLayoutEmail = binding.txtInputLayoutEmail,
+                    txtInputLayoutPW = binding.txtInputLayoutPW
+                )
+            } else {
+                Toast.makeText(requireContext(), "Unknown error", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(requireContext(), "All fields are required", Toast.LENGTH_SHORT).show()
         }
     }
 }

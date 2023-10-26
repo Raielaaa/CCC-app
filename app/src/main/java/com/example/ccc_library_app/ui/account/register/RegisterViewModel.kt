@@ -20,7 +20,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.account.util.Resources
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,6 +31,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 
+@Suppress("NAME_SHADOWING")
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     @Named("FirebaseAuth.Instance")
@@ -116,6 +116,7 @@ class RegisterViewModel @Inject constructor(
                         fragment.findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                     }
                 }.addOnFailureListener { exception ->
+                    Resources.dismissDialog()
                     Toast.makeText(context, exception.localizedMessage, Toast.LENGTH_LONG).show()
                     Log.e(TAG, "insertDataToFirebaseAuth-AuthException: ${exception.message}", )
                 }
@@ -208,5 +209,24 @@ class RegisterViewModel @Inject constructor(
     ) {
         val signInIntent = googleSignInClient.signInIntent
         activity.startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    fun setFocus(vararg editTexts: TextInputEditText) {
+        for (editText in editTexts) {
+            if (editText.text.toString().isEmpty()) {
+                editText.requestFocus()
+                return  // Stop after focusing on the first empty field
+            }
+        }
+    }
+
+    fun validateInputRegisterForGoogleSignIn(vararg editText: TextInputEditText): Boolean {
+        for (editText in editText) {
+            if (editText.text.toString().isEmpty()) {
+                editText.requestFocus()
+                return false
+            }
+        }
+        return true
     }
 }
