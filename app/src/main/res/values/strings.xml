@@ -122,4 +122,8 @@
     <string name="main_search">Search...</string>
     <string name="main_header_1">Discover the power of technology!</string>
     <string name="main_header_2">Book now</string>
+    <string name="main_body_header_1">Featured Book</string>
+    <string name="main_body_header_2">Empower your curiosity</string>
+    <string name="main_body_header_3">with Tunc Doluca\'s Maximum Impact!</string>
+    <string name="main_popular_title">Popular Books</string>
 </resources>
