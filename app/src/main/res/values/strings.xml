@@ -115,4 +115,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+    <!-- Main -->
+    <string name="main_qr_header_1">Click ME</string>
+    <string name="main_qr_header_2">to register your favorite book!</string>
+    <string name="main_search">Search...</string>
+    <string name="main_header_1">Discover the power of technology!</string>
+    <string name="main_header_2">Book now</string>
 </resources>
