@@ -133,4 +133,12 @@
     <string name="main_inventory_borrow_value_placeholder">125</string>
     <string name="main_inventory_borrow_header">Borrowed books</string>
     <string name="main_inventory_see_all">see all</string>
+
+    <!-- Main dialog -->
+    <string name="main_dialog_header_1">Verify your request</string>
+    <string name="main_dialog_header_2">
+        By proceeding, you are providing consent for the transfer of book information along with your personal details, including first name, last name, academic year, program, section, and display name, to be securely transferred and stored in our database. Do you agree to this data transfer?
+    </string>
+    <string name="main_dialog_cancel">Cancel</string>
+    <string name="main_dialog_proceed">Proceed</string>
 </resources>

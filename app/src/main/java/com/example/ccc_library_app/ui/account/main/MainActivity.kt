@@ -1,8 +1,11 @@
 package com.example.ccc_library_app.ui.account.main
 
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,9 +22,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Named
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject
@@ -38,6 +45,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editor: Editor
     private val TAG = "MyTag"
     private val RC_SIGN_IN = 9001
+
+    // For QR code
+    private var imageBitmap: Bitmap? = null
+    private val CAMERA_PERMISSION_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +70,12 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        Resources.displayCustomDialog(
-            activity = this@MainActivity,
-            layoutDialog = R.layout.custom_dialog_loading
-        )
         if (requestCode == RC_SIGN_IN) {
+            Resources.displayCustomDialog(
+                activity = this@MainActivity,
+                layoutDialog = R.layout.custom_dialog_loading
+            )
+
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
@@ -73,6 +85,45 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
+
+        Log.d(TAG, "onActivityResult: before")
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            Log.d(TAG, "onActivityResult: after")
+            val extras: Bundle? = data?.extras
+            imageBitmap = extras?.get("data") as Bitmap
+
+//            editorQRScan.apply {
+//                putString("imagePathQRScan", saveBitmapToInternalStorage(imageBitmap!!))
+//                commit()
+//            }
+            Resources.displayCustomDialog(
+                this@MainActivity,
+                R.layout.custom_dialog_qr,
+                imageBitmap!!
+            )
+            Log.d(TAG, "onActivityResult: ${saveBitmapToInternalStorage(imageBitmap!!)}")
+        }
+    }
+
+    private fun saveBitmapToInternalStorage(bitmap: Bitmap): String? {
+        val contextWrapper = ContextWrapper(this@MainActivity)
+        val directory = contextWrapper.getDir("imageDir", MODE_PRIVATE)
+        val file = File(directory, "ImageQRScan")
+
+        var fos: FileOutputStream? = null
+        try {
+            fos = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+        } catch (e: Exception) {
+            Log.e(TAG, "saveBitmapToInternalStorage: ${e.printStackTrace()}")
+        } finally {
+            try {
+                fos?.close()
+            } catch (e: IOException) {
+                Log.e(TAG, "saveBitmapToInternalStorage: ${e.printStackTrace()}")
+            }
+        }
+        return file.absolutePath
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
