@@ -115,7 +115,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    
+
     <!-- Main -->
     <string name="main_qr_header_1">Click ME</string>
     <string name="main_qr_header_2">to register your favorite book!</string>
@@ -141,4 +141,16 @@
     </string>
     <string name="main_dialog_cancel">Cancel</string>
     <string name="main_dialog_proceed">Proceed</string>
+
+    <!-- Borrow status -->
+    <string name="main_borrow_header_1">Borrow status</string>
+    <string name="main_borrow_returned">Returned</string>
+    <string name="main_borrow_on_borrow">On-borrow</string>
+    <string name="main_borrow_book_title">Title placeholder</string>
+    <string name="main_borrow_status_header">Status: </string>
+    <string name="main_borrow_status">Completed</string>
+
+    <!-- Announcements -->
+    <string name="main_announcement_header_1">Announcements</string>
+    <string name="main_announcement_none">None</string>
 </resources>

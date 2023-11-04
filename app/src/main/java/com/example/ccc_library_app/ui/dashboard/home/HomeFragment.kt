@@ -49,13 +49,30 @@ class HomeFragment : Fragment(), CoroutineScope {
         initRecyclerView()
         initClickableViews()
         imageSlideshow.startSlideshow(binding.ivSlideshow)
+        initBottomNavigationBar()
 
         return binding.root
+    }
+
+    private fun initBottomNavigationBar() {
+        binding.apply {
+            homeFragmentViewModel.navigateToUser(requireActivity(), ivUser)
+            homeFragmentViewModel.navigateToBookmark(requireActivity(), ivBookmark)
+            homeFragmentViewModel.navigateToSettings(requireActivity(), ivSettings)
+        }
     }
 
     private fun initClickableViews() {
         binding.apply {
             cvCaptureQR.setOnClickListener {
+                Resources.displayCustomDialog(
+                    requireActivity(),
+                    this@HomeFragment,
+                    R.layout.custom_dialog_loading
+                )
+                homeFragmentViewModel.captureQR(requireActivity())
+            }
+            ivTakeQr.setOnClickListener {
                 Resources.displayCustomDialog(
                     requireActivity(),
                     this@HomeFragment,
@@ -120,9 +137,6 @@ class ImageSlideshow {
     private fun changeImageWithAnimation(imageView: ImageView) {
         val fadeIn = AlphaAnimation(0f, 1f)
         fadeIn.duration = 1000
-
-        val fadeOut = AlphaAnimation(1f, 0f)
-        fadeOut.duration = 1000
 
         val animationSet = AnimationSet(true)
         animationSet.addAnimation(fadeIn)

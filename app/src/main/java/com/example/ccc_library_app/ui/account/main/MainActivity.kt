@@ -16,6 +16,7 @@ import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.ActivityMainBinding
 import com.example.ccc_library_app.ui.account.register.DataModelGoogle
 import com.example.ccc_library_app.ui.account.util.Resources
+import com.example.ccc_library_app.ui.dashboard.home.HomeFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
@@ -97,6 +98,7 @@ class MainActivity : AppCompatActivity() {
 //                commit()
 //            }
             Resources.displayCustomDialog(
+                HomeFragment(),
                 this@MainActivity,
                 R.layout.custom_dialog_qr,
                 imageBitmap!!

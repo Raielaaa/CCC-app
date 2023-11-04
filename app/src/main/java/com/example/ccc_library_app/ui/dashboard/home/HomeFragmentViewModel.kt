@@ -2,10 +2,15 @@ package com.example.ccc_library_app.ui.dashboard.home
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModel
+import androidx.navigation.findNavController
+import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.account.util.Resources
 
 class HomeFragmentViewModel : ViewModel() {
@@ -47,5 +52,23 @@ class HomeFragmentViewModel : ViewModel() {
         //  Note that the permission code can be any number, but it's a good practice to generate a unique request code for each permission request.
         val cameraPermissionCode = 111
         activity.requestPermissions(permissions, cameraPermissionCode)
+    }
+
+    fun navigateToUser(activity: Activity, ivUser: ImageView) {
+        ivUser.setOnClickListener {
+            activity.findNavController(R.id.action_homeFragment_to_userFragment)
+        }
+    }
+
+    fun navigateToBookmark(activity: Activity, ivBookmark: ImageView) {
+        ivBookmark.setOnClickListener {
+            activity.findNavController(R.id.action_homeFragment_to_bookmarkFragment)
+        }
+    }
+
+    fun navigateToSettings(activity: Activity, ivSettings: ImageView) {
+        ivSettings.setOnClickListener {
+            activity.findNavController(R.id.action_homeFragment_to_settingsFragment)
+        }
     }
 }
