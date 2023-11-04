@@ -8,8 +8,10 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.account.util.Resources
 
@@ -54,21 +56,21 @@ class HomeFragmentViewModel : ViewModel() {
         activity.requestPermissions(permissions, cameraPermissionCode)
     }
 
-    fun navigateToUser(activity: Activity, ivUser: ImageView) {
+    fun navigateToUser(hostFragment: Fragment, ivUser: ImageView) {
         ivUser.setOnClickListener {
-            activity.findNavController(R.id.action_homeFragment_to_userFragment)
+            hostFragment.findNavController().navigate(R.id.action_homeFragment_to_userFragment)
         }
     }
 
-    fun navigateToBookmark(activity: Activity, ivBookmark: ImageView) {
+    fun navigateToBookmark(hostFragment: Fragment, ivBookmark: ImageView) {
         ivBookmark.setOnClickListener {
-            activity.findNavController(R.id.action_homeFragment_to_bookmarkFragment)
+            hostFragment.findNavController().navigate(R.id.action_homeFragment_to_bookmarkFragment)
         }
     }
 
-    fun navigateToSettings(activity: Activity, ivSettings: ImageView) {
+    fun navigateToSettings(hostFragment: Fragment, ivSettings: ImageView) {
         ivSettings.setOnClickListener {
-            activity.findNavController(R.id.action_homeFragment_to_settingsFragment)
+            hostFragment.findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
         }
     }
 }

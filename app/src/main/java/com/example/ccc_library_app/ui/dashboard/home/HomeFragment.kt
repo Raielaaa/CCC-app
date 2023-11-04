@@ -56,9 +56,9 @@ class HomeFragment : Fragment(), CoroutineScope {
 
     private fun initBottomNavigationBar() {
         binding.apply {
-            homeFragmentViewModel.navigateToUser(requireActivity(), ivUser)
-            homeFragmentViewModel.navigateToBookmark(requireActivity(), ivBookmark)
-            homeFragmentViewModel.navigateToSettings(requireActivity(), ivSettings)
+            homeFragmentViewModel.navigateToUser(this@HomeFragment, ivUser)
+            homeFragmentViewModel.navigateToBookmark(this@HomeFragment, ivBookmark)
+            homeFragmentViewModel.navigateToSettings(this@HomeFragment, ivSettings)
         }
     }
 
