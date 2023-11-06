@@ -7,26 +7,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.ccc_library_app.R
+import com.example.ccc_library_app.databinding.FragmentUserBinding
 
 class UserFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = UserFragment()
-    }
-
-    private lateinit var viewModel: UserViewModel
+    private lateinit var userViewModel: UserViewModel
+    private lateinit var binding: FragmentUserBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_user, container, false)
+    ): View {
+        binding = FragmentUserBinding.inflate(inflater, container, false)
+        userViewModel = ViewModelProvider(this@UserFragment)[UserViewModel::class.java]
+
+        initBottomNavigationBar()
+
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-        // TODO: Use the ViewModel
+    private fun initBottomNavigationBar() {
+        binding.apply {
+            userViewModel.apply {
+                navigateHome(this@UserFragment, ivHome)
+                navigateBookmark(this@UserFragment, ivBookmark)
+                navigateSettings(this@UserFragment, ivSettings)
+            }
+        }
     }
-
 }

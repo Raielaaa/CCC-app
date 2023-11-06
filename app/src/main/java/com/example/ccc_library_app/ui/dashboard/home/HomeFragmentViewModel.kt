@@ -13,13 +13,13 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
-import com.example.ccc_library_app.ui.account.util.Resources
+import com.example.ccc_library_app.ui.dashboard.util.Resources
 
 class HomeFragmentViewModel : ViewModel() {
     private var TAG: String = "MyTag"
 
     fun captureQR(activity: Activity) {
-        Resources.dismissDialog()
+        com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
         //  Prompting the user for camera permission. Camera permission is used so that we can use
         //  the camera of the phone of the user
         cameraPermissions(activity)
@@ -57,20 +57,14 @@ class HomeFragmentViewModel : ViewModel() {
     }
 
     fun navigateToUser(hostFragment: Fragment, ivUser: ImageView) {
-        ivUser.setOnClickListener {
-            hostFragment.findNavController().navigate(R.id.action_homeFragment_to_userFragment)
-        }
+        Resources.navigate(hostFragment, ivUser, R.id.action_homeFragment_to_userFragment)
     }
 
     fun navigateToBookmark(hostFragment: Fragment, ivBookmark: ImageView) {
-        ivBookmark.setOnClickListener {
-            hostFragment.findNavController().navigate(R.id.action_homeFragment_to_bookmarkFragment)
-        }
+        Resources.navigate(hostFragment, ivBookmark, R.id.action_homeFragment_to_bookmarkFragment)
     }
 
     fun navigateToSettings(hostFragment: Fragment, ivSettings: ImageView) {
-        ivSettings.setOnClickListener {
-            hostFragment.findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
-        }
+        Resources.navigate(hostFragment, ivSettings, R.id.action_homeFragment_to_settingsFragment)
     }
 }
