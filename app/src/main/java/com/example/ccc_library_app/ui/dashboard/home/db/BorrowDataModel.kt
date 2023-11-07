@@ -9,6 +9,7 @@ data class BorrowDataModel(
     val modelBorrower: String,
     val modelProgram: String,
     val modelSection: String,
+    val modelYear: String,
     val modelBorrowDate: String,
     val modelDeadline: String,
     val modelBorrowStatus: String

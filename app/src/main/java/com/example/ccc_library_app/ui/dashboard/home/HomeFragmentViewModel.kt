@@ -2,12 +2,15 @@ package com.example.ccc_library_app.ui.dashboard.home
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
@@ -23,11 +26,6 @@ class HomeFragmentViewModel : ViewModel() {
         //  Prompting the user for camera permission. Camera permission is used so that we can use
         //  the camera of the phone of the user
         cameraPermissions(activity)
-
-        //  After getting the permission (assuming that the user clicked the "Allow" button on the prompt). A function
-        //  will automatically be implemented, this function is used for launching the phone camera of the user to
-        //  capture an image.
-        takeImage(activity)
     }
 
     private fun takeImage(activity: Activity) {
@@ -41,19 +39,16 @@ class HomeFragmentViewModel : ViewModel() {
     }
 
     private fun cameraPermissions(activity: Activity) {
-        val permissions = arrayOf(
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.READ_PHONE_STATE,
-            android.Manifest.permission.SYSTEM_ALERT_WINDOW,
-            android.Manifest.permission.CAMERA
-        )
-        //  When you request a permission from the user using "requestPermissions()" method, you can specify a request code as the second argument.
-        //  The purpose of the request code is to identify the permission request when the result of the request is returned
-        //  to the activity or fragment that initiated the request.
-        //  Note that the permission code can be any number, but it's a good practice to generate a unique request code for each permission request.
-        val cameraPermissionCode = 111
-        activity.requestPermissions(permissions, cameraPermissionCode)
+        val cameraPermission = android.Manifest.permission.CAMERA
+        val permissionGranted = PackageManager.PERMISSION_GRANTED
+
+        if (ContextCompat.checkSelfPermission(activity, cameraPermission) != permissionGranted) {
+            // Request camera permission if it's not granted.
+            ActivityCompat.requestPermissions(activity, arrayOf(cameraPermission), 111)
+        } else {
+            // Camera permission is already granted, proceed to capturing the image.
+            takeImage(activity)
+        }
     }
 
     fun navigateToBookList(hostFragment: Fragment, ivBookList: ImageView) {
