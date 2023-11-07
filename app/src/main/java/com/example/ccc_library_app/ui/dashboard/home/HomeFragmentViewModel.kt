@@ -56,8 +56,8 @@ class HomeFragmentViewModel : ViewModel() {
         activity.requestPermissions(permissions, cameraPermissionCode)
     }
 
-    fun navigateToUser(hostFragment: Fragment, ivUser: ImageView) {
-        Resources.navigate(hostFragment, ivUser, R.id.action_homeFragment_to_userFragment)
+    fun navigateToBookList(hostFragment: Fragment, ivBookList: ImageView) {
+        Resources.navigate(hostFragment, ivBookList, R.id.action_homeFragment_to_bookListFragment)
     }
 
     fun navigateToBookmark(hostFragment: Fragment, ivBookmark: ImageView) {

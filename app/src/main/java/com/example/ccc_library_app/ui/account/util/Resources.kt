@@ -12,9 +12,12 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.dashboard.home.HomeFragment
+import com.example.ccc_library_app.ui.dashboard.home.HomeFragmentViewModel
+import com.example.ccc_library_app.ui.dashboard.home.db.FirebaseDBManager
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -99,7 +102,7 @@ object Resources {
         try {
             dialog?.apply {
                 findViewById<Button>(R.id.btnProceed)?.setOnClickListener {
-                    scanBitmapQR(imageBitmap, activity)
+                    scanBitmapQR(imageBitmap, activity, parentFragment)
                 }
 
                 findViewById<Button>(R.id.btnCancel)?.setOnClickListener {
@@ -119,7 +122,7 @@ object Resources {
         .enableAllPotentialBarcodes()
         .build()
 
-    private fun scanBitmapQR(imageBitmap: Bitmap, activity: Activity) {
+    private fun scanBitmapQR(imageBitmap: Bitmap, activity: Activity, parentFragment: HomeFragment) {
         if (imageBitmap != null) {
             //  Create an InputImage object from the bitmap
             val image = InputImage.fromBitmap(imageBitmap, 0)
@@ -139,15 +142,17 @@ object Resources {
                         //  If the barcode is of type text, extract the book name and author name
                         when (barcode.valueType) {
                             Barcode.TYPE_TEXT -> {
-                                val rawValueStr = barcode.rawValue.toString()
-                                val index = rawValueStr.indexOf("&")
-                                // Take all characters before the first '&' character to get the book name
-                                val bookAuthor = rawValueStr.takeWhile { it != '&' }
-                                // Get the author name starting from the '&' character until the end of the string
-                                val bookName = rawValueStr.substring(index + 2)
-                                // Show the barcode raw value as a toast message
-                                Toast.makeText(activity, barcode.rawValue, Toast.LENGTH_SHORT).show()
                                 dismissDialog()
+
+                                displayCustomDialog(
+                                    activity,
+                                    R.layout.custom_dialog_loading
+                                )
+
+                                FirebaseDBManager().insertDataToDB(
+                                    barcode.rawValue,
+                                    activity
+                                )
                             }
                         }
                     }

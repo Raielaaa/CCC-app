@@ -87,23 +87,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        Log.d(TAG, "onActivityResult: before")
         if (requestCode == CAMERA_PERMISSION_CODE) {
-            Log.d(TAG, "onActivityResult: after")
             val extras: Bundle? = data?.extras
             imageBitmap = extras?.get("data") as Bitmap
 
-//            editorQRScan.apply {
-//                putString("imagePathQRScan", saveBitmapToInternalStorage(imageBitmap!!))
-//                commit()
-//            }
             Resources.displayCustomDialog(
                 HomeFragment(),
                 this@MainActivity,
                 R.layout.custom_dialog_qr,
                 imageBitmap!!
             )
-            Log.d(TAG, "onActivityResult: ${saveBitmapToInternalStorage(imageBitmap!!)}")
         }
     }
 
@@ -160,8 +153,8 @@ class MainActivity : AppCompatActivity() {
             userID
         )
 
-        fireStore.collection("ccc-library-app-user-data")
-            .add(userData)
+        fireStore.collection("ccc-library-app-user-data").document(userID)
+            .set(userData)
             .addOnSuccessListener {
                 Resources.dismissDialog()
                 navController.navigate(R.id.homeFragment)

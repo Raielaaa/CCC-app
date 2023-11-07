@@ -32,7 +32,7 @@ class SettingsFragment : Fragment() {
         binding.apply {
             settingsViewModel.apply {
                 navigateToSettings(this@SettingsFragment, ivHome)
-                navigateToUser(this@SettingsFragment, ivUser)
+                navigateToBookList(this@SettingsFragment, ivBookList)
                 navigateToBookmark(this@SettingsFragment, ivBookmark)
             }
         }

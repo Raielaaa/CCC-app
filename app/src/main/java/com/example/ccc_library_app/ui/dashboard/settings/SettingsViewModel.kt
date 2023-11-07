@@ -12,8 +12,8 @@ class SettingsViewModel : ViewModel() {
         Resources.navigate(hostFragment, ivHome, R.id.action_settingsFragment_to_homeFragment)
     }
 
-    fun navigateToUser(hostFragment: Fragment, ivUser: ImageView) {
-        Resources.navigate(hostFragment, ivUser, R.id.action_settingsFragment_to_userFragment)
+    fun navigateToBookList(hostFragment: Fragment, ivBookList: ImageView) {
+        Resources.navigate(hostFragment, ivBookList, R.id.action_settingsFragment_to_bookListFragmentFragment)
     }
 
     fun navigateToBookmark(hostFragment: Fragment, ivBookmark: ImageView) {

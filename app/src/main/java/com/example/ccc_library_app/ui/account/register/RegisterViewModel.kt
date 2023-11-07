@@ -104,8 +104,8 @@ class RegisterViewModel @Inject constructor(
                             modelUsername
                         )
 
-                        firebaseFireStore.collection("ccc-library-app-user-data")
-                            .add(userData)
+                        firebaseFireStore.collection("ccc-library-app-user-data").document(userID)
+                            .set(userData)
                             .addOnSuccessListener {
                                 Toast.makeText(context, "Register successful", Toast.LENGTH_LONG).show()
                             }.addOnFailureListener { exception ->

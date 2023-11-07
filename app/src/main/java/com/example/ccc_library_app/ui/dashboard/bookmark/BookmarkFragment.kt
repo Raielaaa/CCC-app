@@ -29,7 +29,7 @@ class BookmarkFragment : Fragment() {
     private fun initBottomNavigationBar() {
         binding.apply {
             bookMarkViewModel.navigateHome(this@BookmarkFragment, ivHome)
-            bookMarkViewModel.navigateUser(this@BookmarkFragment, ivUser)
+            bookMarkViewModel.navigateBookList(this@BookmarkFragment, ivBookList)
             bookMarkViewModel.navigateSettings(this@BookmarkFragment, ivSettings)
         }
     }

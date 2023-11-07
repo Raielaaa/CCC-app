@@ -875,12 +875,12 @@
                 android:src="@drawable/main_home_collored" />
 
             <ImageView
-                android:id="@+id/ivUser"
+                android:id="@+id/ivBookList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="@dimen/_15sdp"
-                android:src="@drawable/main_user" />
+                android:src="@drawable/main_open_book" />
 
             <ImageView
                 android:id="@+id/ivTakeQr"

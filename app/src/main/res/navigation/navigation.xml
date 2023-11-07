@@ -97,8 +97,8 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_homeFragment_to_userFragment"
-            app:destination="@id/userFragment"
+            android:id="@+id/action_homeFragment_to_bookListFragment"
+            app:destination="@id/bookListFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
@@ -124,8 +124,8 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_bookmarkFragment_to_userFragment"
-            app:destination="@id/userFragment"
+            android:id="@+id/action_bookmarkFragment_to_bookListFragment"
+            app:destination="@id/bookListFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
@@ -139,26 +139,26 @@
             app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
-        android:id="@+id/userFragment"
-        android:name="com.example.ccc_library_app.ui.dashboard.user.UserFragment"
-        android:label="fragment_user"
-        tools:layout="@layout/fragment_user" >
+        android:id="@+id/bookListFragment"
+        android:name="com.example.ccc_library_app.ui.dashboard.list.BookListFragment"
+        android:label="fragment_book_list"
+        tools:layout="@layout/fragment_book_list">
         <action
-            android:id="@+id/action_userFragment_to_homeFragment"
+            android:id="@+id/action_bookListFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_userFragment_to_bookmarkFragment"
+            android:id="@+id/action_bookListFragment_to_bookmarkFragment"
             app:destination="@id/bookmarkFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_userFragment_to_settingsFragment"
+            android:id="@+id/action_bookListFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
@@ -174,8 +174,8 @@
             android:id="@+id/action_settingsFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
-            android:id="@+id/action_settingsFragment_to_userFragment"
-            app:destination="@id/userFragment"
+            android:id="@+id/action_settingsFragment_to_bookListFragmentFragment"
+            app:destination="@id/bookListFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"

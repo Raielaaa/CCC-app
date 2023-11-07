@@ -1,5 +1,6 @@
 package com.example.ccc_library_app.ui.dashboard.bookmark
 
+import android.util.Log
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -12,8 +13,8 @@ class BookmarkViewModel : ViewModel() {
         Resources.navigate(hostFragment, ivHome, R.id.action_bookmarkFragment_to_homeFragment)
     }
 
-    fun navigateUser(hostFragment: Fragment, ivUser: ImageView) {
-        Resources.navigate(hostFragment, ivUser, R.id.action_bookmarkFragment_to_userFragment)
+    fun navigateBookList(hostFragment: Fragment, ivBookList: ImageView) {
+        Resources.navigate(hostFragment, ivBookList, R.id.action_bookmarkFragment_to_bookListFragment)
     }
 
     fun navigateSettings(hostFragment: Fragment, ivSettings: ImageView) {
