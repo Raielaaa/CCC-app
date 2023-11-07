@@ -119,10 +119,65 @@ class FirebaseDBManager : AppCompatActivity() {
                     "Book successfully registered.",
                     Toast.LENGTH_LONG
                 ).show()
-                Resources.dismissDialog()
+                getBookBorrowStatus(borrowInfo, activity)
             }.addOnFailureListener { exception ->
                 Toast.makeText(activity, exception.localizedMessage, Toast.LENGTH_LONG).show()
                 Log.e(TAG, "insertDataToDB: ${exception.message}")
+            }
+    }
+
+    private fun getBookBorrowStatus(borrowInfo: BorrowDataModel, activity: Activity) {
+        firebaseFireStore.collection("ccc-library-app-book-data")
+            .document(borrowInfo.modelBookCode)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    var currentBookBorrowCount = 0
+
+                    try {
+                        currentBookBorrowCount = document.data!!["modelBookCount"].toString().toInt()
+                    } catch (ignored: Exception) {
+                        val bookInfo = BookDataModel(
+                            borrowInfo.modelBookCode,
+                            borrowInfo.modelBookName,
+                            borrowInfo.modelBookAuthor,
+                            borrowInfo.modelBookGenre,
+                            "1"
+                        )
+
+                        firebaseFireStore.collection("ccc-library-app-book-data")
+                            .document(borrowInfo.modelBookCode)
+                            .set(bookInfo)
+                            .addOnSuccessListener {
+                                Toast.makeText(
+                                    activity,
+                                    "Book status successfully updated",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                Resources.dismissDialog()
+                            }
+                    }
+
+                    updateBookBorrowStatus(
+                        currentBookBorrowCount,
+                        borrowInfo.modelBookCode,
+                        activity
+                    )
+                }
+            }
+    }
+
+    private fun updateBookBorrowStatus(currentBookBorrowCount: Int, bookCode: String, activity: Activity) {
+        firebaseFireStore.collection("ccc-library-app-book-data")
+            .document(bookCode)
+            .update("modelBookCount", "${currentBookBorrowCount + 1}")
+            .addOnSuccessListener {
+                Toast.makeText(
+                    activity,
+                    "Book status successfully updated",
+                    Toast.LENGTH_LONG
+                ).show()
+                Resources.dismissDialog()
             }
     }
 
