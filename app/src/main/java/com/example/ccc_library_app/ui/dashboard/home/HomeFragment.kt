@@ -65,19 +65,9 @@ class HomeFragment : Fragment(), CoroutineScope {
     private fun initClickableViews() {
         binding.apply {
             cvCaptureQR.setOnClickListener {
-                Resources.displayCustomDialog(
-                    requireActivity(),
-                    this@HomeFragment,
-                    R.layout.custom_dialog_loading
-                )
                 homeFragmentViewModel.captureQR(requireActivity())
             }
             ivTakeQr.setOnClickListener {
-                Resources.displayCustomDialog(
-                    requireActivity(),
-                    this@HomeFragment,
-                    R.layout.custom_dialog_loading
-                )
                 homeFragmentViewModel.captureQR(requireActivity())
             }
         }

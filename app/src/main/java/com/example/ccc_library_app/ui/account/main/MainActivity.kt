@@ -91,11 +91,13 @@ class MainActivity : AppCompatActivity() {
             val extras: Bundle? = data?.extras
             imageBitmap = extras?.get("data") as Bitmap
 
-            Resources.displayCustomDialog(
+            Resources.displayCustomDialogForQr(
                 HomeFragment(),
                 this@MainActivity,
                 R.layout.custom_dialog_qr,
-                imageBitmap!!
+                imageBitmap!!,
+                fireStore,
+                auth
             )
         }
     }

@@ -18,6 +18,8 @@ import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.dashboard.home.HomeFragment
 import com.example.ccc_library_app.ui.dashboard.home.HomeFragmentViewModel
 import com.example.ccc_library_app.ui.dashboard.home.db.FirebaseDBManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -73,11 +75,13 @@ object Resources {
     }
 
     @SuppressLint("ObsoleteSdkInt")
-    fun displayCustomDialog(
+    fun displayCustomDialogForQr(
         parentFragment: HomeFragment,
         activity: Activity,
         layoutDialog: Int,
-        imageBitmap: Bitmap
+        imageBitmap: Bitmap,
+        fireStore: FirebaseFirestore,
+        auth: FirebaseAuth
     ) {
         try {
             if (!activity.isFinishing) {
@@ -102,7 +106,7 @@ object Resources {
         try {
             dialog?.apply {
                 findViewById<Button>(R.id.btnProceed)?.setOnClickListener {
-                    scanBitmapQR(imageBitmap, activity, parentFragment)
+                    scanBitmapQR(imageBitmap, activity, fireStore, auth)
                 }
 
                 findViewById<Button>(R.id.btnCancel)?.setOnClickListener {
@@ -122,7 +126,7 @@ object Resources {
         .enableAllPotentialBarcodes()
         .build()
 
-    private fun scanBitmapQR(imageBitmap: Bitmap, activity: Activity, parentFragment: HomeFragment) {
+    private fun scanBitmapQR(imageBitmap: Bitmap, activity: Activity, fireStore: FirebaseFirestore, auth: FirebaseAuth) {
         if (imageBitmap != null) {
             //  Create an InputImage object from the bitmap
             val image = InputImage.fromBitmap(imageBitmap, 0)
@@ -151,7 +155,9 @@ object Resources {
 
                                 FirebaseDBManager().insertDataToDB(
                                     barcode.rawValue,
-                                    activity
+                                    activity,
+                                    fireStore,
+                                    auth
                                 )
                             }
                         }

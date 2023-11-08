@@ -12,10 +12,6 @@ import java.util.Calendar
 import java.util.Locale
 
 class FirebaseDBManager : AppCompatActivity() {
-    //  Firebase service
-    private var firebaseFireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-
     //  General
     private val TAG: String = "MyTag"
 
@@ -23,15 +19,21 @@ class FirebaseDBManager : AppCompatActivity() {
     private val currentTime = Calendar.getInstance()
     private val sdf = SimpleDateFormat("MM/dd/yy hh:mm a", Locale.getDefault())
 
-    fun insertDataToDB(rawValue: String?, activity: Activity) {
+    fun insertDataToDB(
+        rawValue: String?,
+        activity: Activity,
+        fireStore: FirebaseFirestore,
+        auth: FirebaseAuth
+    ) {
         if (rawValue != null) {
             val bookInfo: List<String> = rawValue.toString().split(":")
-            val userID = firebaseAuth.currentUser!!.uid
+            val userID = auth.currentUser!!.uid
 
             organizeData(
                 userID,
                 bookInfo,
-                activity
+                activity,
+                fireStore
             )
         } else {
             Toast.makeText(
@@ -39,16 +41,17 @@ class FirebaseDBManager : AppCompatActivity() {
                 "QR not defined. Please scan again.",
                 Toast.LENGTH_LONG
             ).show()
-            com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
+            Resources.dismissDialog()
         }
     }
 
     private fun organizeData(
         userID: String,
         bookInfo: List<String>,
-        activity: Activity
+        activity: Activity,
+        fireStore: FirebaseFirestore
     ) {
-        firebaseFireStore.collection("ccc-library-app-user-data")
+        fireStore.collection("ccc-library-app-user-data")
             .document(userID)
             .get()
             .addOnSuccessListener { document ->
@@ -65,7 +68,8 @@ class FirebaseDBManager : AppCompatActivity() {
                         userID,
                         userData,
                         bookInfo,
-                        activity
+                        activity,
+                        fireStore
                     )
                 } else {
                     Toast.makeText(
@@ -81,7 +85,8 @@ class FirebaseDBManager : AppCompatActivity() {
         userID: String,
         userData: UserData,
         bookInfo: List<String>,
-        activity: Activity
+        activity: Activity,
+        fireStore: FirebaseFirestore
     ) {
         val borrowInfo = BorrowDataModel(
             userID,
@@ -101,16 +106,18 @@ class FirebaseDBManager : AppCompatActivity() {
         insertBorrowDataToFireStore(
             borrowInfo,
             userID,
-            activity
+            activity,
+            fireStore
         )
     }
 
     private fun insertBorrowDataToFireStore(
         borrowInfo: BorrowDataModel,
         userID: String,
-        activity: Activity
+        activity: Activity,
+        fireStore: FirebaseFirestore
     ) {
-        firebaseFireStore.collection("ccc-library-app-borrow-data")
+        fireStore.collection("ccc-library-app-borrow-data")
             .document(userID)
             .set(borrowInfo)
             .addOnSuccessListener {
@@ -119,15 +126,23 @@ class FirebaseDBManager : AppCompatActivity() {
                     "Book successfully registered.",
                     Toast.LENGTH_LONG
                 ).show()
-                getBookBorrowStatus(borrowInfo, activity)
+                getBookBorrowStatus(
+                    borrowInfo,
+                    activity,
+                    fireStore
+                )
             }.addOnFailureListener { exception ->
                 Toast.makeText(activity, exception.localizedMessage, Toast.LENGTH_LONG).show()
                 Log.e(TAG, "insertDataToDB: ${exception.message}")
             }
     }
 
-    private fun getBookBorrowStatus(borrowInfo: BorrowDataModel, activity: Activity) {
-        firebaseFireStore.collection("ccc-library-app-book-data")
+    private fun getBookBorrowStatus(
+        borrowInfo: BorrowDataModel,
+        activity: Activity,
+        fireStore: FirebaseFirestore
+    ) {
+        fireStore.collection("ccc-library-app-book-data")
             .document(borrowInfo.modelBookCode)
             .get()
             .addOnSuccessListener { document ->
@@ -145,7 +160,7 @@ class FirebaseDBManager : AppCompatActivity() {
                             "1"
                         )
 
-                        firebaseFireStore.collection("ccc-library-app-book-data")
+                        fireStore.collection("ccc-library-app-book-data")
                             .document(borrowInfo.modelBookCode)
                             .set(bookInfo)
                             .addOnSuccessListener {
@@ -161,14 +176,20 @@ class FirebaseDBManager : AppCompatActivity() {
                     updateBookBorrowStatus(
                         currentBookBorrowCount,
                         borrowInfo.modelBookCode,
-                        activity
+                        activity,
+                        fireStore
                     )
                 }
             }
     }
 
-    private fun updateBookBorrowStatus(currentBookBorrowCount: Int, bookCode: String, activity: Activity) {
-        firebaseFireStore.collection("ccc-library-app-book-data")
+    private fun updateBookBorrowStatus(
+        currentBookBorrowCount: Int,
+        bookCode: String,
+        activity: Activity,
+        fireStore: FirebaseFirestore
+    ) {
+        fireStore.collection("ccc-library-app-book-data")
             .document(bookCode)
             .update("modelBookCount", "${currentBookBorrowCount + 1}")
             .addOnSuccessListener {
