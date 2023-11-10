@@ -153,4 +153,12 @@
     <!-- Announcements -->
     <string name="main_announcement_header_1">Announcements</string>
     <string name="main_announcement_none">None</string>
+
+    <!-- Book list -->
+    <string name="main_bookList_all">All</string>
+    <string name="main_bookList_accounting">Acc.</string>
+    <string name="main_bookList_literature">Lit.</string>
+    <string name="main_bookList_social">Social</string>
+    <string name="main_bookList_science">Science</string>
+    <string name="main_bookList_tech">Tech.</string>
 </resources>

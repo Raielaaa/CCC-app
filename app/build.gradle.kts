@@ -85,6 +85,9 @@ dependencies {
     //  Firebase FireStore
     implementation("com.google.firebase:firebase-firestore-ktx")
 
+    //  Firebase Cloud Storage
+    implementation("com.google.firebase:firebase-storage-ktx")
+
     //  Google Play services authentication library
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 }

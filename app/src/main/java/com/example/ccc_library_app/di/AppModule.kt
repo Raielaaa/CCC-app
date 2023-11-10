@@ -6,6 +6,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,6 +27,11 @@ object AppModule {
     @Provides
     @Named("FirebaseFireStore.Instance")
     fun providesFirebaseFireStoreInstance() = FirebaseFirestore.getInstance()
+
+    @Singleton
+    @Provides
+    @Named("FirebaseStorage.Instance")
+    fun providesFirebaseStorageInstance() = FirebaseStorage.getInstance().reference
 
     @Singleton
     @Provides
