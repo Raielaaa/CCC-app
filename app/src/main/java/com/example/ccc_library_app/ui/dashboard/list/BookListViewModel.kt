@@ -2,6 +2,7 @@ package com.example.ccc_library_app.ui.dashboard.list
 
 import android.app.Activity
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
@@ -91,14 +92,31 @@ class BookListViewModel @Inject constructor(
         ).show()
     }
 
-    fun addImagesToCloudTBD(
-        bitmap: Bitmap,
-        fileName: String
-    ) : UploadTask {
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val data = baos.toByteArray()
-
-        return firebaseStorage.child(fileName).putBytes(data)
+    fun showImage(ivPicPlaceholder: ImageView) {
+        firebaseStorage.child("book_images/183490.jpg").getBytes(1_048_576L).addOnSuccessListener { data ->
+            // Convert the byte array to a Bitmap
+            val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+            if (bitmap != null) {
+                // Set the Bitmap to the ImageView
+                ivPicPlaceholder.setImageBitmap(bitmap)
+            } else {
+                // Handle the case where the conversion to Bitmap failed
+                // You can show an error message or set a default image.
+            }
+        }.addOnFailureListener { exception ->
+            // Handle the failure, e.g., show an error message or log the exception
+            Log.e("MyTag", "Error downloading image: ${exception.message}", exception)
+        }
     }
+
+//    fun addImagesToCloudTBD(
+//        bitmap: Bitmap,
+//        fileName: String
+//    ) : UploadTask {
+//        val baos = ByteArrayOutputStream()
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+//        val data = baos.toByteArray()
+//
+//        return firebaseStorage.child(fileName).putBytes(data)
+//    }
 }

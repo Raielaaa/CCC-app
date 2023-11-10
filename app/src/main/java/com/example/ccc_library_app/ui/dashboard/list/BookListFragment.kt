@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentBookListBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,41 +30,46 @@ class BookListFragment : Fragment() {
 
         initBottomNavigationBar()
         initRecyclerView()
-        addBookImageToCloudTBD()
+//        addBookImageToCloudTBD()
+        initPicPlaceholder(binding.ivPicPlaceholder)
 
         return binding.root
     }
 
-    data class ImageDetails(
-        val bitmap: Bitmap,
-        val fileName: String
-    )
-
-    private fun addBookImageToCloudTBD() {
-        val listOfBitmapImage = listOf(
-            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_1), "book_images/539874.jpg"),
-            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_2), "book_images/372518.jpg"),
-            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_3), "book_images/785463.jpg"),
-            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_4), "book_images/954726.jpg"),
-            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_5), "book_images/839247.jpg"),
-            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_6), "book_images/468912.jpg"),
-            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_7), "book_images/621357.jpg"),
-            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_8), "book_images/526741.jpg"),
-            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_9), "book_images/874592.jpg"),
-            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_10), "book_images/183490.jpg")
-        )
-
-        for (images in listOfBitmapImage) {
-            bookListViewModel.addImagesToCloudTBD(images.bitmap, images.fileName)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("MyTag", "addBookImageToCloudTBD: Upload successful")
-                    } else {
-                        Log.d("MyTag", "addBookImageToCloudTBD: Upload failed")
-                    }
-                }
-        }
+    private fun initPicPlaceholder(ivPicPlaceholder: ImageView) {
+        bookListViewModel.showImage(ivPicPlaceholder)
     }
+
+//    data class ImageDetails(
+//        val bitmap: Bitmap,
+//        val fileName: String
+//    )
+//
+//    private fun addBookImageToCloudTBD() {
+//        val listOfBitmapImage = listOf(
+//            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_1), "book_images/539874.jpg"),
+//            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_2), "book_images/372518.jpg"),
+//            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_3), "book_images/785463.jpg"),
+//            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_4), "book_images/954726.jpg"),
+//            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_5), "book_images/839247.jpg"),
+//            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_6), "book_images/468912.jpg"),
+//            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_7), "book_images/621357.jpg"),
+//            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_8), "book_images/526741.jpg"),
+//            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_9), "book_images/874592.jpg"),
+//            ImageDetails(convertPNGImageResourceToBitmap(R.drawable.book_10), "book_images/183490.jpg")
+//        )
+//
+//        for (images in listOfBitmapImage) {
+//            bookListViewModel.addImagesToCloudTBD(images.bitmap, images.fileName)
+//                .addOnCompleteListener { task ->
+//                    if (task.isSuccessful) {
+//                        Log.d("MyTag", "addBookImageToCloudTBD: Upload successful")
+//                    } else {
+//                        Log.d("MyTag", "addBookImageToCloudTBD: Upload failed")
+//                    }
+//                }
+//        }
+//    }
 
     private fun convertPNGImageResourceToBitmap(imageResource: Int) : Bitmap = BitmapFactory.decodeResource(requireContext().resources, imageResource)
 
