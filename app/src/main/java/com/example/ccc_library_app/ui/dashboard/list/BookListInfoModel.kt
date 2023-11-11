@@ -7,5 +7,6 @@ data class BookListInfoModel(
     val modelBookGenre: String,
     val modelBookPublisher: String,
     val modelBookPublicationDate: String,
+    val modelBookImage: String,
     val modelBookDescription: String
 )

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dashboard.list.BookListFragment">
+    tools:context=".ui.dashboard.list.main.BookListFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView7"
@@ -345,6 +345,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView62" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMain"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -352,15 +353,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView62"
         app:spanCount="2"
         tools:listitem="@layout/fragment_book_list_list_item" />
-
-    <ImageView
-        android:id="@+id/ivPicPlaceholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/book_1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView62" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

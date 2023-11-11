@@ -140,7 +140,7 @@
     </fragment>
     <fragment
         android:id="@+id/bookListFragment"
-        android:name="com.example.ccc_library_app.ui.dashboard.list.BookListFragment"
+        android:name="com.example.ccc_library_app.ui.dashboard.list.main.BookListFragment"
         android:label="fragment_book_list"
         tools:layout="@layout/fragment_book_list">
         <action
@@ -164,6 +164,9 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_bookListFragment_to_clickedBookFragment"
+            app:destination="@id/clickedBookFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -188,4 +191,18 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
     </fragment>
+    <fragment
+        android:id="@+id/clickedBookFragment"
+        android:name="com.example.ccc_library_app.ui.dashboard.list.selected.ClickedBookFragment"
+        android:label="fragment_clicked_book"
+        tools:layout="@layout/fragment_clicked_book" >
+        <action
+            android:id="@+id/action_clickedBookFragment_to_bookListFragment"
+            app:destination="@id/bookListFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/registerTermsAndCondition"
+        android:name="com.example.ccc_library_app.ui.account.register.RegisterTermsAndCondition"
+        android:label="fragment_register_terms_and_condition"
+        tools:layout="@layout/fragment_register_terms_and_condition" />
 </navigation>
