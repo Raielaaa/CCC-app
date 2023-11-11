@@ -8,8 +8,10 @@ import android.os.Environment
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccc_library_app.R
@@ -53,7 +55,11 @@ class BookListViewModel @Inject constructor(
         )
     }
 
-    fun setUpRecyclerView(activity: Activity, rvMain: RecyclerView) {
+    fun setUpRecyclerView(
+        activity: Activity,
+        rvMain: RecyclerView,
+        hostFragment: Fragment
+    ) {
         Resources.displayCustomDialog(activity, R.layout.custom_dialog_loading)
 
         try {
@@ -86,7 +92,7 @@ class BookListViewModel @Inject constructor(
                             addDataToBookListItemModel(data, activity, data.modelBookImage) {
                                 itemsProcessed++
                                 if (itemsProcessed == bookInfoListLocal.size) {
-                                    displayInfoToRecyclerView(rvMain, activity)
+                                    displayInfoToRecyclerView(rvMain, activity, hostFragment)
                                 }
                             }
                         }
@@ -122,20 +128,30 @@ class BookListViewModel @Inject constructor(
     }
 
 
-    private fun displayInfoToRecyclerView(rvMain: RecyclerView, activity: Activity) {
+    private fun displayInfoToRecyclerView(rvMain: RecyclerView, activity: Activity, hostFragment: Fragment) {
         rvMain.apply {
             layoutManager = GridLayoutManager(activity, 2)
-            adapter = BookListAdapter(listOfBookListItemModel)
+            adapter = BookListAdapter(listOfBookListItemModel) { bookData ->
+                navigateFragment(bookData, hostFragment)
+            }
             addItemDecoration(
                 BookListItemDecoration(
-                2,
-                50,
-                true
-            )
+                    2,
+                    50,
+                    true
+                )
             )
         }
         
         Resources.dismissDialog()
+    }
+
+    private fun navigateFragment(bookData: BookListItemModel, hostFragment: Fragment) {
+        Resources.displayCustomDialog(
+            hostFragment.requireActivity(),
+            R.layout.custom_dialog_loading
+        )
+        hostFragment.findNavController().navigate(R.id.action_bookListFragment_to_clickedBookFragment, bundleOf("bookTitleKey" to bookData.tvBookTitle))
     }
 
     private fun bitmapToUri(activity: Activity, bitmap: Bitmap, bookNumber: String): Uri? {

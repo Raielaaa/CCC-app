@@ -18,6 +18,13 @@
         <item name="cornerSizeBottomLeft">@dimen/_150sdp</item>
     </style>
 
+    <!-- For ImageView at fragment_clicked_book -->
+    <style name="fragmentClickedBookMainImageBG" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">@dimen/_30sdp</item>
+        <item name="cornerSizeBottomRight">@dimen/_30sdp</item>
+    </style>
+
     <style name="MyFloatingActionButtonStyle">
         <item name="android:background">@drawable/login_actionbutton_bg</item>
         <!-- Other attributes as needed -->

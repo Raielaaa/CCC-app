@@ -68,7 +68,8 @@ class BookListFragment : Fragment() {
     private fun initRecyclerView() {
         bookListViewModel.setUpRecyclerView(
             requireActivity(),
-            binding.rvMain
+            binding.rvMain,
+            this@BookListFragment
         )
     }
 

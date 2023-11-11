@@ -166,7 +166,11 @@
             app:popExitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_bookListFragment_to_clickedBookFragment"
-            app:destination="@id/clickedBookFragment" />
+            app:destination="@id/clickedBookFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -198,7 +202,11 @@
         tools:layout="@layout/fragment_clicked_book" >
         <action
             android:id="@+id/action_clickedBookFragment_to_bookListFragment"
-            app:destination="@id/bookListFragment" />
+            app:destination="@id/bookListFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <dialog
         android:id="@+id/registerTermsAndCondition"

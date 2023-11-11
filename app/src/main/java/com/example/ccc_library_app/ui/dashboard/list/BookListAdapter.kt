@@ -7,14 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ccc_library_app.databinding.FragmentBookListListItemBinding
 
 class BookListAdapter(
-    private val collections: List<BookListItemModel>
+    private val collections: List<BookListItemModel>,
+    private val clickedListener: (BookListItemModel) -> Unit
 ) : RecyclerView.Adapter<BookListAdapter.BookListViewHolder>() {
     inner class BookListViewHolder(private val binding: FragmentBookListListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(bookListModel: BookListItemModel) {
+        fun bind(bookListModel: BookListItemModel, clickedListener: (BookListItemModel) -> Unit) {
             binding.apply {
                 ivBook.setImageURI(bookListModel.ivBook)
                 tvBookTitle.text = bookListModel.tvBookTitle
                 tvBookGenre.text = bookListModel.tvBookGenre
+            }
+            binding.root.setOnClickListener {
+                clickedListener(bookListModel)
             }
         }
     }
@@ -30,6 +34,6 @@ class BookListAdapter(
     }
 
     override fun onBindViewHolder(holder: BookListViewHolder, position: Int) {
-        holder.bind(collections[position])
+        holder.bind(collections[position], clickedListener)
     }
 }
