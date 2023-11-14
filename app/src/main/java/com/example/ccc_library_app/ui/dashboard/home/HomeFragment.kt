@@ -19,11 +19,13 @@ import com.example.ccc_library_app.databinding.FragmentHomeBinding
 import com.example.ccc_library_app.ui.account.util.Resources
 import com.example.ccc_library_app.ui.dashboard.home.popular.PopularAdapter
 import com.example.ccc_library_app.ui.dashboard.home.popular.PopularModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.util.Timer
 import java.util.TimerTask
 import kotlin.coroutines.CoroutineContext
 
+@AndroidEntryPoint
 class HomeFragment : Fragment(), CoroutineScope {
     //  Views
     private lateinit var binding: FragmentHomeBinding
@@ -54,6 +56,10 @@ class HomeFragment : Fragment(), CoroutineScope {
         return binding.root
     }
 
+    private fun initRecyclerViewPopular() {
+
+    }
+
     private fun initBottomNavigationBar() {
         binding.apply {
             homeFragmentViewModel.navigateToBookList(this@HomeFragment, ivBookList)
@@ -81,6 +87,11 @@ class HomeFragment : Fragment(), CoroutineScope {
 
     private fun initRecyclerView() {
         adapter = PopularAdapter()
+
+        homeFragmentViewModel.initPopularRecyclerView(
+            binding.rvPopular,
+            requireActivity()
+        )
 
         binding.apply {
             adapter.setList(
