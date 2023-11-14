@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ccc_library_app.databinding.FragmentBookListListItemBinding
 
 class BookListAdapter(
-    private val collections: List<BookListItemModel>,
+    private val collections: ArrayList<BookListItemModel>,
     private val clickedListener: (BookListItemModel) -> Unit
 ) : RecyclerView.Adapter<BookListAdapter.BookListViewHolder>() {
     inner class BookListViewHolder(private val binding: FragmentBookListListItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -23,6 +23,11 @@ class BookListAdapter(
         }
     }
 
+    fun updateData(newData: List<BookListItemModel>) {
+        collections.clear()
+        collections.addAll(newData)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookListViewHolder {
         val binding = FragmentBookListListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)

@@ -39,6 +39,9 @@ class BookListViewModel @Inject constructor(
 ) : ViewModel() {
     private val TAG: String = "MyTag"
     private var listOfBookListItemModel = ArrayList<BookListItemModel>()
+    private lateinit var bookInfoListLocal: ArrayList<BookListInfoModel>
+    private lateinit var adapterForRV: BookListAdapter
+    private lateinit var rvMainVM: RecyclerView
 
     fun navigateHome(hostFragment: Fragment, ivHome: ImageView) {
         com.example.ccc_library_app.ui.dashboard.util.Resources.navigate(hostFragment, ivHome, R.id.action_bookListFragment_to_homeFragment
@@ -69,7 +72,7 @@ class BookListViewModel @Inject constructor(
                     if (bookInfoListFromDB.isEmpty) {
                         displayToastMessage("Books unavailable.", activity)
                     } else {
-                        val bookInfoListLocal = ArrayList<BookListInfoModel>()
+                        bookInfoListLocal = ArrayList()
 
                         for (bookInfo in bookInfoListFromDB.documents) {
                             bookInfoListLocal.add(
@@ -92,16 +95,18 @@ class BookListViewModel @Inject constructor(
                             addDataToBookListItemModel(data, activity, data.modelBookImage) {
                                 itemsProcessed++
                                 if (itemsProcessed == bookInfoListLocal.size) {
-                                    displayInfoToRecyclerView(rvMain, activity, hostFragment)
+                                    displayInfoToRecyclerView(rvMain, activity, hostFragment, listOfBookListItemModel)
                                 }
                             }
                         }
                     }
                 }.addOnFailureListener {
                     displayToastMessage("An error occurred: ${it.localizedMessage}", activity)
+                    Resources.dismissDialog()
                 }
         } catch (exception: Exception) {
             displayToastMessage("Critical error occurred: ${exception.localizedMessage}", activity)
+            Resources.dismissDialog()
         }
     }
 
@@ -128,12 +133,15 @@ class BookListViewModel @Inject constructor(
     }
 
 
-    private fun displayInfoToRecyclerView(rvMain: RecyclerView, activity: Activity, hostFragment: Fragment) {
-        rvMain.apply {
+    private fun displayInfoToRecyclerView(rvMain: RecyclerView, activity: Activity, hostFragment: Fragment, bookList: ArrayList<BookListItemModel>) {
+        adapterForRV = BookListAdapter(bookList) { bookData ->
+            navigateFragment(bookData, hostFragment)
+        }
+        rvMainVM = rvMain
+
+        rvMainVM.apply {
             layoutManager = GridLayoutManager(activity, 2)
-            adapter = BookListAdapter(listOfBookListItemModel) { bookData ->
-                navigateFragment(bookData, hostFragment)
-            }
+            adapter = adapterForRV
             addItemDecoration(
                 BookListItemDecoration(
                     2,
@@ -220,5 +228,103 @@ class BookListViewModel @Inject constructor(
         val data = baos.toByteArray()
 
         return firebaseStorage.child(fileName).putBytes(data)
+    }
+
+    fun initSelectedGenre(
+        ivAll: ImageView,
+        ivAcc: ImageView,
+        ivLit: ImageView,
+        ivSocial: ImageView,
+        ivScience: ImageView,
+        ivTech: ImageView,
+        hostFragment: Fragment
+    ) {
+        ivAll.setOnClickListener {
+            ivAll.setImageResource(R.drawable.main_booklist_all_collored)
+            ivAcc.setImageResource(R.drawable.main_booklist_accounting)
+            ivLit.setImageResource(R.drawable.main_booklist_literature)
+            ivSocial.setImageResource(R.drawable.main_booklist_ss)
+            ivScience.setImageResource(R.drawable.main_booklist_science)
+            ivTech.setImageResource(R.drawable.main_booklist_tech)
+
+            adapterForRV = BookListAdapter(listOfBookListItemModel) { bookData ->
+                navigateFragment(bookData, hostFragment)
+            }
+            rvMainVM.adapter = adapterForRV
+            adapterForRV.notifyDataSetChanged()
+        }
+        ivAcc.setOnClickListener {
+            ivAll.setImageResource(R.drawable.main_booklist_all)
+            ivAcc.setImageResource(R.drawable.main_booklist_accounting_collored)
+            ivLit.setImageResource(R.drawable.main_booklist_literature)
+            ivSocial.setImageResource(R.drawable.main_booklist_ss)
+            ivScience.setImageResource(R.drawable.main_booklist_science)
+            ivTech.setImageResource(R.drawable.main_booklist_tech)
+
+            initRecyclerViewByGenre(hostFragment, "Accounting")
+        }
+        ivLit.setOnClickListener {
+            ivAll.setImageResource(R.drawable.main_booklist_all)
+            ivAcc.setImageResource(R.drawable.main_booklist_accounting)
+            ivLit.setImageResource(R.drawable.main_booklist_literature_collored)
+            ivSocial.setImageResource(R.drawable.main_booklist_ss)
+            ivScience.setImageResource(R.drawable.main_booklist_science)
+            ivTech.setImageResource(R.drawable.main_booklist_tech)
+
+            initRecyclerViewByGenre(hostFragment, "Literature")
+        }
+        ivSocial.setOnClickListener {
+            ivAll.setImageResource(R.drawable.main_booklist_all)
+            ivAcc.setImageResource(R.drawable.main_booklist_accounting)
+            ivLit.setImageResource(R.drawable.main_booklist_literature)
+            ivSocial.setImageResource(R.drawable.main_booklist_ss_collored)
+            ivScience.setImageResource(R.drawable.main_booklist_science)
+            ivTech.setImageResource(R.drawable.main_booklist_tech)
+
+            initRecyclerViewByGenre(hostFragment, "Social science")
+        }
+        ivScience.setOnClickListener {
+            ivAll.setImageResource(R.drawable.main_booklist_all)
+            ivAcc.setImageResource(R.drawable.main_booklist_accounting)
+            ivLit.setImageResource(R.drawable.main_booklist_literature)
+            ivSocial.setImageResource(R.drawable.main_booklist_ss)
+            ivScience.setImageResource(R.drawable.main_booklist_science_collored)
+            ivTech.setImageResource(R.drawable.main_booklist_tech)
+
+            initRecyclerViewByGenre(hostFragment, "Science")
+        }
+        ivTech.setOnClickListener {
+            ivAll.setImageResource(R.drawable.main_booklist_all)
+            ivAcc.setImageResource(R.drawable.main_booklist_accounting)
+            ivLit.setImageResource(R.drawable.main_booklist_literature)
+            ivSocial.setImageResource(R.drawable.main_booklist_ss)
+            ivScience.setImageResource(R.drawable.main_booklist_science)
+            ivTech.setImageResource(R.drawable.main_booklist_tech_collored)
+
+            initRecyclerViewByGenre(hostFragment, "Technology")
+        }
+    }
+
+    private var tempList: ArrayList<BookListItemModel> = ArrayList()
+
+    private fun initRecyclerViewByGenre(hostFragment: Fragment, genre: String) {
+        tempList.clear()
+        for (bookInfo in listOfBookListItemModel) {
+            if (bookInfo.tvBookGenre == "Genre: $genre") {
+                tempList.add(
+                    BookListItemModel(
+                        bookInfo.ivBook,
+                        bookInfo.tvBookTitle,
+                        bookInfo.tvBookGenre
+                    )
+                )
+            }
+        }
+
+        adapterForRV = BookListAdapter(tempList) { bookData ->
+            navigateFragment(bookData, hostFragment)
+        }
+        rvMainVM.adapter = adapterForRV
+        adapterForRV.notifyDataSetChanged()
     }
 }

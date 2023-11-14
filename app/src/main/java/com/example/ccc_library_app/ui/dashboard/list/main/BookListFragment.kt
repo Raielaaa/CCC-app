@@ -27,9 +27,24 @@ class BookListFragment : Fragment() {
 
         initBottomNavigationBar()
         initRecyclerView()
+        highlightSelectedGenre()
 //        addBookImageToCloudTBD()
 
         return binding.root
+    }
+
+    private fun highlightSelectedGenre() {
+        binding.apply {
+            bookListViewModel.initSelectedGenre(
+                ivAll,
+                ivAcc,
+                ivLit,
+                ivSocial,
+                ivScience,
+                ivTech,
+                this@BookListFragment
+            )
+        }
     }
 
     data class ImageDetails(
