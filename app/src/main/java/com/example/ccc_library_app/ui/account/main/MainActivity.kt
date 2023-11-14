@@ -89,7 +89,12 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == CAMERA_PERMISSION_CODE) {
             val extras: Bundle? = data?.extras
-            imageBitmap = extras?.get("data") as Bitmap
+            try {
+                imageBitmap = extras?.get("data") as Bitmap
+            } catch (exception: Exception) {
+                Toast.makeText(this@MainActivity, "An error occurred: ${exception.localizedMessage}", Toast.LENGTH_LONG).show()
+                return
+            }
 
             Resources.displayCustomDialogForQr(
                 HomeFragment(),

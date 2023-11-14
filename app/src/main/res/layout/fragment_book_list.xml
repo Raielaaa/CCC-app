@@ -20,13 +20,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 android:src="@drawable/bgimage"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:shapeAppearanceOverlay="@style/fragmentClickedBookMainImageBG"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -324,7 +325,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textView62"
+        android:id="@+id/tvGenreBookList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
@@ -340,9 +341,9 @@
         android:layout_height="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_2sdp"
         android:src="@drawable/main_body_right_arrow"
-        app:layout_constraintBottom_toBottomOf="@+id/textView62"
-        app:layout_constraintStart_toEndOf="@+id/textView62"
-        app:layout_constraintTop_toTopOf="@+id/textView62" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvGenreBookList"
+        app:layout_constraintStart_toEndOf="@+id/tvGenreBookList"
+        app:layout_constraintTop_toTopOf="@+id/tvGenreBookList" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMain"
@@ -353,7 +354,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView62"
+        app:layout_constraintTop_toBottomOf="@+id/tvGenreBookList"
         app:spanCount="2"
         tools:listitem="@layout/fragment_book_list_list_item" />
 

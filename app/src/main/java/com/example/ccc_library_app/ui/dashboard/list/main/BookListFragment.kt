@@ -42,7 +42,9 @@ class BookListFragment : Fragment() {
                 ivSocial,
                 ivScience,
                 ivTech,
-                this@BookListFragment
+                this@BookListFragment,
+                tvGenreBookList,
+                requireActivity()
             )
         }
     }

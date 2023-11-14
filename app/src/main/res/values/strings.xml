@@ -161,6 +161,12 @@
     <string name="main_bookList_social">Social</string>
     <string name="main_bookList_science">Science</string>
     <string name="main_bookList_tech">Tech.</string>
+    <string name="main_bookList_accounting_code">Accounting books</string>
+    <string name="main_bookList_literature_code">Literature books</string>
+    <string name="main_bookList_social_code">Social science books</string>
+    <string name="main_bookList_science_code">Science books</string>
+    <string name="main_bookList_tech_code">Technology books</string>
+    <string name="main_bookList_all_code">All books</string>
 
     <!-- Clicked book -->
     <string name="clicked_book_add">Add to bookmark</string>

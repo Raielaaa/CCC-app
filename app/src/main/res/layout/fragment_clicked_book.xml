@@ -165,7 +165,7 @@
     <ImageView
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_45sdp"
-        android:id="@+id/imageView33"
+        android:id="@+id/ivAddBookmark"
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
         android:src="@drawable/add_to_bookmark"
@@ -193,14 +193,14 @@
         android:fontFamily="@font/poppins"
         android:textSize="@dimen/_10ssp"
         android:text="@string/clicked_book_add"
-        app:layout_constraintEnd_toEndOf="@+id/imageView33"
-        app:layout_constraintStart_toStartOf="@+id/imageView33"
-        app:layout_constraintTop_toBottomOf="@+id/imageView33" />
+        app:layout_constraintEnd_toEndOf="@+id/ivAddBookmark"
+        app:layout_constraintStart_toStartOf="@+id/ivAddBookmark"
+        app:layout_constraintTop_toBottomOf="@+id/ivAddBookmark" />
 
     <ImageView
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginStart="@dimen/_45sdp"
-        android:id="@+id/imageView34"
+        android:id="@+id/ivQRBorrow"
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
         android:src="@drawable/book_list_clicked_qr"
@@ -215,8 +215,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/clicked_book_borrow_book"
-        app:layout_constraintEnd_toEndOf="@+id/imageView34"
-        app:layout_constraintStart_toStartOf="@+id/imageView34"
-        app:layout_constraintTop_toBottomOf="@+id/imageView34" />
+        app:layout_constraintEnd_toEndOf="@+id/ivQRBorrow"
+        app:layout_constraintStart_toStartOf="@+id/ivQRBorrow"
+        app:layout_constraintTop_toBottomOf="@+id/ivQRBorrow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

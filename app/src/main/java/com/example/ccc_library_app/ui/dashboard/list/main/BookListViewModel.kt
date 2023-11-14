@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -237,7 +238,9 @@ class BookListViewModel @Inject constructor(
         ivSocial: ImageView,
         ivScience: ImageView,
         ivTech: ImageView,
-        hostFragment: Fragment
+        hostFragment: Fragment,
+        tvGenreBookList: TextView,
+        activity: Activity
     ) {
         ivAll.setOnClickListener {
             ivAll.setImageResource(R.drawable.main_booklist_all_collored)
@@ -246,6 +249,7 @@ class BookListViewModel @Inject constructor(
             ivSocial.setImageResource(R.drawable.main_booklist_ss)
             ivScience.setImageResource(R.drawable.main_booklist_science)
             ivTech.setImageResource(R.drawable.main_booklist_tech)
+            tvGenreBookList.text = activity.getString(R.string.main_bookList_all_code)
 
             adapterForRV = BookListAdapter(listOfBookListItemModel) { bookData ->
                 navigateFragment(bookData, hostFragment)
@@ -260,6 +264,7 @@ class BookListViewModel @Inject constructor(
             ivSocial.setImageResource(R.drawable.main_booklist_ss)
             ivScience.setImageResource(R.drawable.main_booklist_science)
             ivTech.setImageResource(R.drawable.main_booklist_tech)
+            tvGenreBookList.text = activity.getString(R.string.main_bookList_accounting_code)
 
             initRecyclerViewByGenre(hostFragment, "Accounting")
         }
@@ -270,6 +275,7 @@ class BookListViewModel @Inject constructor(
             ivSocial.setImageResource(R.drawable.main_booklist_ss)
             ivScience.setImageResource(R.drawable.main_booklist_science)
             ivTech.setImageResource(R.drawable.main_booklist_tech)
+            tvGenreBookList.text = activity.getString(R.string.main_bookList_literature_code)
 
             initRecyclerViewByGenre(hostFragment, "Literature")
         }
@@ -280,6 +286,7 @@ class BookListViewModel @Inject constructor(
             ivSocial.setImageResource(R.drawable.main_booklist_ss_collored)
             ivScience.setImageResource(R.drawable.main_booklist_science)
             ivTech.setImageResource(R.drawable.main_booklist_tech)
+            tvGenreBookList.text = activity.getString(R.string.main_bookList_social_code)
 
             initRecyclerViewByGenre(hostFragment, "Social science")
         }
@@ -290,6 +297,7 @@ class BookListViewModel @Inject constructor(
             ivSocial.setImageResource(R.drawable.main_booklist_ss)
             ivScience.setImageResource(R.drawable.main_booklist_science_collored)
             ivTech.setImageResource(R.drawable.main_booklist_tech)
+            tvGenreBookList.text = activity.getString(R.string.main_bookList_science_code)
 
             initRecyclerViewByGenre(hostFragment, "Science")
         }
@@ -300,6 +308,7 @@ class BookListViewModel @Inject constructor(
             ivSocial.setImageResource(R.drawable.main_booklist_ss)
             ivScience.setImageResource(R.drawable.main_booklist_science)
             ivTech.setImageResource(R.drawable.main_booklist_tech_collored)
+            tvGenreBookList.text = activity.getString(R.string.main_bookList_tech_code)
 
             initRecyclerViewByGenre(hostFragment, "Technology")
         }
