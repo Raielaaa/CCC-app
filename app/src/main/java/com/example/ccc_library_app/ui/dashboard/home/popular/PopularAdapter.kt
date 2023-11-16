@@ -7,13 +7,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ccc_library_app.databinding.MainPopularListItemBinding
 
 class PopularAdapter(
-
+    private val clickedListener: (PopularModel) -> Unit
 ) : RecyclerView.Adapter<PopularAdapter.PopularViewHolder>() {
     inner class PopularViewHolder(private val binding: MainPopularListItemBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(popularModel: PopularModel) {
+        fun bind(popularModel: PopularModel, clickedListener: (PopularModel) -> Unit) {
             binding.apply {
                 ivBookImage.setImageURI(popularModel.uriImage)
                 txtBookTitle.text = popularModel.bookTitle
+            }
+
+            binding.root.setOnClickListener {
+                clickedListener(popularModel)
             }
         }
     }
@@ -38,6 +42,6 @@ class PopularAdapter(
     }
 
     override fun onBindViewHolder(holder: PopularViewHolder, position: Int) {
-        holder.bind(collection[position])
+        holder.bind(collection[position], clickedListener)
     }
 }

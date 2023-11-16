@@ -86,31 +86,11 @@ class HomeFragment : Fragment(), CoroutineScope {
     }
 
     private fun initRecyclerView() {
-        adapter = PopularAdapter()
-
         homeFragmentViewModel.initPopularRecyclerView(
             binding.rvPopular,
-            requireActivity()
+            requireActivity(),
+            this@HomeFragment
         )
-
-        binding.apply {
-            adapter.setList(
-                listOf(
-                    PopularModel(Uri.parse("android.resource://com.example.ccc_library_app/drawable/book_1"), "Data Science"),
-                    PopularModel(Uri.parse("android.resource://com.example.ccc_library_app/drawable/book_2"), "Max. Impact"),
-                    PopularModel(Uri.parse("android.resource://com.example.ccc_library_app/drawable/book_3"), "Techno-crimes"),
-                    PopularModel(Uri.parse("android.resource://com.example.ccc_library_app/drawable/book_4"), "Data Science 2"),
-                    PopularModel(Uri.parse("android.resource://com.example.ccc_library_app/drawable/book_5"), "Data Science 3"),
-                    PopularModel(Uri.parse("android.resource://com.example.ccc_library_app/drawable/book_6"), "Data Science 4"),
-                    PopularModel(Uri.parse("android.resource://com.example.ccc_library_app/drawable/book_7"), "Data Science 5"),
-                    PopularModel(Uri.parse("android.resource://com.example.ccc_library_app/drawable/book_8"), "Data Science 6"),
-                    PopularModel(Uri.parse("android.resource://com.example.ccc_library_app/drawable/book_9"), "Data Science 7"),
-                    PopularModel(Uri.parse("android.resource://com.example.ccc_library_app/drawable/book_10"), "Data Science 8"),
-                )
-            )
-
-            rvPopular.adapter = adapter
-        }
     }
 }
 

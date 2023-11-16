@@ -13,8 +13,11 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.dashboard.home.popular.FirebaseDataModel
@@ -85,7 +88,8 @@ class HomeFragmentViewModel @Inject constructor(
 
     fun initPopularRecyclerView(
         recyclerView: RecyclerView,
-        activity: Activity
+        activity: Activity,
+        hostFragment: Fragment
     ) {
         try {
             com.example.ccc_library_app.ui.account.util.Resources.displayCustomDialog(
@@ -119,7 +123,7 @@ class HomeFragmentViewModel @Inject constructor(
                             displayPopularRV(bookData, recyclerView, activity, bookData.modelBookImage) {
                                 itemsProcessed++
                                 if (itemsProcessed == bookListPopularTemp.size) {
-                                    displayInfoToRecyclerView(recyclerView, activity, bookListPopularFinal)
+                                    displayInfoToRecyclerView(recyclerView, activity, bookListPopularFinal, hostFragment)
                                 }
                             }
                         }
@@ -134,12 +138,18 @@ class HomeFragmentViewModel @Inject constructor(
         }
     }
 
-    private fun displayInfoToRecyclerView(recyclerView: RecyclerView, activity: Activity, bookListPopularFinal: ArrayList<PopularModel>) {
-        val adapter = PopularAdapter()
+    private fun displayInfoToRecyclerView(recyclerView: RecyclerView, activity: Activity, bookListPopularFinal: ArrayList<PopularModel>, hostFragment: Fragment) {
+        val adapter = PopularAdapter() { clickedItemInfo ->
+            clickedFunction(clickedItemInfo, hostFragment)
+        }
         recyclerView.adapter = adapter
         adapter.setList(bookListPopularFinal)
 
         com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
+    }
+
+    private fun clickedFunction(clickedItemInfo: PopularModel, hostFragment: Fragment) {
+        hostFragment.findNavController().navigate(R.id.action_homeFragment_to_clickedBookFragment, bundleOf("bookTitleKey" to clickedItemInfo.bookTitle))
     }
 
     private fun displayPopularRV(
@@ -212,5 +222,9 @@ class HomeFragmentViewModel @Inject constructor(
             message,
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    fun displayBookCompleteInfo(clickedItemInfo: PopularModel) {
+
     }
 }
