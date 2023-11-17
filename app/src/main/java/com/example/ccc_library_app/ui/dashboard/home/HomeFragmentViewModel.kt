@@ -16,13 +16,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.dashboard.home.popular.FirebaseDataModel
 import com.example.ccc_library_app.ui.dashboard.home.popular.PopularAdapter
 import com.example.ccc_library_app.ui.dashboard.home.popular.PopularModel
+import com.example.ccc_library_app.ui.dashboard.list.BookListItemModel
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
@@ -41,6 +41,7 @@ class HomeFragmentViewModel @Inject constructor(
 ) : ViewModel() {
     private var TAG: String = "MyTag"
 
+    private lateinit var bookListPopularPermanent: ArrayList<BookListItemModel>
     private lateinit var bookListPopularTemp: ArrayList<FirebaseDataModel>
     private var bookListPopularFinal: ArrayList<PopularModel> = ArrayList()
 
@@ -98,6 +99,7 @@ class HomeFragmentViewModel @Inject constructor(
             )
 
             bookListPopularTemp = ArrayList()
+            bookListPopularPermanent = ArrayList()
 
             firebaseFireStore.collection("ccc-library-app-book-info")
                 .get()
@@ -109,21 +111,36 @@ class HomeFragmentViewModel @Inject constructor(
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
+                        val genreHolder: ArrayList<String> = ArrayList()
+
                         for (bookInfo in bookInfoListFromDB) {
                             bookListPopularTemp.add(
                                 FirebaseDataModel(
                                     bookInfo.get("modelBookTitle").toString(),
-                                    bookInfo.get("modelBookImage").toString()
+                                    bookInfo.get("modelBookImage").toString(),
                                 )
                             )
+                            genreHolder.add(bookInfo.get("modelBookGenre").toString())
                         }
 
                         var itemsProcessed = 0
-                        for (bookData in bookListPopularTemp) {
-                            displayPopularRV(bookData, recyclerView, activity, bookData.modelBookImage) {
+//                        for (bookData in bookListPopularTemp) {
+//                            displayPopularRV(bookData, recyclerView, activity, bookData.modelBookImage, bookData.modelBookImage) {
+//                                itemsProcessed++
+//                                if (itemsProcessed == bookListPopularTemp.size) {
+//                                    displayInfoToRecyclerView(recyclerView, activity, bookListPopularFinal, hostFragment)
+//
+//                                    Resources.setPermanentDataForSearch(bookListPopularPermanent)
+//                                }
+//                            }
+//                        }
+                        bookListPopularTemp.forEachIndexed { index, bookData ->
+                            displayPopularRV(bookData, recyclerView, activity, bookData.modelBookImage, genreHolder[index] ) {
                                 itemsProcessed++
                                 if (itemsProcessed == bookListPopularTemp.size) {
                                     displayInfoToRecyclerView(recyclerView, activity, bookListPopularFinal, hostFragment)
+
+                                    Resources.setPermanentDataForSearch(bookListPopularPermanent)
                                 }
                             }
                         }
@@ -157,6 +174,7 @@ class HomeFragmentViewModel @Inject constructor(
         recyclerView: RecyclerView,
         activity: Activity,
         bookCode: String,
+        modelBookGenre: String,
         completion: (Boolean) -> Unit
     ) {
         getImage(data.modelBookImage, activity) { bitmapImage ->
@@ -171,12 +189,18 @@ class HomeFragmentViewModel @Inject constructor(
                     )
                 )
                 completion(true)
+                bookListPopularPermanent.add(
+                    BookListItemModel(
+                        bitmapToUri(activity, bitmapImage, bookCode)!!,
+                        data.modelBookTitle,
+                        "Genre: $modelBookGenre"
+                    )
+                )
             }
         }
     }
 
     private fun getImage(filePath: String, activity: Activity, callback: (Bitmap?) -> Unit) {
-        Log.d(TAG, "getImage: $filePath")
         firebaseStorage.child(filePath).getBytes(1_048_576L)
             .addOnSuccessListener { data ->
                 // Convert the byte array to a Bitmap
@@ -222,9 +246,5 @@ class HomeFragmentViewModel @Inject constructor(
             message,
             Toast.LENGTH_LONG
         ).show()
-    }
-
-    fun displayBookCompleteInfo(clickedItemInfo: PopularModel) {
-
     }
 }

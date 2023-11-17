@@ -83,11 +83,15 @@ class BookListFragment : Fragment() {
     private fun convertPNGImageResourceToBitmap(imageResource: Int) : Bitmap = BitmapFactory.decodeResource(requireContext().resources, imageResource)
 
     private fun initRecyclerView() {
-        bookListViewModel.setUpRecyclerView(
-            requireActivity(),
-            binding.rvMain,
-            this@BookListFragment
-        )
+        binding.apply {
+            bookListViewModel.setUpRecyclerView(
+                requireActivity(),
+                rvMain,
+                this@BookListFragment,
+                etBookListSearch,
+                tvGenreBookList
+            )
+        }
     }
 
     private fun initBottomNavigationBar() {

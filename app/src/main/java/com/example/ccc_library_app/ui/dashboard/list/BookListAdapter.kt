@@ -29,6 +29,8 @@ class BookListAdapter(
         notifyDataSetChanged()
     }
 
+    fun getAllData() : List<BookListItemModel> = collections
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookListViewHolder {
         val binding = FragmentBookListListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return BookListViewHolder(binding)

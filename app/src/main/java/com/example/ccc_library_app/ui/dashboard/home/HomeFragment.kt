@@ -1,11 +1,6 @@
 package com.example.ccc_library_app.ui.dashboard.home
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +11,6 @@ import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentHomeBinding
-import com.example.ccc_library_app.ui.account.util.Resources
-import com.example.ccc_library_app.ui.dashboard.home.popular.PopularAdapter
-import com.example.ccc_library_app.ui.dashboard.home.popular.PopularModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.util.Timer
@@ -29,7 +21,6 @@ import kotlin.coroutines.CoroutineContext
 class HomeFragment : Fragment(), CoroutineScope {
     //  Views
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var adapter: PopularAdapter
 
     //  ViewModel
     private lateinit var homeFragmentViewModel: HomeFragmentViewModel

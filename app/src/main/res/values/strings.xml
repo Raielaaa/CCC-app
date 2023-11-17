@@ -156,11 +156,11 @@
 
     <!-- Book list -->
     <string name="main_bookList_all">All</string>
-    <string name="main_bookList_accounting">Acc.</string>
-    <string name="main_bookList_literature">Lit.</string>
-    <string name="main_bookList_social">Social</string>
+    <string name="main_bookList_accounting">Accounting</string>
+    <string name="main_bookList_literature">Literature</string>
+    <string name="main_bookList_social">Social science</string>
     <string name="main_bookList_science">Science</string>
-    <string name="main_bookList_tech">Tech.</string>
+    <string name="main_bookList_tech">Technology</string>
     <string name="main_bookList_accounting_code">Accounting books</string>
     <string name="main_bookList_literature_code">Literature books</string>
     <string name="main_bookList_social_code">Social science books</string>
