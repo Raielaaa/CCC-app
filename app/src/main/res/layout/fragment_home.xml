@@ -236,7 +236,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
                 android:text="@string/main_body_header_1"
-                android:textColor="@color/black"
+                android:textColor="@color/Theme.color"
                 android:textSize="@dimen/_13ssp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
