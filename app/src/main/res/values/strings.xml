@@ -10,6 +10,8 @@
     <string name="drawer_book_list">Book list</string>
     <string name="drawer_bookmark">Bookmark</string>
     <string name="drawer_settings">Settings</string>
+    <string name="drawer_name_placeholder">User display name</string>
+    <string name="drawer_email_placeholder">Email address display</string>
 
     <!-- Opening -->
     <string name="opening_header_1">CCC Library</string>
