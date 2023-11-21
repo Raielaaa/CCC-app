@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.ccc_library_app.R
@@ -60,6 +61,8 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_account) as NavHostFragment
         navController = navHostFragment.navController
+
+        com.example.ccc_library_app.ui.dashboard.util.Resources.setDrawerLayoutRef(binding.drawerLayout)
     }
 
     // Use this method to navigate to a destination

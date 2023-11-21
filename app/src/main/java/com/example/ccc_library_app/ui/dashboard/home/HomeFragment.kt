@@ -8,9 +8,13 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
 import android.widget.ImageView
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentHomeBinding
+import com.example.ccc_library_app.ui.account.main.MainActivity
+import com.example.ccc_library_app.ui.dashboard.util.Resources
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.util.Timer
@@ -43,8 +47,22 @@ class HomeFragment : Fragment(), CoroutineScope {
         initClickableViews()
         imageSlideshow.startSlideshow(binding.ivSlideshow)
         initBottomNavigationBar()
+        initNavigationDrawer()
 
         return binding.root
+    }
+
+    private fun initNavigationDrawer() {
+        val drawerLayout: DrawerLayout? = Resources.getDrawerLayoutRef()
+
+        binding.ivNavDrawer.setOnClickListener {
+            // Toggle the drawer (open if closed, close if open)
+            if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
     }
 
     private fun initRecyclerViewPopular() {

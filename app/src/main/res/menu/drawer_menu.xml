@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_home"
+            android:icon="@drawable/drawer_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="@string/drawer_home" />
+        <item
+            android:id="@+id/drawer_book_list"
+            android:icon="@drawable/drawer_book_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="@string/drawer_book_list" />
+        <item
+            android:id="@+id/drawer_bookmark"
+            android:icon="@drawable/drawer_book_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="@string/drawer_bookmark" />
+        <item
+            android:id="@+id/drawer_settings"
+            android:icon="@drawable/drawer_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="@string/drawer_settings" />
+    </group>
+</menu>

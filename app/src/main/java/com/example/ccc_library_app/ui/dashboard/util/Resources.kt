@@ -2,6 +2,7 @@ package com.example.ccc_library_app.ui.dashboard.util
 
 import android.util.Log
 import android.widget.ImageView
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
@@ -24,4 +25,12 @@ object Resources {
     fun getPermanentDataForSearch(): ArrayList<BookListItemModel> {
         return ArrayList(permanentDataForSearch)
     }
+
+    private var drawerLayout: DrawerLayout? = null
+
+    fun setDrawerLayoutRef(drawerLayout: DrawerLayout?) {
+        this.drawerLayout = drawerLayout
+    }
+
+    fun getDrawerLayoutRef() : DrawerLayout? = this.drawerLayout
 }
