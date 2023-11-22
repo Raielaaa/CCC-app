@@ -3,6 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="Theme.color">#063bd4</color>
+    <color name="Theme.color.light">#d4dffe</color>
+    <color name="Theme.color.dark">#49454f</color>
     <color name="defaultIconColor">#666666</color>
     <color name="required">#FF0000</color>
     <color name="green">#00f700</color>

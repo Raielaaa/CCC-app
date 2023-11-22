@@ -24,13 +24,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
         app:navGraph="@navigation/navigation" />
-    
+
     <com.google.android.material.navigation.NavigationView
-        app:headerLayout="@layout/navigation_drawer_header"
         android:id="@+id/nav_drawer"
+        app:itemIconTint="@color/drawer_item"
+        app:itemTextColor="@color/drawer_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="false"
-        app:menu="@menu/drawer_menu"/>
+        app:headerLayout="@layout/navigation_drawer_header"
+        app:menu="@menu/drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

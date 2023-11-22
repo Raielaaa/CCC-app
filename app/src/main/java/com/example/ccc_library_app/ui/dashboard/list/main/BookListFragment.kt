@@ -9,8 +9,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentBookListBinding
+import com.example.ccc_library_app.ui.dashboard.util.Resources
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,8 +32,22 @@ class BookListFragment : Fragment() {
         initRecyclerView()
         highlightSelectedGenre()
 //        addBookImageToCloudTBD()
+        initNavigationDrawer()
 
         return binding.root
+    }
+
+    private fun initNavigationDrawer() {
+        val drawerLayout: DrawerLayout? = Resources.getDrawerLayoutRef()
+
+        binding.ivNavDrawer.setOnClickListener {
+            // Toggle the drawer (open if closed, close if open)
+            if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
     }
 
     private fun highlightSelectedGenre() {
