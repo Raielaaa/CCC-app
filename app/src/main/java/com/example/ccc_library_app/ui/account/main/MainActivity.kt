@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -63,10 +64,26 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         com.example.ccc_library_app.ui.dashboard.util.Resources.setDrawerLayoutRef(binding.drawerLayout)
+        initNavDrawerClickEvents()
+    }
+
+    private fun initNavDrawerClickEvents() {
+        binding.apply {
+            navDrawer.setNavigationItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.drawer_home -> navigateTo(R.id.homeFragment)
+                    R.id.drawer_book_list -> navigateTo(R.id.bookListFragment)
+                    R.id.drawer_bookmark -> navigateTo(R.id.bookmarkFragment)
+                    R.id.drawer_settings -> navigateTo(R.id.settingsFragment)
+                }
+                this.drawerLayout.closeDrawer(GravityCompat.START)
+                true
+            }
+        }
     }
 
     // Use this method to navigate to a destination
-    fun navigateTo(destinationId: Int, args: Bundle? = null) {
+    private fun navigateTo(destinationId: Int, args: Bundle? = null) {
         navController.navigate(destinationId, args)
     }
 

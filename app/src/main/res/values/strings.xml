@@ -139,6 +139,7 @@
     <string name="main_inventory_borrow_value_placeholder">125</string>
     <string name="main_inventory_borrow_header">Borrowed books</string>
     <string name="main_inventory_see_all">see all</string>
+    <string name="main_click_me">Click me to see more from this book!</string>
 
     <!-- Main dialog -->
     <string name="main_dialog_header_1">Verify your request</string>

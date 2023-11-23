@@ -139,7 +139,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView28"
+                    android:id="@+id/tvClickMe"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -266,16 +266,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView32">
 
                 <ImageView
-                    android:id="@+id/imageView28"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/ivFeaturedImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/main_body_pic_1" />
 
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/textView33"
+                android:id="@+id/tvFeaturedTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_7sdp"
@@ -287,7 +287,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
             <TextView
-                android:id="@+id/textView34"
+                android:maxLines="2"
+                android:id="@+id/tvFeaturedDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
@@ -295,13 +296,13 @@
                 android:textColor="@color/lightGrey"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView33" />
+                app:layout_constraintTop_toBottomOf="@+id/tvFeaturedTitle" />
 
             <TextView
+                android:layout_marginTop="@dimen/_20sdp"
                 android:id="@+id/textView35"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins"
                 android:text="@string/main_popular_title"
@@ -309,7 +310,7 @@
                 android:textSize="@dimen/_13ssp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView34" />
+                app:layout_constraintTop_toBottomOf="@+id/tvSeeMore" />
 
             <ImageView
                 android:id="@+id/imageView29"
@@ -845,6 +846,19 @@
                         app:layout_constraintVertical_bias="0.5" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textStyle="italic"
+                android:id="@+id/tvSeeMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:text="@string/main_click_me"
+                android:textColor="@color/Theme.color"
+                android:textSize="@dimen/_8sdp"
+                app:layout_constraintStart_toStartOf="@+id/tvFeaturedDescription"
+                app:layout_constraintTop_toBottomOf="@+id/tvFeaturedDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

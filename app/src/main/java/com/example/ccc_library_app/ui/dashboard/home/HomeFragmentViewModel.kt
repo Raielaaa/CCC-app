@@ -10,6 +10,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,12 +20,15 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccc_library_app.R
+import com.example.ccc_library_app.ui.dashboard.home.featured.CompleteFeaturedBookModel
+import com.example.ccc_library_app.ui.dashboard.home.featured.FeaturedBookModel
 import com.example.ccc_library_app.ui.dashboard.home.popular.FirebaseDataModel
 import com.example.ccc_library_app.ui.dashboard.home.popular.PopularAdapter
 import com.example.ccc_library_app.ui.dashboard.home.popular.PopularModel
 import com.example.ccc_library_app.ui.dashboard.list.BookListItemModel
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
@@ -124,16 +128,6 @@ class HomeFragmentViewModel @Inject constructor(
                         }
 
                         var itemsProcessed = 0
-//                        for (bookData in bookListPopularTemp) {
-//                            displayPopularRV(bookData, recyclerView, activity, bookData.modelBookImage, bookData.modelBookImage) {
-//                                itemsProcessed++
-//                                if (itemsProcessed == bookListPopularTemp.size) {
-//                                    displayInfoToRecyclerView(recyclerView, activity, bookListPopularFinal, hostFragment)
-//
-//                                    Resources.setPermanentDataForSearch(bookListPopularPermanent)
-//                                }
-//                            }
-//                        }
                         bookListPopularTemp.forEachIndexed { index, bookData ->
                             displayPopularRV(bookData, recyclerView, activity, bookData.modelBookImage, genreHolder[index] ) {
                                 itemsProcessed++
@@ -246,5 +240,79 @@ class HomeFragmentViewModel @Inject constructor(
             message,
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    fun initFeaturedBook(
+        ivFeaturedImage: ImageView,
+        tvFeaturedTitle: TextView,
+        tvFeaturedDescription: TextView,
+        activity: Activity
+    ) {
+        var tempHighestFeaturedBookModel: CompleteFeaturedBookModel? = null
+
+        firebaseFireStore.collection("ccc-library-app-book-data")
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    var count = 0
+                    for (document in querySnapshot) {
+                        getBookCompleteInfo(document, activity) { tempCompleteFeaturedBookHolder ->
+                            count++
+                            if (tempCompleteFeaturedBookHolder != null) {
+                                if (tempHighestFeaturedBookModel == null) {
+                                    tempHighestFeaturedBookModel = tempCompleteFeaturedBookHolder
+                                } else {
+                                    if (document.get("modelBookCode").toString().toInt() > tempHighestFeaturedBookModel!!.count.toInt()) {
+                                        tempHighestFeaturedBookModel = tempCompleteFeaturedBookHolder
+                                    }
+                                }
+                            }
+
+                            // Check if all callbacks are received
+                            if (count == querySnapshot.size()) {
+                                // All callbacks received, proceed with the logic
+                                ivFeaturedImage.setImageURI(tempHighestFeaturedBookModel!!.image)
+                                tvFeaturedTitle.text = tempHighestFeaturedBookModel!!.featuredTitle
+                                tvFeaturedDescription.text = tempHighestFeaturedBookModel!!.featuredDescription
+                            }
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "initFeaturedBook: empty")
+                }
+            }
+    }
+
+    private fun getBookCompleteInfo(
+        document: QueryDocumentSnapshot?,
+        activity: Activity,
+        callback: (CompleteFeaturedBookModel?) -> Unit
+    ) {
+        var completeFeaturedBookModelTemp: CompleteFeaturedBookModel?
+
+        firebaseFireStore.collection("ccc-library-app-book-info")
+            .document(document!!.get("modelBookCode").toString())
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                var imageBitmap: Bitmap? = null
+                getImage(documentSnapshot.data!!["modelBookImage"].toString(), activity) { bitmapImage ->
+                    if (bitmapImage == null) {
+                        showToastMessage(activity, "An error occurred displaying the books")
+                    } else {
+                        imageBitmap = bitmapImage
+                    }
+
+                    completeFeaturedBookModelTemp = CompleteFeaturedBookModel(
+                        bitmapToUri(activity, imageBitmap!!, "book_images/${documentSnapshot.data!!["modelBookCode"]}"
+                        )!!,
+                        documentSnapshot.data!!["modelBookTitle"].toString(),
+                        documentSnapshot.data!!["modelBookDescription"].toString(),
+                        document.get("modelBookCount").toString()
+                    )
+
+                    // Pass the result to the callback
+                    callback(completeFeaturedBookModelTemp)
+                }
+            }
     }
 }

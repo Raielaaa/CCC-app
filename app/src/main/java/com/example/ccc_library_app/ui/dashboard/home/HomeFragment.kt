@@ -1,6 +1,9 @@
 package com.example.ccc_library_app.ui.dashboard.home
 
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.UnderlineSpan
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +11,8 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.core.text.color
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -48,8 +53,34 @@ class HomeFragment : Fragment(), CoroutineScope {
         imageSlideshow.startSlideshow(binding.ivSlideshow)
         initBottomNavigationBar()
         initNavigationDrawer()
+        initFeaturedBookDisplay()
+        initSeeMoreDesign()
 
         return binding.root
+    }
+
+    private fun initSeeMoreDesign() {
+        binding.apply {
+            val spannableString = SpannableString(tvSeeMore.text.toString())
+            spannableString.setSpan(UnderlineSpan(), 0, spannableString.length, 0)
+            tvSeeMore.text = spannableString
+
+            val clickMeSpannableString = SpannableStringBuilder()
+                .append("Click ")
+                .color(ContextCompat.getColor(requireContext(), R.color.Theme_color)) { append("ME")}
+            tvClickMe.text = clickMeSpannableString
+        }
+    }
+
+    private fun initFeaturedBookDisplay() {
+        binding.apply {
+            homeFragmentViewModel.initFeaturedBook(
+                ivFeaturedImage,
+                tvFeaturedTitle,
+                tvFeaturedDescription,
+                requireActivity()
+            )
+        }
     }
 
     private fun initNavigationDrawer() {
@@ -63,10 +94,6 @@ class HomeFragment : Fragment(), CoroutineScope {
                 drawerLayout.openDrawer(GravityCompat.START)
             }
         }
-    }
-
-    private fun initRecyclerViewPopular() {
-
     }
 
     private fun initBottomNavigationBar() {
@@ -85,6 +112,7 @@ class HomeFragment : Fragment(), CoroutineScope {
             ivTakeQr.setOnClickListener {
                 homeFragmentViewModel.captureQR(requireActivity())
             }
+            tvSeeMore.setOnClickListener {  }
         }
     }
 
