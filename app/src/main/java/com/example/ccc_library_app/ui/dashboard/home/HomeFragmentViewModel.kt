@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccc_library_app.R
@@ -150,7 +151,7 @@ class HomeFragmentViewModel @Inject constructor(
     }
 
     private fun displayInfoToRecyclerView(recyclerView: RecyclerView, activity: Activity, bookListPopularFinal: ArrayList<PopularModel>, hostFragment: Fragment) {
-        val adapter = PopularAdapter() { clickedItemInfo ->
+        val adapter = PopularAdapter { clickedItemInfo ->
             clickedFunction(clickedItemInfo, hostFragment)
         }
         recyclerView.adapter = adapter
@@ -314,5 +315,12 @@ class HomeFragmentViewModel @Inject constructor(
                     callback(completeFeaturedBookModelTemp)
                 }
             }
+    }
+
+    fun initFeaturedClickedFunction(
+        hostFragment: Fragment,
+        bookTitle: String
+    ) {
+        hostFragment.findNavController().navigate(R.id.action_homeFragment_to_clickedBookFragment, bundleOf("bookTitleKey" to bookTitle))
     }
 }

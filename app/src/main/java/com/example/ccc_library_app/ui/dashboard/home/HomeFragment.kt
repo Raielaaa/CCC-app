@@ -16,6 +16,7 @@ import androidx.core.text.color
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentHomeBinding
 import com.example.ccc_library_app.ui.account.main.MainActivity
@@ -112,7 +113,12 @@ class HomeFragment : Fragment(), CoroutineScope {
             ivTakeQr.setOnClickListener {
                 homeFragmentViewModel.captureQR(requireActivity())
             }
-            tvSeeMore.setOnClickListener {  }
+            tvSeeMore.setOnClickListener {
+                homeFragmentViewModel.initFeaturedClickedFunction(
+                    this@HomeFragment,
+                    tvFeaturedTitle.text.toString()
+                )
+            }
         }
     }
 
