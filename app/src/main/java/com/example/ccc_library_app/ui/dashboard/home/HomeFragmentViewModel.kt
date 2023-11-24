@@ -28,8 +28,12 @@ import com.example.ccc_library_app.ui.dashboard.home.popular.PopularAdapter
 import com.example.ccc_library_app.ui.dashboard.home.popular.PopularModel
 import com.example.ccc_library_app.ui.dashboard.list.BookListItemModel
 import com.example.ccc_library_app.ui.dashboard.util.Resources
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
@@ -322,5 +326,42 @@ class HomeFragmentViewModel @Inject constructor(
         bookTitle: String
     ) {
         hostFragment.findNavController().navigate(R.id.action_homeFragment_to_clickedBookFragment, bundleOf("bookTitleKey" to bookTitle))
+    }
+
+    fun displayTally(tvInventoryCurrent: TextView, tvInventoryBorrowed: TextView) {
+        var bookNumberCount: Int = 0
+        var bookBorrowedCount: Int = 0
+
+        // Create a list of tasks
+        val tasks = mutableListOf<Task<QuerySnapshot>>()
+
+        // Add the first task
+        tasks.add(firebaseFireStore.collection("ccc-library-app-book-info").get())
+
+        // Add the second task
+        tasks.add(firebaseFireStore.collection("ccc-library-app-borrow-data").get())
+
+        // Create a combined task to wait for all tasks to complete
+        val combinedTask = Tasks.whenAllSuccess<QuerySnapshot>(tasks)
+
+        // Add a listener to the combined task
+        combinedTask.addOnSuccessListener { results ->
+            // Process the results of the individual tasks
+            val bookInfoSnapshot = results[0] as QuerySnapshot
+            val borrowDataSnapshot = results[1] as QuerySnapshot
+
+            bookNumberCount = bookInfoSnapshot.size()
+            bookBorrowedCount = borrowDataSnapshot.size()
+
+            // Update the TextViews
+            tvInventoryCurrent.text = (bookNumberCount - bookBorrowedCount).toString()
+            tvInventoryBorrowed.text = bookBorrowedCount.toString()
+        }
+
+        // Handle errors
+        combinedTask.addOnFailureListener { exception ->
+            // Handle the failure
+            Log.e("Firebase", "Error retrieving data", exception)
+        }
     }
 }

@@ -56,8 +56,18 @@ class HomeFragment : Fragment(), CoroutineScope {
         initNavigationDrawer()
         initFeaturedBookDisplay()
         initSeeMoreDesign()
+        initBookTally()
 
         return binding.root
+    }
+
+    private fun initBookTally() {
+        binding.apply {
+            homeFragmentViewModel.displayTally(
+                tvInventoryCurrent,
+                tvInventoryBorrowed
+            )
+        }
     }
 
     private fun initSeeMoreDesign() {
