@@ -49,6 +49,12 @@ class HomeFragment : Fragment(), CoroutineScope {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         homeFragmentViewModel = ViewModelProvider(this)[HomeFragmentViewModel::class.java]
 
+        initializeViews()
+
+        return binding.root
+    }
+
+    private fun initializeViews() {
         initRecyclerView()
         initClickableViews()
         imageSlideshow.startSlideshow(binding.ivSlideshow)
@@ -57,8 +63,20 @@ class HomeFragment : Fragment(), CoroutineScope {
         initFeaturedBookDisplay()
         initSeeMoreDesign()
         initBookTally()
+        initSeeAllBottomDialog()
+    }
 
-        return binding.root
+    private fun initSeeAllBottomDialog() {
+        binding.apply {
+            homeFragmentViewModel.initSeeAllBottomDialog(
+                tvCurrentSeeAll,
+                ivCurrentSeeAll,
+                tvBorrowSeeAll,
+                ivBorrowSeeAll,
+                this@HomeFragment,
+                requireActivity()
+            )
+        }
     }
 
     private fun initBookTally() {

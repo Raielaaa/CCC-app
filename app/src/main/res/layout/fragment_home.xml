@@ -427,7 +427,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvInventoryCurrent" />
 
                     <ImageView
-                        android:id="@+id/imageView8"
+                        android:id="@+id/ivCurrentSeeAll"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_12sdp"
                         android:layout_margin="@dimen/_5sdp"
@@ -437,15 +437,15 @@
                         app:srcCompat="@drawable/home_menu" />
 
                     <TextView
-                        android:id="@+id/textView39"
+                        android:id="@+id/tvCurrentSeeAll"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_bold"
                         android:text="@string/main_inventory_see_all"
                         android:textSize="@dimen/_8ssp"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView8"
-                        app:layout_constraintTop_toTopOf="@+id/imageView8"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivCurrentSeeAll"
+                        app:layout_constraintEnd_toStartOf="@+id/ivCurrentSeeAll"
+                        app:layout_constraintTop_toTopOf="@+id/ivCurrentSeeAll"
                         tools:layout_editor_absoluteY="76dp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -513,7 +513,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvInventoryBorrowed" />
 
                     <ImageView
-                        android:id="@+id/ivInventorySeeAll"
+                        android:id="@+id/ivBorrowSeeAll"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_12sdp"
                         android:layout_margin="@dimen/_5sdp"
@@ -523,15 +523,15 @@
                         app:srcCompat="@drawable/home_menu" />
 
                     <TextView
-                        android:id="@+id/textView40"
+                        android:id="@+id/tvBorrowSeeAll"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_bold"
                         android:text="@string/main_inventory_see_all"
                         android:textSize="@dimen/_8ssp"
-                        app:layout_constraintBottom_toBottomOf="@+id/ivInventorySeeAll"
-                        app:layout_constraintEnd_toStartOf="@+id/ivInventorySeeAll"
-                        app:layout_constraintTop_toTopOf="@+id/ivInventorySeeAll"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivBorrowSeeAll"
+                        app:layout_constraintEnd_toStartOf="@+id/ivBorrowSeeAll"
+                        app:layout_constraintTop_toTopOf="@+id/ivBorrowSeeAll"
                         tools:layout_editor_absoluteY="76dp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

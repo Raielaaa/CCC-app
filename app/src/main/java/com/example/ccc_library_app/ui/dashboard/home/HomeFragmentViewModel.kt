@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.dashboard.home.featured.CompleteFeaturedBookModel
 import com.example.ccc_library_app.ui.dashboard.home.featured.FeaturedBookModel
+import com.example.ccc_library_app.ui.dashboard.home.inventory.InventoryItemsDataModel
+import com.example.ccc_library_app.ui.dashboard.home.inventory.InventorySeeAllBottomSheetFragment
 import com.example.ccc_library_app.ui.dashboard.home.popular.FirebaseDataModel
 import com.example.ccc_library_app.ui.dashboard.home.popular.PopularAdapter
 import com.example.ccc_library_app.ui.dashboard.home.popular.PopularModel
@@ -362,6 +364,82 @@ class HomeFragmentViewModel @Inject constructor(
         combinedTask.addOnFailureListener { exception ->
             // Handle the failure
             Log.e("Firebase", "Error retrieving data", exception)
+        }
+    }
+
+    fun initSeeAllBottomDialog(
+        tvInventoryCurrent: TextView,
+        ivInventoryCurrent: ImageView,
+        tvInventoryBorrowed: TextView,
+        ivInventoryBorrow: ImageView,
+        hostFragment: Fragment,
+        activity: Activity
+    ) {
+        tvInventoryBorrowed.setOnClickListener {
+            bottomSheetSeeAllBorrow(hostFragment, activity)
+        }
+        ivInventoryBorrow.setOnClickListener {
+            bottomSheetSeeAllBorrow(hostFragment, activity)
+        }
+
+
+//        tvInventoryCurrent.setOnClickListener {
+//            InventorySeeAllBottomSheetFragment().show(hostFragment.parentFragmentManager, "SeeAll_BottomSheetFragment")
+//        }
+//        ivInventoryCurrent.setOnClickListener {
+//            InventorySeeAllBottomSheetFragment().show(hostFragment.parentFragmentManager, "SeeAll_BottomSheetFragment")
+//        }
+    }
+
+    private fun bottomSheetSeeAllBorrow(hostFragment: Fragment, activity: Activity) {
+        com.example.ccc_library_app.ui.account.util.Resources.displayCustomDialog(
+            activity,
+            R.layout.custom_dialog_loading
+        )
+
+        try {
+            val task = mutableListOf<Task<QuerySnapshot>>()
+            task.add(firebaseFireStore.collection("ccc-library-app-borrow-data").get())
+
+            val returnedTask = Tasks.whenAllSuccess<QuerySnapshot>(task)
+            returnedTask.addOnSuccessListener { result ->
+                if (result.isNotEmpty()) {
+                    val listOfBookInfo: ArrayList<InventoryItemsDataModel> = ArrayList()
+
+                    for (items in result) {
+                        for (item in items) {
+                            var imageUriSource: Uri? = null
+
+                            val imageListSource = bookListPopularFinal
+                            for (data in imageListSource) {
+                                if (data.bookTitle == item.get("modelBookName")) {
+                                    imageUriSource = data.uriImage
+                                }
+                            }
+
+                            listOfBookInfo.add(
+                                InventoryItemsDataModel(
+                                    imageUriSource!!,
+                                    item.get("modelBookName").toString(),
+                                    item.get("modelBookAuthor").toString(),
+                                    item.get("modelBookGenre").toString()
+                                )
+                            )
+                        }
+                    }
+                    InventorySeeAllBottomSheetFragment(listOfBookInfo)
+                        .show(hostFragment.parentFragmentManager, "SeeAll_BottomSheetFragment")
+                    com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
+                } else {
+                    showToastMessage(activity, "Nothing to show. Borrow list is empty.")
+                    com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
+                }
+            }
+
+        } catch (err: Exception) {
+            showToastMessage(activity, "An error occurred: ${err.localizedMessage}")
+            Log.e(TAG, "bottomSheetSeeAllBorrow: ${err.message}", )
+            com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
         }
     }
 }
