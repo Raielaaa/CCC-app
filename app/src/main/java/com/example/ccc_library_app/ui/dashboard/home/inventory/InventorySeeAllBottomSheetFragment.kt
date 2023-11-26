@@ -18,52 +18,20 @@ class InventorySeeAllBottomSheetFragment(
 
     private var _binding: FragmentInventorySeelAllBottomSheetListDialogBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        _binding =
-            FragmentInventorySeelAllBottomSheetListDialogBinding.inflate(inflater, container, false)
+        _binding = FragmentInventorySeelAllBottomSheetListDialogBinding.inflate(inflater, container, false)
+
+        val adapter = InventorySeeAllAdapter(collections)
+        _binding!!.rvDialogMain.adapter = adapter
+
         return binding.root
 
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        activity?.findViewById<RecyclerView>(R.id.list)?.layoutManager = LinearLayoutManager(context)
-        activity?.findViewById<RecyclerView>(R.id.list)?.adapter = ItemAdapter(collections)
-    }
-
-    private inner class ViewHolder(binding: FragmentInventorySeelAllBottomSheetListDialogItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: InventoryItemsDataModel) {
-
-        }
-    }
-
-    private inner class ItemAdapter(
-        private val mItemCount: ArrayList<InventoryItemsDataModel>
-    ) : RecyclerView.Adapter<ViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            return ViewHolder(
-                FragmentInventorySeelAllBottomSheetListDialogItemBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bind(collections[position])
-        }
-
-        override fun getItemCount(): Int {
-            return mItemCount.size
-        }
     }
 
     override fun onDestroyView() {
