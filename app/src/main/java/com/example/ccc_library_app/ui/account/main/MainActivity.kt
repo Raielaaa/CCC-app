@@ -8,6 +8,8 @@ import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
@@ -19,9 +21,13 @@ import com.example.ccc_library_app.ui.account.util.Resources
 import com.example.ccc_library_app.ui.dashboard.home.main.HomeFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
@@ -63,7 +69,39 @@ class MainActivity : AppCompatActivity() {
 
         com.example.ccc_library_app.ui.dashboard.util.Resources.setDrawerLayoutRef(binding.drawerLayout)
         initNavDrawerClickEvents()
+        initNavDrawerHeaderLayout()
     }
+
+    private fun initNavDrawerHeaderLayout() {
+        binding.apply {
+            val headerLayout: View = navDrawer.getHeaderView(0)
+            val tvDisplayName = headerLayout.findViewById<TextView>(R.id.tvDisplayName)
+            val tvEmail = headerLayout.findViewById<TextView>(R.id.tvEmail)
+
+            getDisplayNameFromFirebase { displayName ->
+                tvDisplayName.text = displayName
+
+            }
+            tvEmail.text = getEmailFromAuth()
+        }
+    }
+
+    private fun getDisplayNameFromFirebase(callback: (String?) -> Unit) {
+        val uID = auth.currentUser!!.uid
+
+        fireStore.collection("ccc-library-app-user-data").document(uID)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val displayNameFromFirebase = documentSnapshot.getString("modelUsername")
+                callback(displayNameFromFirebase)
+            }
+            .addOnFailureListener { exception ->
+                // Handle the failure (e.g., log an error)
+                callback(null)
+            }
+    }
+
+    private fun getEmailFromAuth(): String = auth.currentUser!!.email.toString()
 
     private fun initNavDrawerClickEvents() {
         Resources.navDrawer = binding.navDrawer
