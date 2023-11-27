@@ -79,7 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.ccc_library_app.ui.dashboard.home.HomeFragment"
+        android:name="com.example.ccc_library_app.ui.dashboard.home.main.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -117,6 +117,9 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_inventorySeeAllBottomSheetFragment2"
+            app:destination="@id/inventorySeeAllBottomSheetFragment2" />
     </fragment>
     <fragment
         android:id="@+id/bookmarkFragment"
@@ -227,4 +230,16 @@
         android:name="com.example.ccc_library_app.ui.account.register.RegisterTermsAndCondition"
         android:label="fragment_register_terms_and_condition"
         tools:layout="@layout/fragment_register_terms_and_condition" />
+    <dialog
+        android:id="@+id/inventorySeeAllBottomSheetFragment2"
+        android:name="com.example.ccc_library_app.ui.dashboard.home.inventory.InventorySeeAllBottomSheetFragment"
+        android:label="InventorySeeAllBottomSheetFragment" >
+        <action
+            android:id="@+id/action_inventorySeeAllBottomSheetFragment2_to_bookListFragment"
+            app:destination="@id/bookListFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_in" />
+    </dialog>
 </navigation>

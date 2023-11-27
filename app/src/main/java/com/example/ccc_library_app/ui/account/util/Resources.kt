@@ -12,12 +12,11 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
-import com.example.ccc_library_app.ui.dashboard.home.HomeFragment
-import com.example.ccc_library_app.ui.dashboard.home.HomeFragmentViewModel
+import com.example.ccc_library_app.ui.dashboard.home.main.HomeFragment
 import com.example.ccc_library_app.ui.dashboard.home.db.FirebaseDBManager
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -29,6 +28,7 @@ object Resources {
     private var dialog: Dialog? = null
     private var TAG: String = "MyTag"
     private lateinit var data: List<String>
+    lateinit var navDrawer: NavigationView
 
     fun setGoogleSignInData(dataFromUser: List<String>) {
         data = dataFromUser

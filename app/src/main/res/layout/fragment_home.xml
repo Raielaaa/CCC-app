@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dashboard.home.HomeFragment">
+    tools:context=".ui.dashboard.home.main.HomeFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView7"
@@ -304,8 +304,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/poppins"
                 android:text="@string/main_popular_title"
+                android:fontFamily="@font/poppins"
                 android:textColor="@color/Theme.color"
                 android:textSize="@dimen/_13ssp"
                 android:textStyle="bold"
@@ -848,15 +848,15 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:layout_marginTop="@dimen/_5sdp"
-                android:textStyle="italic"
                 android:id="@+id/tvSeeMore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="147dp"
+                android:layout_height="11dp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/poppins"
                 android:text="@string/main_click_me"
                 android:textColor="@color/Theme.color"
                 android:textSize="@dimen/_8sdp"
+                android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="@+id/tvFeaturedDescription"
                 app:layout_constraintTop_toBottomOf="@+id/tvFeaturedDescription" />
 

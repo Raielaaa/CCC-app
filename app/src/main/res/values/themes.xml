@@ -44,4 +44,13 @@
         <item name="colorControlHighlight">@color/Theme.color.light</item>
         <item name="android:checkable">true</item>
     </style>
+
+    <!-- Home BottomSheetDialog -->
+    <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+    </style>
+
+    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
+        <item name="behavior_peekHeight">500dp</item>
+    </style>
 </resources>

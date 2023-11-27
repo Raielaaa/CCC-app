@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:height="16dp" android:width="16dp"
+        android:drawable="@drawable/main_home_dialog_book"/>
+</layer-list>

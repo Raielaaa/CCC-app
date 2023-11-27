@@ -1,19 +1,21 @@
 package com.example.ccc_library_app.ui.dashboard.home.inventory
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
-import com.example.ccc_library_app.databinding.FragmentInventorySeelAllBottomSheetListDialogItemBinding
 import com.example.ccc_library_app.databinding.FragmentInventorySeelAllBottomSheetListDialogBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class InventorySeeAllBottomSheetFragment(
-    private val collections: ArrayList<InventoryItemsDataModel>
+    private val collections: ArrayList<InventoryItemsDataModel>,
+    private val label: String
 ) : BottomSheetDialogFragment() {
 
     private var _binding: FragmentInventorySeelAllBottomSheetListDialogBinding? = null
@@ -24,11 +26,22 @@ class InventorySeeAllBottomSheetFragment(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+//        (dialog as? BottomSheetDialog)?.let {
+//            it.behavior.peekHeight = 1000
+//        }
 
         _binding = FragmentInventorySeelAllBottomSheetListDialogBinding.inflate(inflater, container, false)
 
         val adapter = InventorySeeAllAdapter(collections)
-        _binding!!.rvDialogMain.adapter = adapter
+        _binding!!.apply {
+            rvDialogMain.adapter = adapter
+            tvLabel.text = label
+
+            btnViewAll.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_bookListFragment)
+                dismiss()
+            }
+        }
 
         return binding.root
 

@@ -38,6 +38,8 @@ class BookListFragment : Fragment() {
     }
 
     private fun initNavigationDrawer() {
+        com.example.ccc_library_app.ui.account.util.Resources.navDrawer.setCheckedItem(R.id.drawer_book_list)
+
         val drawerLayout: DrawerLayout? = Resources.getDrawerLayoutRef()
 
         binding.ivNavDrawer.setOnClickListener {

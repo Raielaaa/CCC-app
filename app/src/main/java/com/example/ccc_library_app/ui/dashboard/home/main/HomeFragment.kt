@@ -1,4 +1,4 @@
-package com.example.ccc_library_app.ui.dashboard.home
+package com.example.ccc_library_app.ui.dashboard.home.main
 
 import android.os.Bundle
 import android.text.SpannableString
@@ -16,10 +16,8 @@ import androidx.core.text.color
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentHomeBinding
-import com.example.ccc_library_app.ui.account.main.MainActivity
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -50,8 +48,13 @@ class HomeFragment : Fragment(), CoroutineScope {
         homeFragmentViewModel = ViewModelProvider(this)[HomeFragmentViewModel::class.java]
 
         initializeViews()
+        initNavDrawer()
 
         return binding.root
+    }
+
+    private fun initNavDrawer() {
+        com.example.ccc_library_app.ui.account.util.Resources.navDrawer.setCheckedItem(R.id.drawer_home)
     }
 
     private fun initializeViews() {

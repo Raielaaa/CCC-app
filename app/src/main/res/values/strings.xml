@@ -188,4 +188,7 @@
     <string name="clicked_book_synopsis_header_placeholder">About the book</string>
     <string name="clicked_book_details_header">Book details:</string>
     <string name="clicked_book_borrow_book">Borrow book</string>
+
+    <!-- Home Dialog -->
+    <string name="home_dialog_button">View All</string>
 </resources>

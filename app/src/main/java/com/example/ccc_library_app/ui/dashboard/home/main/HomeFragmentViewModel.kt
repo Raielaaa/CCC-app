@@ -1,4 +1,4 @@
-package com.example.ccc_library_app.ui.dashboard.home
+package com.example.ccc_library_app.ui.dashboard.home.main
 
 import android.app.Activity
 import android.content.Intent
@@ -17,12 +17,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.dashboard.home.featured.CompleteFeaturedBookModel
-import com.example.ccc_library_app.ui.dashboard.home.featured.FeaturedBookModel
 import com.example.ccc_library_app.ui.dashboard.home.inventory.InventoryItemsDataModel
 import com.example.ccc_library_app.ui.dashboard.home.inventory.InventorySeeAllBottomSheetFragment
 import com.example.ccc_library_app.ui.dashboard.home.popular.FirebaseDataModel
@@ -32,7 +30,6 @@ import com.example.ccc_library_app.ui.dashboard.list.BookListItemModel
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
@@ -438,7 +435,7 @@ class HomeFragmentViewModel @Inject constructor(
                             )
                         }
                     }
-                    InventorySeeAllBottomSheetFragment(listOfBookInfo)
+                    InventorySeeAllBottomSheetFragment(listOfBookInfo, "Available Books")
                         .show(hostFragment.parentFragmentManager, "SeeAll_BottomSheetFragment")
                     com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
                 } else {
@@ -489,7 +486,7 @@ class HomeFragmentViewModel @Inject constructor(
                             )
                         }
                     }
-                    InventorySeeAllBottomSheetFragment(listOfBookInfo)
+                    InventorySeeAllBottomSheetFragment(listOfBookInfo, "Borrowed Books")
                         .show(hostFragment.parentFragmentManager, "SeeAll_BottomSheetFragment")
                     com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
                 } else {
