@@ -383,12 +383,74 @@ class HomeFragmentViewModel @Inject constructor(
         }
 
 
-//        tvInventoryCurrent.setOnClickListener {
-//            InventorySeeAllBottomSheetFragment().show(hostFragment.parentFragmentManager, "SeeAll_BottomSheetFragment")
-//        }
-//        ivInventoryCurrent.setOnClickListener {
-//            InventorySeeAllBottomSheetFragment().show(hostFragment.parentFragmentManager, "SeeAll_BottomSheetFragment")
-//        }
+        tvInventoryCurrent.setOnClickListener {
+            bottomSheetSeeAllCurrent(hostFragment, activity)
+        }
+        ivInventoryCurrent.setOnClickListener {
+            bottomSheetSeeAllCurrent(hostFragment, activity)
+        }
+    }
+
+    private fun bottomSheetSeeAllCurrent(hostFragment: Fragment, activity: Activity) {
+        com.example.ccc_library_app.ui.account.util.Resources.displayCustomDialog(
+            activity,
+            R.layout.custom_dialog_loading
+        )
+
+        try {
+            val task = mutableListOf<Task<QuerySnapshot>>()
+            task.add(firebaseFireStore.collection("ccc-library-app-book-info").get())
+            task.add(firebaseFireStore.collection("ccc-library-app-borrow-data").get())
+
+            val returnedTask = Tasks.whenAllSuccess<QuerySnapshot>(task)
+            returnedTask.addOnSuccessListener { result ->
+                val resultCurrent = result[0] as QuerySnapshot
+                val resultBorrow = result[1] as QuerySnapshot
+
+                if (!resultCurrent.isEmpty) {
+                    val listOfBookInfo: ArrayList<InventoryItemsDataModel> = ArrayList()
+                    val listOfBorrowBooksTitle: ArrayList<String> = ArrayList()
+
+                    for (document in resultBorrow.documents) {
+                        listOfBorrowBooksTitle.add(document.get("modelBookName").toString())
+                    }
+
+                    parentLoopCurrent@ for (document in resultCurrent.documents) {
+                        var imageUriSource: Uri? = null
+
+                        val imageListSource = bookListPopularFinal
+                        childLoopCurrent@ for (data in imageListSource) {
+                            if (data.bookTitle == document.get("modelBookTitle")) {
+                                imageUriSource = data.uriImage
+                                break@childLoopCurrent
+                            }
+                        }
+
+                        //  Exclude the book if it is present on the list of Borrowed books
+                        if (!listOfBorrowBooksTitle.contains(document.get("modelBookTitle").toString())) {
+                            listOfBookInfo.add(
+                                InventoryItemsDataModel(
+                                    imageUriSource!!,
+                                    document.get("modelBookTitle").toString(),
+                                    document.get("modelBookAuthor").toString(),
+                                    document.get("modelBookGenre").toString()
+                                )
+                            )
+                        }
+                    }
+                    InventorySeeAllBottomSheetFragment(listOfBookInfo)
+                        .show(hostFragment.parentFragmentManager, "SeeAll_BottomSheetFragment")
+                    com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
+                } else {
+                    showToastMessage(activity, "Nothing to show. List of available books is empty.")
+                    com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
+                }
+            }
+        } catch (err: Exception) {
+            showToastMessage(activity, "An error occurred: ${err.localizedMessage}")
+            Log.e(TAG, "bottomSheetSeeAllCurrent: ${err.message}", )
+            com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
+        }
     }
 
     private fun bottomSheetSeeAllBorrow(hostFragment: Fragment, activity: Activity) {
