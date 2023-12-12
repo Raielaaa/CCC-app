@@ -6,20 +6,20 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:icon="@drawable/drawer_home"
             android:id="@+id/drawer_home"
-            android:title="@null"
-            app:actionLayout="@layout/drawer_home" />
+            android:title="@string/drawer_home" />
         <item
+            android:icon="@drawable/drawer_book_list"
             android:id="@+id/drawer_book_list"
-            android:title="@null"
-            app:actionLayout="@layout/drawer_book_list" />
+            android:title="@string/drawer_book_list" />
         <item
+            android:icon="@drawable/drawer_book_mark"
             android:id="@+id/drawer_bookmark"
-            android:title="@null"
-            app:actionLayout="@layout/drawer_bookmark" />
+            android:title="@string/drawer_bookmark" />
         <item
+            android:icon="@drawable/drawer_settings"
             android:id="@+id/drawer_settings"
-            android:title="@null"
-            app:actionLayout="@layout/drawer_settings" />
+            android:title="@string/drawer_settings" />
     </group>
 </menu>

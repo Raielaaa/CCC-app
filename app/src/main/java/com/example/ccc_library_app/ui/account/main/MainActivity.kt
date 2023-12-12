@@ -69,36 +69,23 @@ class MainActivity : AppCompatActivity() {
 
         com.example.ccc_library_app.ui.dashboard.util.Resources.setDrawerLayoutRef(binding.drawerLayout)
         initNavDrawerClickEvents()
-        initNavDrawerHeaderLayout()
-    }
-
-    private fun initNavDrawerHeaderLayout() {
-        binding.apply {
-            val headerLayout: View = navDrawer.getHeaderView(0)
-            val tvDisplayName = headerLayout.findViewById<TextView>(R.id.tvDisplayName)
-            val tvEmail = headerLayout.findViewById<TextView>(R.id.tvEmail)
-
-            getDisplayNameFromFirebase { displayName ->
-                tvDisplayName.text = displayName
-
-            }
-            tvEmail.text = getEmailFromAuth()
-        }
     }
 
     private fun getDisplayNameFromFirebase(callback: (String?) -> Unit) {
-        val uID = auth.currentUser!!.uid
+        try {
+            val uID = auth.currentUser!!.uid
 
-        fireStore.collection("ccc-library-app-user-data").document(uID)
-            .get()
-            .addOnSuccessListener { documentSnapshot ->
-                val displayNameFromFirebase = documentSnapshot.getString("modelUsername")
-                callback(displayNameFromFirebase)
-            }
-            .addOnFailureListener { exception ->
-                // Handle the failure (e.g., log an error)
-                callback(null)
-            }
+            fireStore.collection("ccc-library-app-user-data").document(uID)
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    val displayNameFromFirebase = documentSnapshot.getString("modelUsername")
+                    callback(displayNameFromFirebase)
+                }
+                .addOnFailureListener { exception ->
+                    // Handle the failure (e.g., log an error)
+                    callback(null)
+                }
+        } catch (ignored: Exception) { }
     }
 
     private fun getEmailFromAuth(): String = auth.currentUser!!.email.toString()

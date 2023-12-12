@@ -107,7 +107,8 @@ class FirebaseDBManager : AppCompatActivity() {
             borrowInfo,
             userID,
             activity,
-            fireStore
+            fireStore,
+            bookInfo[3]
         )
     }
 
@@ -115,7 +116,8 @@ class FirebaseDBManager : AppCompatActivity() {
         borrowInfo: BorrowDataModel,
         userID: String,
         activity: Activity,
-        fireStore: FirebaseFirestore
+        fireStore: FirebaseFirestore,
+        bookCode: String
     ) {
         fireStore.collection("ccc-library-app-borrow-data")
             .document(userID)
@@ -126,7 +128,15 @@ class FirebaseDBManager : AppCompatActivity() {
                     "Book successfully registered.",
                     Toast.LENGTH_LONG
                 ).show()
-                getBookBorrowStatus(
+
+                //  Update ccc-library-app-book-info modelBookStatus
+                updateBookInfoStatus(
+                    bookCode,
+                    fireStore,
+                    activity
+                )
+
+                setBookBorrowStatus(
                     borrowInfo,
                     activity,
                     fireStore
@@ -137,7 +147,30 @@ class FirebaseDBManager : AppCompatActivity() {
             }
     }
 
-    private fun getBookBorrowStatus(
+    private fun updateBookInfoStatus(
+        bookCode: String,
+        fireStore: FirebaseFirestore,
+        activity: Activity
+    ) {
+        fireStore.collection("ccc-library-app-book-info")
+            .document(bookCode)
+            .update("modelStatus", "Unavailable")
+            .addOnSuccessListener {
+                Toast.makeText(
+                    activity,
+                    "Book availability status updated",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }.addOnFailureListener {
+                Toast.makeText(
+                    activity,
+                    "Book availability status update failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    private fun setBookBorrowStatus(
         borrowInfo: BorrowDataModel,
         activity: Activity,
         fireStore: FirebaseFirestore

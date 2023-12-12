@@ -12,6 +12,8 @@
     <string name="drawer_settings">Settings</string>
     <string name="drawer_name_placeholder">User display name</string>
     <string name="drawer_email_placeholder">useraddress@gmail.com</string>
+    <string name="drawer_header_1">CCC</string>
+    <string name="drawer_header_2">Library</string>
 
     <!-- Opening -->
     <string name="opening_header_1">CCC Library</string>
@@ -176,6 +178,8 @@
     <string name="main_bookList_science_code">Science books</string>
     <string name="main_bookList_tech_code">Technology books</string>
     <string name="main_bookList_all_code">All books</string>
+    <string name="main_bookList_status">Status: </string>
+    <string name="main_bookList_status_placeholder">Available</string>
 
     <!-- Clicked book -->
     <string name="clicked_book_add">Add to bookmark</string>

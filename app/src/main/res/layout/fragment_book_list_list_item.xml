@@ -49,18 +49,43 @@
                 app:layout_constraintTop_toBottomOf="@+id/ivBook" />
 
             <TextView
-                android:layout_marginTop="@dimen/_5sdp"
                 android:id="@+id/tvBookGenre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/poppins"
                 android:text="Genre: Book genre"
                 android:textSize="@dimen/_8ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvBookTitle" />
+
+            <TextView
+                android:id="@+id/textView33"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/main_bookList_status"
+                android:textSize="@dimen/_8ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvBookGenre" />
+
+            <TextView
+                android:textAllCaps="true"
+                android:textColor="@color/green"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:id="@+id/textView34"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:text="@string/main_bookList_status_placeholder"
+                android:textSize="@dimen/_8ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView33"
+                app:layout_constraintStart_toEndOf="@+id/textView33"
+                app:layout_constraintTop_toTopOf="@+id/textView33" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

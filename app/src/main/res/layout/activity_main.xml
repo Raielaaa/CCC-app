@@ -26,10 +26,10 @@
         app:navGraph="@navigation/navigation" />
 
     <com.google.android.material.navigation.NavigationView
+        app:itemTextAppearance="@style/PoppinsTextViewStyle"
+        app:itemIconPadding="@dimen/_30sdp"
+        app:itemIconSize="@dimen/_13sdp"
         android:id="@+id/nav_drawer"
-        app:itemIconTint="@color/drawer_item"
-        app:itemTextColor="@color/drawer_item"
-        app:itemBackground="@drawable/nav_item_drawable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"

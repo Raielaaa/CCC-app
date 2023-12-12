@@ -60,16 +60,6 @@ class HomeFragmentViewModel @Inject constructor(
         cameraPermissions(activity)
     }
 
-    private fun takeImage(activity: Activity) {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            activity.startActivityForResult(intent, 1)
-        } catch (e: Exception) {
-            Toast.makeText(activity, e.localizedMessage, Toast.LENGTH_SHORT).show()
-            Log.d(TAG, "takeImage: ${e.message}")
-        }
-    }
-
     private fun cameraPermissions(activity: Activity) {
         val cameraPermission = android.Manifest.permission.CAMERA
         val permissionGranted = PackageManager.PERMISSION_GRANTED
@@ -80,6 +70,16 @@ class HomeFragmentViewModel @Inject constructor(
         } else {
             // Camera permission is already granted, proceed to capturing the image.
             takeImage(activity)
+        }
+    }
+
+    private fun takeImage(activity: Activity) {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            activity.startActivityForResult(intent, 1)
+        } catch (e: Exception) {
+            Toast.makeText(activity, e.localizedMessage, Toast.LENGTH_SHORT).show()
+            Log.d(TAG, "takeImage: ${e.message}")
         }
     }
 
