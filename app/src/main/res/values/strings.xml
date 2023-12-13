@@ -180,6 +180,9 @@
     <string name="main_bookList_all_code">All books</string>
     <string name="main_bookList_status">Status: </string>
     <string name="main_bookList_status_placeholder">Available</string>
+    <string name="main_wv_header">Can\'t find your book? Explore thousands of free ebooks and discover new adventures today!</string>
+    <string name="main_wv_title">CATEGORY: EDUCATION &amp; LEARNING</string>
+    <string name="main_wv_button">VISIT</string>
 
     <!-- Clicked book -->
     <string name="clicked_book_add">Add to bookmark</string>

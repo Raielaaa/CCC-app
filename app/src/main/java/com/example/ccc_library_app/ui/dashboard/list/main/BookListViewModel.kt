@@ -2,13 +2,16 @@ package com.example.ccc_library_app.ui.dashboard.list.main
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -315,5 +318,17 @@ class BookListViewModel @Inject constructor(
             }
         }
         adapterForRV.updateData(tempListForSearch)
+    }
+
+    fun visitWebsite(requireActivity: Activity) {
+        val url = "https://www.getfreeebooks.com/"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+
+        try {
+            requireActivity.startActivity(intent)
+        } catch (err: Exception) {
+            Toast.makeText(requireActivity, "An error occurred: ${err.localizedMessage}", Toast.LENGTH_LONG).show()
+            Log.e(TAG, "visitWebsite: ${err.message}", )
+        }
     }
 }

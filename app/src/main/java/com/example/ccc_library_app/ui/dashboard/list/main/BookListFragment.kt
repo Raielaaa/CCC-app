@@ -33,8 +33,15 @@ class BookListFragment : Fragment() {
         highlightSelectedGenre()
 //        addBookImageToCloudTBD()
         initNavigationDrawer()
+        initVisitButton()
 
         return binding.root
+    }
+
+    private fun initVisitButton() {
+        binding.btnVisit.setOnClickListener {
+            bookListViewModel.visitWebsite(requireActivity())
+        }
     }
 
     private fun initNavigationDrawer() {
