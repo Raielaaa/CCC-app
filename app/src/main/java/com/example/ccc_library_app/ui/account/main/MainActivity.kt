@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.ActivityMainBinding
@@ -29,6 +30,11 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -71,24 +77,24 @@ class MainActivity : AppCompatActivity() {
         initNavDrawerClickEvents()
     }
 
-    private fun getDisplayNameFromFirebase(callback: (String?) -> Unit) {
-        try {
-            val uID = auth.currentUser!!.uid
-
-            fireStore.collection("ccc-library-app-user-data").document(uID)
-                .get()
-                .addOnSuccessListener { documentSnapshot ->
-                    val displayNameFromFirebase = documentSnapshot.getString("modelUsername")
-                    callback(displayNameFromFirebase)
-                }
-                .addOnFailureListener { exception ->
-                    // Handle the failure (e.g., log an error)
-                    callback(null)
-                }
-        } catch (ignored: Exception) { }
-    }
-
-    private fun getEmailFromAuth(): String = auth.currentUser!!.email.toString()
+//    private fun getDisplayNameFromFirebase(callback: (String?) -> Unit) {
+//        try {
+//            val uID = auth.currentUser!!.uid
+//
+//            fireStore.collection("ccc-library-app-user-data").document(uID)
+//                .get()
+//                .addOnSuccessListener { documentSnapshot ->
+//                    val displayNameFromFirebase = documentSnapshot.getString("modelUsername")
+//                    callback(displayNameFromFirebase)
+//                }
+//                .addOnFailureListener { exception ->
+//                    // Handle the failure (e.g., log an error)
+//                    callback(null)
+//                }
+//        } catch (ignored: Exception) { }
+//    }
+//
+//    private fun getEmailFromAuth(): String = auth.currentUser!!.email.toString()
 
     private fun initNavDrawerClickEvents() {
         Resources.navDrawer = binding.navDrawer
@@ -98,19 +104,19 @@ class MainActivity : AppCompatActivity() {
             navDrawer.setNavigationItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.drawer_home -> {
-                        navigateTo(R.id.homeFragment)
+                        navigate(R.id.homeFragment)
                         navDrawer.setCheckedItem(R.id.drawer_home)
                     }
                     R.id.drawer_book_list -> {
-                        navigateTo(R.id.bookListFragment)
+                        navigate(R.id.bookListFragment)
                         navDrawer.setCheckedItem(R.id.drawer_book_list)
                     }
                     R.id.drawer_bookmark -> {
-                        navigateTo(R.id.bookmarkFragment)
+                        navigate(R.id.bookmarkFragment)
                         navDrawer.setCheckedItem(R.id.drawer_bookmark)
                     }
                     R.id.drawer_settings -> {
-                        navigateTo(R.id.settingsFragment)
+                        navigate(R.id.settingsFragment)
                         navDrawer.setCheckedItem(R.id.drawer_settings)
                     }
                 }
@@ -118,6 +124,25 @@ class MainActivity : AppCompatActivity() {
                 true
             }
         }
+    }
+
+    private fun navigate(fragment: Int) {
+        binding.apply {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            CoroutineScope(Dispatchers.IO).launch {
+                delay(500)
+                withContext(Dispatchers.Main) {
+                    navController.navigate(fragment, null, getCustomNavOptions(R.anim.fade_in, R.anim.fade_out))
+                }
+            }
+        }
+    }
+
+    private fun getCustomNavOptions(enterAnim: Int, exitAnim: Int): NavOptions {
+        return NavOptions.Builder()
+            .setEnterAnim(enterAnim)
+            .setExitAnim(exitAnim)
+            .build()
     }
 
     // Use this method to navigate to a destination
