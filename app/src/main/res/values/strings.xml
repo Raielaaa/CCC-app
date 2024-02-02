@@ -196,6 +196,32 @@
     <string name="clicked_book_details_header">Book details:</string>
     <string name="clicked_book_borrow_book">Borrow book</string>
 
+    <!-- Borrow-Return dialog -->
+    <string name="borrow_return_header">VALIDATE TRANSACTION INFO</string>
+    <string name="borrow_return_borrow">BORROW</string>
+    <string name="borrow_return_return">RETURN</string>
+    <string name="borrow_return_item_name">BOOK PLACEHOLDER</string>
+    <string name="borrow_return_name">Email: </string>
+    <string name="borrow_return_name_placeholder">Borrower Name</string>
+    <string name="borrow_return_lrn">User ID: </string>
+    <string name="borrow_return_lrn_placeholder">3847364924746</string>
+    <string name="borrow_return_category">Genre: </string>
+    <string name="borrow_return_category_placeholder">Accounting</string>
+    <string name="borrow_return_status">Status: </string>
+    <string name="borrow_return_status_placeholder">Available</string>
+    <string name="borrow_return_date">Set Date</string>
+    <string name="borrow_return_time">Set Time</string>
+    <string name="borrow_return_consent">
+        By proceeding, you are providing consent for the transfer of book information along with your personal details, including your name, username, program, section, year, and ID to be securely transferred and stored in our database. Do you agree to this data transfer?
+    </string>
+    <string name="borrow_return_proceed">PROCEED</string>
+    <string name="borrow_return_cancel">CANCEL</string>
+    <string name="borrow_return_report">Encountered a problem? REPORT NOW!</string>
+    <string-array name="borrow_return_option">
+        <item>BORROW</item>
+        <item>RETURN</item>
+    </string-array>
+
     <!-- Home Dialog -->
     <string name="home_dialog_button">View All</string>
 </resources>

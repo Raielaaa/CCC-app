@@ -174,20 +174,30 @@ class MainActivity : AppCompatActivity() {
             val extras: Bundle? = data?.extras
             try {
                 imageBitmap = extras?.get("data") as Bitmap
+
+                displayBorrowReturnDialog(imageBitmap!!)
             } catch (exception: Exception) {
                 Toast.makeText(this@MainActivity, "An error occurred: ${exception.localizedMessage}", Toast.LENGTH_LONG).show()
                 return
             }
-
-            Resources.displayCustomDialogForQr(
-                HomeFragment(),
-                this@MainActivity,
-                R.layout.custom_dialog_qr,
-                imageBitmap!!,
-                fireStore,
-                auth
-            )
         }
+    }
+
+    private fun displayBorrowReturnDialog(imageBitmap: Bitmap) {
+        Resources.scanBitmapQR(
+            imageBitmap,
+            this@MainActivity,
+            fireStore,
+            auth
+        )
+//        Resources.displayCustomDialogForQr(
+//            HomeFragment(),
+//            this@MainActivity,
+//            R.layout.custom_dialog_qr,
+//            imageBitmap!!,
+//            fireStore,
+//            auth
+//        )
     }
 
     private fun saveBitmapToInternalStorage(bitmap: Bitmap): String? {
