@@ -1,6 +1,7 @@
 package com.example.ccc_library_app.ui.dashboard.home.main
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.dashboard.home.featured.CompleteFeaturedBookModel
 import com.example.ccc_library_app.ui.dashboard.home.inventory.InventoryItemsDataModel
@@ -31,6 +33,7 @@ import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
@@ -206,41 +209,49 @@ class HomeFragmentViewModel @Inject constructor(
         ivFeaturedImage: ImageView,
         tvFeaturedTitle: TextView,
         tvFeaturedDescription: TextView,
-        activity: Activity
+        context: Context
     ) {
-//        var tempHighestFeaturedBookModel: CompleteFeaturedBookModel? = null
-//
-//        firebaseFireStore.collection("ccc-library-app-book-data")
-//            .get()
-//            .addOnSuccessListener { querySnapshot ->
-//                if (!querySnapshot.isEmpty) {
-//                    var count = 0
-//                    for (document in querySnapshot) {
-//                        getBookCompleteInfo(document, activity) { tempCompleteFeaturedBookHolder ->
-//                            count++
-//                            if (tempCompleteFeaturedBookHolder != null) {
-//                                if (tempHighestFeaturedBookModel == null) {
-//                                    tempHighestFeaturedBookModel = tempCompleteFeaturedBookHolder
-//                                } else {
-//                                    if (document.get("modelBookCode").toString().toInt() > tempHighestFeaturedBookModel!!.count.toInt()) {
-//                                        tempHighestFeaturedBookModel = tempCompleteFeaturedBookHolder
-//                                    }
-//                                }
-//                            }
-//
-//                            // Check if all callbacks are received
-//                            if (count == querySnapshot.size()) {
-//                                // All callbacks received, proceed with the logic
-//                                ivFeaturedImage.setImageURI(tempHighestFeaturedBookModel!!.image)
-//                                tvFeaturedTitle.text = tempHighestFeaturedBookModel!!.featuredTitle
-//                                tvFeaturedDescription.text = tempHighestFeaturedBookModel!!.featuredDescription
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    Log.d(TAG, "initFeaturedBook: empty")
-//                }
-//            }
+        firebaseFireStore.collection("ccc-library-app-book-data")
+            .orderBy("modelBookCount", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { querySnapshotRoot ->
+                for (item in querySnapshotRoot.documents) {
+                    val bookBookCodeForImage = item.get("modelBookCode").toString()
+                    val bookTitle = item.get("modelBookName").toString()
+
+                    firebaseFireStore.collection("ccc-library-app-book-info")
+                        .document(bookBookCodeForImage)
+                        .get()
+                        .addOnSuccessListener { querySnapshot ->
+                            val bookDescription = querySnapshot.get("modelBookDescription").toString()
+
+                            tvFeaturedTitle.text = bookTitle
+                            tvFeaturedDescription.text = bookDescription
+
+                            val gsReference = storage.getReferenceFromUrl("gs://ccc-library-system.appspot.com/book_images/$bookBookCodeForImage.jpg")
+                            Glide.with(context)
+                                .load(gsReference)
+                                .placeholder(R.drawable.placeholder_image)
+                                .error(R.drawable.error_image)
+                                .into(ivFeaturedImage)
+                        }.addOnFailureListener { exception ->
+                            Log.e("MyTag", "initFeaturedBook: $exception")
+                            Toast.makeText(
+                                context,
+                                "An error occurred: ${exception.localizedMessage}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                }
+            }.addOnFailureListener { exception ->
+                Log.e("MyTag", "initFeaturedBook: $exception")
+                Toast.makeText(
+                    context,
+                    "An error occurred: ${exception.localizedMessage}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     private fun getBookCompleteInfo(

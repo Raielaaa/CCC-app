@@ -25,8 +25,7 @@ class PopularAdapter(
             binding.apply {
                 txtBookTitle.text = popularModel.modelBookTitle
 
-                val firebaseStorage = FirebaseStorage.getInstance()
-                val gsReference = firebaseStorage.getReferenceFromUrl("gs://ccc-library-system.appspot.com/${popularModel.modelBookImage}")
+                val gsReference = storage.getReferenceFromUrl("gs://ccc-library-system.appspot.com/${popularModel.modelBookImage}")
 
                 Glide.with(context)
                     .load(gsReference)
