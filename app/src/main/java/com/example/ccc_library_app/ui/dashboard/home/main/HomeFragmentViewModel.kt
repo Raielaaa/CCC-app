@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
@@ -45,7 +46,9 @@ class HomeFragmentViewModel @Inject constructor(
     @Named("FirebaseFireStore.Instance")
     val firebaseFireStore: FirebaseFirestore,
     @Named("FirebaseStorage.Instance")
-    val firebaseStorage: StorageReference
+    val firebaseStorage: StorageReference,
+    @Named("FirebaseStorage.Reference")
+    val storage: FirebaseStorage
 ) : ViewModel() {
     private var TAG: String = "MyTag"
 
@@ -107,7 +110,6 @@ class HomeFragmentViewModel @Inject constructor(
             )
 
             bookListPopularTemp = ArrayList()
-            bookListPopularPermanent = ArrayList()
 
             firebaseFireStore.collection("ccc-library-app-book-info")
                 .get()
@@ -131,17 +133,18 @@ class HomeFragmentViewModel @Inject constructor(
                             genreHolder.add(bookInfo.get("modelBookGenre").toString())
                         }
 
-                        var itemsProcessed = 0
-                        bookListPopularTemp.forEachIndexed { index, bookData ->
-                            displayPopularRV(bookData, recyclerView, activity, bookData.modelBookImage, genreHolder[index] ) {
-                                itemsProcessed++
-                                if (itemsProcessed == bookListPopularTemp.size) {
-                                    displayInfoToRecyclerView(recyclerView, activity, bookListPopularFinal, hostFragment)
-
-                                    Resources.setPermanentDataForSearch(bookListPopularPermanent)
-                                }
-                            }
+                        val adapter = PopularAdapter(
+                            hostFragment.requireContext(),
+                            storage,
+                            bookListPopularTemp
+                        ) {
+                            clickedFunction(it, hostFragment)
                         }
+                        adapter.setList(bookListPopularTemp)
+
+                        recyclerView.adapter = adapter
+
+                        com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
                     }
                 }
         } catch (exception: Exception) {
@@ -150,71 +153,24 @@ class HomeFragmentViewModel @Inject constructor(
                 "An error occurred: ${exception.localizedMessage}",
                 Toast.LENGTH_SHORT
             ).show()
+            Log.e(TAG, "initPopularRecyclerView: ", exception)
         }
     }
 
-    private fun displayInfoToRecyclerView(recyclerView: RecyclerView, activity: Activity, bookListPopularFinal: ArrayList<PopularModel>, hostFragment: Fragment) {
-        val adapter = PopularAdapter { clickedItemInfo ->
-            clickedFunction(clickedItemInfo, hostFragment)
-        }
-        recyclerView.adapter = adapter
-        adapter.setList(bookListPopularFinal)
 
-        com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
-    }
+//    //  Displaying items in popular recycler view
+//    private fun displayInfoToRecyclerView(recyclerView: RecyclerView, activity: Activity, bookListPopularFinal: ArrayList<PopularModel>, hostFragment: Fragment) {
+//        val adapter = PopularAdapter { clickedItemInfo ->
+//            clickedFunction(clickedItemInfo, hostFragment)
+//        }
+//        recyclerView.adapter = adapter
+//        adapter.setList(bookListPopularFinal)
+//
+//        com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
+//    }
 
-    private fun clickedFunction(clickedItemInfo: PopularModel, hostFragment: Fragment) {
-        hostFragment.findNavController().navigate(R.id.action_homeFragment_to_clickedBookFragment, bundleOf("bookTitleKey" to clickedItemInfo.bookTitle))
-    }
-
-    private fun displayPopularRV(
-        data: FirebaseDataModel,
-        recyclerView: RecyclerView,
-        activity: Activity,
-        bookCode: String,
-        modelBookGenre: String,
-        completion: (Boolean) -> Unit
-    ) {
-        getImage(data.modelBookImage, activity) { bitmapImage ->
-            if (bitmapImage == null) {
-                showToastMessage(activity, "An error occurred displaying the books")
-                completion(false) // Signal failure
-            } else {
-                bookListPopularFinal.add(
-                    PopularModel(
-                        bitmapToUri(activity, bitmapImage, bookCode)!!,
-                        data.modelBookTitle
-                    )
-                )
-                completion(true)
-                bookListPopularPermanent.add(
-                    BookListItemModel(
-                        bitmapToUri(activity, bitmapImage, bookCode)!!,
-                        data.modelBookTitle,
-                        "Genre: $modelBookGenre"
-                    )
-                )
-            }
-        }
-    }
-
-    private fun getImage(filePath: String, activity: Activity, callback: (Bitmap?) -> Unit) {
-        firebaseStorage.child(filePath).getBytes(1_048_576L)
-            .addOnSuccessListener { data ->
-                // Convert the byte array to a Bitmap
-                val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
-                callback(bitmap)
-            }.addOnFailureListener { exception ->
-                // Indicate failure by passing null to the callback
-                callback(null)
-
-                // Handle the failure, e.g., show an error message or log the exception
-                Log.e("MyTag", "Error downloading image: ${exception.message}", exception)
-                showToastMessage(
-                    activity,
-                    "Error downloading image: ${exception.localizedMessage}"
-                )
-            }
+    private fun clickedFunction(clickedItemInfo: FirebaseDataModel, hostFragment: Fragment) {
+        hostFragment.findNavController().navigate(R.id.action_homeFragment_to_clickedBookFragment, bundleOf("bookTitleKey" to clickedItemInfo.modelBookTitle))
     }
 
     private fun bitmapToUri(activity: Activity, bitmap: Bitmap, bookNumber: String): Uri? {
@@ -252,39 +208,39 @@ class HomeFragmentViewModel @Inject constructor(
         tvFeaturedDescription: TextView,
         activity: Activity
     ) {
-        var tempHighestFeaturedBookModel: CompleteFeaturedBookModel? = null
-
-        firebaseFireStore.collection("ccc-library-app-book-data")
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                if (!querySnapshot.isEmpty) {
-                    var count = 0
-                    for (document in querySnapshot) {
-                        getBookCompleteInfo(document, activity) { tempCompleteFeaturedBookHolder ->
-                            count++
-                            if (tempCompleteFeaturedBookHolder != null) {
-                                if (tempHighestFeaturedBookModel == null) {
-                                    tempHighestFeaturedBookModel = tempCompleteFeaturedBookHolder
-                                } else {
-                                    if (document.get("modelBookCode").toString().toInt() > tempHighestFeaturedBookModel!!.count.toInt()) {
-                                        tempHighestFeaturedBookModel = tempCompleteFeaturedBookHolder
-                                    }
-                                }
-                            }
-
-                            // Check if all callbacks are received
-                            if (count == querySnapshot.size()) {
-                                // All callbacks received, proceed with the logic
-                                ivFeaturedImage.setImageURI(tempHighestFeaturedBookModel!!.image)
-                                tvFeaturedTitle.text = tempHighestFeaturedBookModel!!.featuredTitle
-                                tvFeaturedDescription.text = tempHighestFeaturedBookModel!!.featuredDescription
-                            }
-                        }
-                    }
-                } else {
-                    Log.d(TAG, "initFeaturedBook: empty")
-                }
-            }
+//        var tempHighestFeaturedBookModel: CompleteFeaturedBookModel? = null
+//
+//        firebaseFireStore.collection("ccc-library-app-book-data")
+//            .get()
+//            .addOnSuccessListener { querySnapshot ->
+//                if (!querySnapshot.isEmpty) {
+//                    var count = 0
+//                    for (document in querySnapshot) {
+//                        getBookCompleteInfo(document, activity) { tempCompleteFeaturedBookHolder ->
+//                            count++
+//                            if (tempCompleteFeaturedBookHolder != null) {
+//                                if (tempHighestFeaturedBookModel == null) {
+//                                    tempHighestFeaturedBookModel = tempCompleteFeaturedBookHolder
+//                                } else {
+//                                    if (document.get("modelBookCode").toString().toInt() > tempHighestFeaturedBookModel!!.count.toInt()) {
+//                                        tempHighestFeaturedBookModel = tempCompleteFeaturedBookHolder
+//                                    }
+//                                }
+//                            }
+//
+//                            // Check if all callbacks are received
+//                            if (count == querySnapshot.size()) {
+//                                // All callbacks received, proceed with the logic
+//                                ivFeaturedImage.setImageURI(tempHighestFeaturedBookModel!!.image)
+//                                tvFeaturedTitle.text = tempHighestFeaturedBookModel!!.featuredTitle
+//                                tvFeaturedDescription.text = tempHighestFeaturedBookModel!!.featuredDescription
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    Log.d(TAG, "initFeaturedBook: empty")
+//                }
+//            }
     }
 
     private fun getBookCompleteInfo(
@@ -299,24 +255,24 @@ class HomeFragmentViewModel @Inject constructor(
             .get()
             .addOnSuccessListener { documentSnapshot ->
                 var imageBitmap: Bitmap? = null
-                getImage(documentSnapshot.data!!["modelBookImage"].toString(), activity) { bitmapImage ->
-                    if (bitmapImage == null) {
-                        showToastMessage(activity, "An error occurred displaying the books")
-                    } else {
-                        imageBitmap = bitmapImage
-                    }
-
-                    completeFeaturedBookModelTemp = CompleteFeaturedBookModel(
-                        bitmapToUri(activity, imageBitmap!!, "book_images/${documentSnapshot.data!!["modelBookCode"]}"
-                        )!!,
-                        documentSnapshot.data!!["modelBookTitle"].toString(),
-                        documentSnapshot.data!!["modelBookDescription"].toString(),
-                        document.get("modelBookCount").toString()
-                    )
-
-                    // Pass the result to the callback
-                    callback(completeFeaturedBookModelTemp)
-                }
+//                getImage(documentSnapshot.data!!["modelBookImage"].toString(), activity) { bitmapImage ->
+//                    if (bitmapImage == null) {
+//                        showToastMessage(activity, "An error occurred displaying the books")
+//                    } else {
+//                        imageBitmap = bitmapImage
+//                    }
+//
+//                    completeFeaturedBookModelTemp = CompleteFeaturedBookModel(
+//                        bitmapToUri(activity, imageBitmap!!, "book_images/${documentSnapshot.data!!["modelBookCode"]}"
+//                        )!!,
+//                        documentSnapshot.data!!["modelBookTitle"].toString(),
+//                        documentSnapshot.data!!["modelBookDescription"].toString(),
+//                        document.get("modelBookCount").toString()
+//                    )
+//
+//                    // Pass the result to the callback
+//                    callback(completeFeaturedBookModelTemp)
+//                }
             }
     }
 

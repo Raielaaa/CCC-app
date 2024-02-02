@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
     //  Add the Google services Gradle plugin
     id("com.google.gms.google-services")
 }
@@ -91,4 +92,10 @@ dependencies {
 
     //  Google Play services authentication library
     implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    //  Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
+    //  Firebase UI for Glide use
+    implementation("com.firebaseui:firebase-ui-storage:8.0.2")
 }

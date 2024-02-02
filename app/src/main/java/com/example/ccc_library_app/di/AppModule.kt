@@ -35,6 +35,11 @@ object AppModule {
 
     @Singleton
     @Provides
+    @Named("FirebaseStorage.Reference")
+    fun providesFirebaseStorageReferenceInstance() = FirebaseStorage.getInstance()
+
+    @Singleton
+    @Provides
     @Named("GoogleSignInClient")
     fun providesGoogleSignInClient(
         @ApplicationContext
