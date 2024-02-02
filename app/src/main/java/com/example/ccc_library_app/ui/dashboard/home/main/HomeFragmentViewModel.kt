@@ -29,6 +29,7 @@ import com.example.ccc_library_app.ui.dashboard.home.popular.FirebaseDataModel
 import com.example.ccc_library_app.ui.dashboard.home.popular.PopularAdapter
 import com.example.ccc_library_app.ui.dashboard.home.popular.PopularModel
 import com.example.ccc_library_app.ui.dashboard.list.BookListItemModel
+import com.example.ccc_library_app.ui.dashboard.util.CompleteBookInfoModel
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
@@ -58,6 +59,7 @@ class HomeFragmentViewModel @Inject constructor(
     private lateinit var bookListPopularPermanent: ArrayList<BookListItemModel>
     private lateinit var bookListPopularTemp: ArrayList<FirebaseDataModel>
     private var bookListPopularFinal: ArrayList<PopularModel> = ArrayList()
+    private lateinit var completeBookInfoModel: ArrayList<CompleteBookInfoModel>
 
     fun captureQR(activity: Activity) {
         com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
@@ -294,41 +296,62 @@ class HomeFragmentViewModel @Inject constructor(
         hostFragment.findNavController().navigate(R.id.action_homeFragment_to_clickedBookFragment, bundleOf("bookTitleKey" to bookTitle))
     }
 
-    fun displayTally(tvInventoryCurrent: TextView, tvInventoryBorrowed: TextView) {
-        var bookNumberCount: Int = 0
-        var bookBorrowedCount: Int = 0
+    fun displayTally(
+        tvInventoryCurrent: TextView,
+        tvInventoryBorrowed: TextView,
+        context: Context
+    ) {
+        completeBookInfoModel = ArrayList()
 
-        // Create a list of tasks
-        val tasks = mutableListOf<Task<QuerySnapshot>>()
+        firebaseFireStore.collection("ccc-library-app-book-info")
+            .get()
+            .addOnCompleteListener { querySnapshot ->
+                for (items in querySnapshot.result) {
+                    val modelBookAuthor = items.get("modelBookAuthor").toString()
+                    val modelBookCode = items.get("modelBookCode").toString()
+                    val modelBookDescription = items.get("modelBookDescription").toString()
+                    val modelBookGenre = items.get("modelBookGenre").toString()
+                    val modelBookImage = items.get("modelBookImage").toString()
+                    val modelBookPublicationDate = items.get("modelBookPublicationDate").toString()
+                    val modelBookPublisher = items.get("modelBookPublisher").toString()
+                    val modelBookTitle = items.get("modelBookTitle").toString()
+                    val modelBookStatus = items.get("modelStatus").toString()
 
-        // Add the first task
-        tasks.add(firebaseFireStore.collection("ccc-library-app-book-info").get())
+                    completeBookInfoModel.add(
+                        CompleteBookInfoModel(
+                            modelBookAuthor,
+                            modelBookCode,
+                            modelBookDescription,
+                            modelBookGenre,
+                            modelBookImage,
+                            modelBookPublicationDate,
+                            modelBookPublisher,
+                            modelBookTitle,
+                            modelBookStatus
+                        )
+                    )
 
-        // Add the second task
-        tasks.add(firebaseFireStore.collection("ccc-library-app-borrow-data").get())
+                    var inventoryCurrent = 0
+                    var inventoryBorrowed = 0
 
-        // Create a combined task to wait for all tasks to complete
-        val combinedTask = Tasks.whenAllSuccess<QuerySnapshot>(tasks)
+                    for (data in completeBookInfoModel) {
+                        Log.d(TAG, "displayTally: $modelBookStatus")
+                        if (data.modelBookStatus == "Available") inventoryCurrent++
+                        else inventoryBorrowed++
+                    }
 
-        // Add a listener to the combined task
-        combinedTask.addOnSuccessListener { results ->
-            // Process the results of the individual tasks
-            val bookInfoSnapshot = results[0] as QuerySnapshot
-            val borrowDataSnapshot = results[1] as QuerySnapshot
-
-            bookNumberCount = bookInfoSnapshot.size()
-            bookBorrowedCount = borrowDataSnapshot.size()
-
-            // Update the TextViews
-            tvInventoryCurrent.text = (bookNumberCount - bookBorrowedCount).toString()
-            tvInventoryBorrowed.text = bookBorrowedCount.toString()
-        }
-
-        // Handle errors
-        combinedTask.addOnFailureListener { exception ->
-            // Handle the failure
-            Log.e("Firebase", "Error retrieving data", exception)
-        }
+                    //  Setting values to the Inventory and Borrowed CardView Display
+                    tvInventoryCurrent.text = inventoryCurrent.toString()
+                    tvInventoryBorrowed.text = inventoryBorrowed.toString()
+                }
+            }.addOnFailureListener { exception ->
+                Log.e("MyTag", "displayTally: ${exception.localizedMessage}")
+                Toast.makeText(
+                    context,
+                    "An error occurred: ${exception.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     fun initSeeAllBottomDialog(

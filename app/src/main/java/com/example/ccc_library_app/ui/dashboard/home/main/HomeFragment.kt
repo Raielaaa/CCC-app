@@ -86,7 +86,8 @@ class HomeFragment : Fragment(), CoroutineScope {
         binding.apply {
             homeFragmentViewModel.displayTally(
                 tvInventoryCurrent,
-                tvInventoryBorrowed
+                tvInventoryBorrowed,
+                requireContext()
             )
         }
     }
