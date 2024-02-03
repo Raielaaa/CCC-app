@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentInventorySeelAllBottomSheetListDialogBinding
+import com.example.ccc_library_app.ui.dashboard.util.CompleteBookInfoModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.storage.FirebaseStorage
 
 class InventorySeeAllBottomSheetFragment(
-    private val collections: ArrayList<InventoryItemsDataModel>,
+    private val collections: ArrayList<CompleteBookInfoModel>,
     private val label: String
 ) : BottomSheetDialogFragment() {
 
@@ -32,7 +34,7 @@ class InventorySeeAllBottomSheetFragment(
 
         _binding = FragmentInventorySeelAllBottomSheetListDialogBinding.inflate(inflater, container, false)
 
-        val adapter = InventorySeeAllAdapter(collections)
+        val adapter = InventorySeeAllAdapter(collections, requireContext(), FirebaseStorage.getInstance())
         _binding!!.apply {
             rvDialogMain.adapter = adapter
             tvLabel.text = label
