@@ -1,9 +1,13 @@
 package com.example.ccc_library_app.ui.dashboard.home.main
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.UnderlineSpan
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +15,11 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.text.color
 import androidx.core.view.GravityCompat
@@ -18,9 +27,13 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentHomeBinding
+import com.example.ccc_library_app.ui.dashboard.util.DataCache
 import com.example.ccc_library_app.ui.dashboard.util.Resources
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import java.io.ByteArrayOutputStream
 import java.util.Timer
 import java.util.TimerTask
 import kotlin.coroutines.CoroutineContext
@@ -40,6 +53,9 @@ class HomeFragment : Fragment(), CoroutineScope {
     //  General
     private val TAG: String = "MyTag"
 
+    //  Image chooser
+    private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,8 +65,49 @@ class HomeFragment : Fragment(), CoroutineScope {
 
         initializeViews()
         initNavDrawer()
+        initOnBackPress()
+        initProfileImage()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // Move the registerForActivityResult call here
+        pickMediaLauncher = registerForActivityResult(
+            ActivityResultContracts.PickVisualMedia()
+        ) { uri ->
+            if (uri != null) {
+                val storage = FirebaseStorage.getInstance().reference
+                val auth = FirebaseAuth.getInstance()
+
+                Resources.imageChooserDisplay(
+                    this@HomeFragment,
+                    binding.ivUserImage,
+                    storage,
+                    auth,
+                    uri
+                )
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "No media selected",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun initOnBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Toast.makeText(
+                    requireContext(),
+                    "Back press on Homepage unavailable",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 
     private fun initNavDrawer() {
@@ -67,7 +124,22 @@ class HomeFragment : Fragment(), CoroutineScope {
         initSeeMoreDesign()
         initBookTally()
         initSeeAllBottomDialog()
+        initProfileImage()
     }
+
+    private fun initProfileImage() {
+        binding.apply {
+            if (DataCache.userImageProfile != null) {
+                ivUserImage.setImageBitmap(DataCache.userImageProfile)
+            }
+
+            ivUserImage.setOnClickListener {
+                // Call the registered launcher here
+                pickMediaLauncher.launch(PickVisualMediaRequest())
+            }
+        }
+    }
+
 
     private fun initSeeAllBottomDialog() {
         binding.apply {

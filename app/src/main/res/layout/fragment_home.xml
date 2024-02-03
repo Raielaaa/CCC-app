@@ -36,7 +36,7 @@
                 app:layout_constraintVertical_bias="0.5" />
 
             <ImageView
-                android:id="@+id/imageView27"
+                android:id="@+id/ivUserImage"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
@@ -61,7 +61,7 @@
                 android:textColorHint="@color/black"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView27"
+                app:layout_constraintEnd_toStartOf="@+id/ivUserImage"
                 app:layout_constraintStart_toEndOf="@+id/ivNavDrawer"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5" />
