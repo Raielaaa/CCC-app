@@ -17,7 +17,7 @@ import com.bumptech.glide.request.target.Target
 class PopularAdapter(
     private val context: Context,
     private val storage: FirebaseStorage,
-    private val bookListPopularTemp: ArrayList<FirebaseDataModel>,
+    private val bookListPopularTemp: ArrayList<FirebaseDataModel>?,
     private val clickedListener: (FirebaseDataModel) -> Unit
 ) : RecyclerView.Adapter<PopularAdapter.PopularViewHolder>() {
     inner class PopularViewHolder(private val binding: MainPopularListItemBinding): RecyclerView.ViewHolder(binding.root) {

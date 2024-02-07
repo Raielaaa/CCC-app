@@ -74,15 +74,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvBookGenre" />
 
             <TextView
-                android:textAllCaps="true"
-                android:textColor="@color/green"
-                android:layout_marginStart="@dimen/_2sdp"
-                android:id="@+id/textView34"
+                android:id="@+id/tvListStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
                 android:fontFamily="@font/poppins"
                 android:text="@string/main_bookList_status_placeholder"
+                android:textAllCaps="true"
+                android:textColor="@color/green"
                 android:textSize="@dimen/_8ssp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/textView33"
                 app:layout_constraintStart_toEndOf="@+id/textView33"
                 app:layout_constraintTop_toTopOf="@+id/textView33" />

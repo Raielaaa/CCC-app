@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/_40sdp"
         android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_35sdp"
         android:layout_marginEnd="@dimen/_15sdp"
         app:cardCornerRadius="50dp"
         app:cardElevation="2dp"

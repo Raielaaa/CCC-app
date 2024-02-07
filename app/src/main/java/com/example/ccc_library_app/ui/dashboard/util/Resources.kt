@@ -3,11 +3,16 @@ package com.example.ccc_library_app.ui.dashboard.util
 import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,6 +29,24 @@ import java.io.ByteArrayOutputStream
 import java.lang.reflect.Array
 
 object Resources {
+    fun changeStatusBarColorToBlack(hostFragment: Fragment) {
+        // Check if the Android version is Lollipop or higher
+        // Get the activity's window
+        val window: Window = hostFragment.requireActivity().window
+
+        // Set the status bar text color to black
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
+
+    fun changeStatusBarColorToWhite(hostFragment: Fragment) {
+        // Check if the Android version is Lollipop or higher
+        // Get the activity's window
+        val window: Window = hostFragment.requireActivity().window
+
+        // Set the status bar text color to black
+        window.decorView.systemUiVisibility = 0
+    }
+
     fun imageChooserDisplay(
         hostFragment: Fragment,
         ivUserImage: ImageView,

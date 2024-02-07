@@ -34,13 +34,29 @@ class BookListFragment : Fragment() {
 //        addBookImageToCloudTBD()
         initNavigationDrawer()
         initVisitButton()
+        initStatusBar()
 
         return binding.root
     }
 
+    private fun initStatusBar() {
+        Resources.changeStatusBarColorToBlack(this@BookListFragment)
+    }
+
     private fun initVisitButton() {
-        binding.btnVisit.setOnClickListener {
-            bookListViewModel.visitWebsite(requireActivity())
+        binding.apply {
+            btnVisit.setOnClickListener {
+                bookListViewModel.visitWebsite(requireActivity(), "https://www.getfreeebooks.com/")
+            }
+            cvVitalSource.setOnClickListener {
+                bookListViewModel.visitWebsite(requireActivity(), "https://login.vitalsource.com/?redirect_uri=https%3A%2F%2Fccc-elibrary.vitalsource.com%2F%23%2F&brand=ccc-elibrary.vitalsource.com&context=bookshelf")
+            }
+            cvAccessScience.setOnClickListener {
+                bookListViewModel.visitWebsite(requireActivity(), "https://www.accessscience.com/")
+            }
+            cvPEJ.setOnClickListener {
+                bookListViewModel.visitWebsite(requireActivity(), "https://ejournals.ph/")
+            }
         }
     }
 

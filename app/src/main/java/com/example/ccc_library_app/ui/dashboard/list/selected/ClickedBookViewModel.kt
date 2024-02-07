@@ -7,10 +7,14 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.Glide
+import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.account.util.Resources
 import com.example.ccc_library_app.ui.dashboard.list.BookListInfoModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -44,7 +48,8 @@ class ClickedBookViewModel @Inject constructor(
         tvSynopsis: TextView,
         bookTitle: String,
         activity: Activity,
-        ivMainBG: ImageView
+        ivMainBG: ImageView,
+        hostFragment: Fragment
     ) {
         try {
             firebaseFireStore.collection("ccc-library-app-book-info")
@@ -69,11 +74,20 @@ class ClickedBookViewModel @Inject constructor(
                             tvPublisher.text = "Publisher: " + completeBookInfo.modelBookPublisher
                             tvPublicationDate.text = "Publication date: " + completeBookInfo.modelBookPublicationDate
                             tvSynopsis.text = completeBookInfo.modelBookDescription
-                            getImage(
-                                completeBookInfo.modelBookImage,
-                                activity,
-                                ivMainBG
-                            )
+//                            getImage(
+//                                completeBookInfo.modelBookImage,
+//                                activity,
+//                                ivMainBG
+//                            )
+
+                            val storage = FirebaseStorage.getInstance()
+                            val gsReference = storage.getReferenceFromUrl("gs://ccc-library-system.appspot.com/${completeBookInfo.modelBookImage}")
+
+                            Glide.with(hostFragment.requireContext())
+                                .load(gsReference)
+                                .placeholder(R.drawable.placeholder_image)
+                                .error(R.drawable.error_image)
+                                .into(ivMainBG)
 
                             return@addOnSuccessListener
                         }
@@ -87,27 +101,27 @@ class ClickedBookViewModel @Inject constructor(
         }
     }
 
-    private fun getImage(
-        filePath: String,
-        activity: Activity,
-        ivMainBG: ImageView
-    ) {
-        firebaseStorage.child(filePath).getBytes(1_048_576L)
-            .addOnSuccessListener { data ->
-                // Convert the byte array to a Bitmap
-                val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
-                ivMainBG.setImageBitmap(bitmap)
-
-                Resources.dismissDialog()
-            }.addOnFailureListener { exception ->
-                // Handle the failure, e.g., show an error message or log the exception
-                Log.e("MyTag", "Error downloading image: ${exception.message}", exception)
-                showToastMessage(
-                    activity,
-                    "Error downloading image: ${exception.localizedMessage}"
-                )
-            }
-    }
+//    private fun getImage(
+//        filePath: String,
+//        activity: Activity,
+//        ivMainBG: ImageView
+//    ) {
+//        firebaseStorage.child(filePath).getBytes(1_048_576L)
+//            .addOnSuccessListener { data ->
+//                // Convert the byte array to a Bitmap
+//                val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+//                ivMainBG.setImageBitmap(bitmap)
+//
+//                Resources.dismissDialog()
+//            }.addOnFailureListener { exception ->
+//                // Handle the failure, e.g., show an error message or log the exception
+//                Log.e("MyTag", "Error downloading image: ${exception.message}", exception)
+//                showToastMessage(
+//                    activity,
+//                    "Error downloading image: ${exception.localizedMessage}"
+//                )
+//            }
+//    }
     private fun showToastMessage(activity: Activity, message: String) {
         Toast.makeText(
             activity,

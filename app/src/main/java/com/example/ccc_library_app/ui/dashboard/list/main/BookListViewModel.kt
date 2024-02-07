@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,7 +24,9 @@ import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.account.util.Resources
 import com.example.ccc_library_app.ui.dashboard.list.BookListAdapter
 import com.example.ccc_library_app.ui.dashboard.list.BookListItemDecoration
-import com.example.ccc_library_app.ui.dashboard.list.BookListItemModel
+import com.example.ccc_library_app.ui.dashboard.util.CompleteBookInfoModel
+import com.example.ccc_library_app.ui.dashboard.util.DataCache
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,13 +48,16 @@ class BookListViewModel @Inject constructor(
     private lateinit var rvMainVM: RecyclerView
 
     //  Temp list
-    private val tempListForSearch: ArrayList<BookListItemModel> = ArrayList()
-    private val listForAll: ArrayList<BookListItemModel> = ArrayList()
-    private val listForAcc: ArrayList<BookListItemModel> = ArrayList()
-    private val listForLit: ArrayList<BookListItemModel> = ArrayList()
-    private val listForSocial: ArrayList<BookListItemModel> = ArrayList()
-    private val listForScience: ArrayList<BookListItemModel> = ArrayList()
-    private val listForTech: ArrayList<BookListItemModel> = ArrayList()
+    private val tempListForSearch: ArrayList<CompleteBookInfoModel> = ArrayList()
+    private val listForAll: ArrayList<CompleteBookInfoModel> = ArrayList()
+    private val listForAcc: ArrayList<CompleteBookInfoModel> = ArrayList()
+    private val listForLit: ArrayList<CompleteBookInfoModel> = ArrayList()
+    private val listForSocial: ArrayList<CompleteBookInfoModel> = ArrayList()
+    private val listForScience: ArrayList<CompleteBookInfoModel> = ArrayList()
+    private val listForTech: ArrayList<CompleteBookInfoModel> = ArrayList()
+
+    // For rv display
+    private val storage = FirebaseStorage.getInstance()
 
     fun navigateHome(hostFragment: Fragment, ivHome: ImageView) {
         com.example.ccc_library_app.ui.dashboard.util.Resources.navigate(hostFragment, ivHome, R.id.action_bookListFragment_to_homeFragment
@@ -75,16 +81,16 @@ class BookListViewModel @Inject constructor(
         etBookListSearch: EditText,
         tvGenreBookList: TextView
     ) {
-        displayInfoToRecyclerView(rvMain, activity, hostFragment, com.example.ccc_library_app.ui.dashboard.util.Resources.getPermanentDataForSearch())
+        displayInfoToRecyclerView(rvMain, activity, hostFragment, DataCache.booksFullInfo)
         setUpSearch(
             etBookListSearch,
             tvGenreBookList,
-            com.example.ccc_library_app.ui.dashboard.util.Resources.getPermanentDataForSearch()
+            DataCache.booksFullInfo
         )
     }
 
-    private fun displayInfoToRecyclerView(rvMain: RecyclerView, activity: Activity, hostFragment: Fragment, bookList: ArrayList<BookListItemModel>) {
-        adapterForRV = BookListAdapter(bookList) { bookData ->
+    private fun displayInfoToRecyclerView(rvMain: RecyclerView, activity: Activity, hostFragment: Fragment, bookList: ArrayList<CompleteBookInfoModel> ) {
+        adapterForRV = BookListAdapter(storage, hostFragment.requireContext(), removeDuplicates(bookList)) { bookData ->
             navigateFragment(bookData, hostFragment)
         }
         rvMainVM = rvMain
@@ -102,12 +108,12 @@ class BookListViewModel @Inject constructor(
         }
     }
 
-    private fun navigateFragment(bookData: BookListItemModel, hostFragment: Fragment) {
+    private fun navigateFragment(bookData: CompleteBookInfoModel, hostFragment: Fragment) {
         Resources.displayCustomDialog(
             hostFragment.requireActivity(),
             R.layout.custom_dialog_loading
         )
-        hostFragment.findNavController().navigate(R.id.action_bookListFragment_to_clickedBookFragment, bundleOf("bookTitleKey" to bookData.tvBookTitle))
+        hostFragment.findNavController().navigate(R.id.action_bookListFragment_to_clickedBookFragment, bundleOf("bookTitleKey" to bookData.modelBookTitle))
     }
 
     fun addImagesToCloudTBD(
@@ -132,13 +138,19 @@ class BookListViewModel @Inject constructor(
         tvGenreBookList: TextView,
         activity: Activity
     ) {
-        for (data in com.example.ccc_library_app.ui.dashboard.util.Resources.getPermanentDataForSearch()) {
-            when (data.tvBookGenre) {
-                "Genre: Accounting" -> listForAcc.add(data)
-                "Genre: Literature" -> listForLit.add(data)
-                "Genre: Social science" -> listForSocial.add(data)
-                "Genre: Science" -> listForScience.add(data)
-                "Genre: Technology" -> listForTech.add(data)
+        listForAcc.clear()
+        listForLit.clear()
+        listForSocial.clear()
+        listForScience.clear()
+        listForTech.clear()
+        listForAll.clear()
+        for (data in DataCache.booksFullInfo) {
+            when (data.modelBookGenre) {
+                "Accounting" -> listForAcc.add(data)
+                "Literature" -> listForLit.add(data)
+                "Social science" -> listForSocial.add(data)
+                "Science" -> listForScience.add(data)
+                "Technology" -> listForTech.add(data)
                 else -> listForAll.add(data)
             }
         }
@@ -149,7 +161,7 @@ class BookListViewModel @Inject constructor(
                 hostFragment,
                 activity,
                 R.string.main_bookList_all_code,
-                com.example.ccc_library_app.ui.dashboard.util.Resources.getPermanentDataForSearch()
+                DataCache.booksFullInfo
             )
         }
         ivAcc.setOnClickListener {
@@ -199,24 +211,25 @@ class BookListViewModel @Inject constructor(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initSelectedGenreHelper(
         tvGenre: TextView,
         hostFragment: Fragment,
         activity: Activity,
         genreCode: Int,
-        listItem: ArrayList<BookListItemModel>
+        listItem: ArrayList<CompleteBookInfoModel>
     ) {
         tvGenre.text = activity.getString(genreCode)
 
-        adapterForRV = BookListAdapter(listItem) { bookData ->
+        adapterForRV = BookListAdapter(storage, hostFragment.requireContext(), removeDuplicates(listItem)) { bookData ->
             navigateFragment(bookData, hostFragment)
         }
         rvMainVM.adapter = adapterForRV
         adapterForRV.notifyDataSetChanged()
     }
 
-    private fun setUpSearch(etBookListSearch: EditText, tvGenreBookList: TextView, listOfBookListItemModelFS: ArrayList<BookListItemModel>) {
-        val filteredList: ArrayList<BookListItemModel> = ArrayList()
+    private fun setUpSearch(etBookListSearch: EditText, tvGenreBookList: TextView, listOfBookListItemModelFS: ArrayList<CompleteBookInfoModel>) {
+        val filteredList: ArrayList<CompleteBookInfoModel> = ArrayList()
 
         etBookListSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
@@ -281,47 +294,49 @@ class BookListViewModel @Inject constructor(
         })
     }
 
+    private fun removeDuplicates(listItem: ArrayList<CompleteBookInfoModel>): ArrayList<CompleteBookInfoModel> {
+        return ArrayList(listItem.distinctBy { it.modelBookCode })
+    }
+
     fun filterFunction(
         stringInput: String,
-        filteredList: ArrayList<BookListItemModel>,
-        listOfBookListItemModelFS: ArrayList<BookListItemModel>,
+        filteredList: ArrayList<CompleteBookInfoModel>,
+        listOfBookListItemModelFS: ArrayList<CompleteBookInfoModel>,
         genre: String
     ) {
         if (stringInput.isNotEmpty()) {
             filteredList.clear()
 
-            for (model in listOfBookListItemModelFS) {
-                if (model.tvBookTitle.lowercase().trim().contains(stringInput) ||
-                    model.tvBookGenre.lowercase().trim().contains(stringInput))
+            for (model in removeDuplicates(listOfBookListItemModelFS)) {
+                if (model.modelBookTitle.lowercase().trim().contains(stringInput) ||
+                    model.modelBookGenre.lowercase().trim().contains(stringInput))
                     filteredList.add(model)
             }
 
             adapterForRV.updateData(filteredList)
         } else if (stringInput.isEmpty() || stringInput == "") {
             when (genre) {
-                "All" -> adapterForRV.updateData(com.example.ccc_library_app.ui.dashboard.util.Resources.getPermanentDataForSearch())
-                "Accounting" -> bookListResetFromSearch("Genre: Accounting")
-                "Literature" -> bookListResetFromSearch("Genre: Literature")
-                "Social science" -> bookListResetFromSearch("Genre: Social science")
-                "Science" -> bookListResetFromSearch("Genre: Science")
-                "Technology" -> bookListResetFromSearch("Genre: Technology")
+                "All" -> adapterForRV.updateData(removeDuplicates(DataCache.booksFullInfo))
+                "Accounting" -> bookListResetFromSearch("Accounting")
+                "Literature" -> bookListResetFromSearch("Literature")
+                "Social science" -> bookListResetFromSearch("Social science")
+                "Science" -> bookListResetFromSearch("Science")
+                "Technology" -> bookListResetFromSearch("Technology")
             }
         }
     }
 
     private fun bookListResetFromSearch(genre: String) {
         tempListForSearch.clear()
-        for (data in com.example.ccc_library_app.ui.dashboard.util.Resources.getPermanentDataForSearch()) {
-            if (data.tvBookGenre == genre) {
+        for (data in DataCache.booksFullInfo) {
+            if (data.modelBookGenre == genre) {
                 tempListForSearch.add(data)
-                Log.d(TAG, "filterFunction: if-counter")
             }
         }
-        adapterForRV.updateData(tempListForSearch)
+        adapterForRV.updateData(removeDuplicates(tempListForSearch))
     }
 
-    fun visitWebsite(requireActivity: Activity) {
-        val url = "https://www.getfreeebooks.com/"
+    fun visitWebsite(requireActivity: Activity, url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
 
         try {

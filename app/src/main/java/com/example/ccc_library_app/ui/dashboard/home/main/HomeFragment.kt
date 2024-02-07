@@ -27,6 +27,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentHomeBinding
+import com.example.ccc_library_app.ui.dashboard.home.popular.FirebaseDataModel
+import com.example.ccc_library_app.ui.dashboard.home.popular.PopularAdapter
 import com.example.ccc_library_app.ui.dashboard.util.DataCache
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.firebase.auth.FirebaseAuth
@@ -67,8 +69,13 @@ class HomeFragment : Fragment(), CoroutineScope {
         initNavDrawer()
         initOnBackPress()
         initProfileImage()
+        initStatusBar()
 
         return binding.root
+    }
+
+    private fun initStatusBar() {
+        Resources.changeStatusBarColorToWhite(this@HomeFragment)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -127,6 +134,14 @@ class HomeFragment : Fragment(), CoroutineScope {
         initProfileImage()
     }
 
+    private fun initRecyclerView() {
+        homeFragmentViewModel.initPopularRecyclerView(
+            binding.rvPopular,
+            requireActivity(),
+            this@HomeFragment
+        )
+    }
+
     private fun initProfileImage() {
         binding.apply {
             if (DataCache.userImageProfile != null) {
@@ -155,12 +170,27 @@ class HomeFragment : Fragment(), CoroutineScope {
     }
 
     private fun initBookTally() {
-        binding.apply {
-            homeFragmentViewModel.displayTally(
-                tvInventoryCurrent,
-                tvInventoryBorrowed,
-                requireContext()
-            )
+        if (DataCache.userImageProfile == null) {
+            binding.apply {
+                homeFragmentViewModel.displayTally(
+                    tvInventoryCurrent,
+                    tvInventoryBorrowed,
+                    requireContext()
+                )
+            }
+        } else {
+            binding.apply {
+                var inventoryCurrent = 0
+                var inventoryBorrowed = 0
+
+                for (data in DataCache.booksFullInfo) {
+                    if (data.modelBookStatus == "Available") inventoryCurrent++
+                    else inventoryBorrowed++
+                }
+
+                tvInventoryBorrowed.text = inventoryBorrowed.toString()
+                tvInventoryCurrent.text = inventoryCurrent.toString()
+            }
         }
     }
 
@@ -230,14 +260,6 @@ class HomeFragment : Fragment(), CoroutineScope {
         super.onDestroy()
         coroutineContext[Job]?.cancel()
         imageSlideshow.stopSlideshow()
-    }
-
-    private fun initRecyclerView() {
-        homeFragmentViewModel.initPopularRecyclerView(
-            binding.rvPopular,
-            requireActivity(),
-            this@HomeFragment
-        )
     }
 }
 

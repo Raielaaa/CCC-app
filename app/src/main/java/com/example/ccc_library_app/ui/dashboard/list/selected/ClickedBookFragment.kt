@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentClickedBookBinding
@@ -52,7 +53,8 @@ class ClickedBookFragment : Fragment() {
                 tvSynopsis,
                 arguments?.getString("bookTitleKey")!!,
                 requireActivity(),
-                ivMainBG
+                ivMainBG,
+                this@ClickedBookFragment
             )
         }
     }
