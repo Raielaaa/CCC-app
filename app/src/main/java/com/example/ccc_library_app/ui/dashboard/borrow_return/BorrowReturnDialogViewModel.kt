@@ -379,11 +379,12 @@ class BorrowReturnDialogViewModel @Inject constructor(
                             author,
                             genre,
                             filter,
-                            email
+                            email,
+                            getCurrentDateTime()
                         )
 
                         firebaseFireStore.collection("ccc-library-app-return-info")
-                            .document(filter)
+                            .document("$filter,${getCurrentDateTime().replace("/", "_")}")
                             .set(dataToBeInserted)
                             .addOnSuccessListener {
                                 Log.d("MyTag", "checkReturnAuthenticity: Returned item successfully inserted in the persistent return info list on DB")

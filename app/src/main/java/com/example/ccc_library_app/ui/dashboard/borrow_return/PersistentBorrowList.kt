@@ -6,5 +6,6 @@ data class PersistentBorrowList (
     val bookAuthor: String,
     val bookGenre: String,
     val borrowerName: String,
-    val borrowerEmail: String
+    val borrowerEmail: String,
+    val returnedDate: String
 )
