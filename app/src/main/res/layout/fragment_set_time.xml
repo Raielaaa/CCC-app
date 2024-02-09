@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_20sdp"
-        android:fontFamily="@font/poppins_bold"
+        android:fontFamily="@font/poppins"
+        android:textStyle="bold"
         android:text="Set Time"
         android:textColor="@color/Theme.color"
         android:textSize="@dimen/_16ssp"
@@ -58,32 +59,27 @@
         android:id="@+id/tvCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
-        android:fontFamily="@font/poppins_bold"
-        android:textSize="@dimen/_12ssp"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:fontFamily="@font/poppins"
+        android:text="CANCEL"
         android:textColor="@color/Theme.color"
-        android:layout_marginTop="@dimen/_20sdp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline35"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timePicker" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline35"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        android:textSize="@dimen/_10ssp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvSet" />
 
     <TextView
         android:id="@+id/tvSet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set"
-        android:textSize="@dimen/_12ssp"
-        android:textColor="@color/Theme.color"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:fontFamily="@font/poppins"
         android:layout_marginTop="@dimen/_20sdp"
-        android:fontFamily="@font/poppins_bold"
+        android:text="OK"
+        android:textColor="@color/Theme.color"
+        android:textSize="@dimen/_10ssp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline35"
-        app:layout_constraintTop_toBottomOf="@+id/timePicker" />
+        app:layout_constraintTop_toBottomOf="@+id/view8" />
 </androidx.constraintlayout.widget.ConstraintLayout>

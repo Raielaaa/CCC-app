@@ -150,6 +150,7 @@
                 android:textSize="@dimen/_12ssp" />
 
             <TextView
+                android:justificationMode="inter_word"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:id="@+id/tvSynopsis"
                 android:layout_width="match_parent"

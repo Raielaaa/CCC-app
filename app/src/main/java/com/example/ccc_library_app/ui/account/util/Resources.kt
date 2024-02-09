@@ -26,6 +26,7 @@ import com.example.ccc_library_app.ui.dashboard.home.db.FirebaseDBManager
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -113,7 +114,13 @@ object Resources {
                                 Barcode.TYPE_TEXT -> {
                                     dismissDialog()
 
-                                    BorrowReturnDialogFragment().show(activity.supportFragmentManager, "BorrowReturn_Dialog")
+                                    BorrowReturnDialogFragment(
+                                        barcode.rawValue!!,
+                                        fireStore,
+                                        auth,
+                                        FirebaseStorage.getInstance(),
+                                        imageBitmap
+                                    ).show(activity.supportFragmentManager, "BorrowReturn_Dialog")
 //                                    FirebaseDBManager().insertDataToDB(
 //                                        barcode.rawValue,
 //                                        activity,
