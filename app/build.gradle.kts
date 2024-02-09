@@ -98,4 +98,7 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:4.16.0")
     //  Firebase UI for Glide use
     implementation("com.firebaseui:firebase-ui-storage:8.0.2")
+
+    //  Swipe down refresh
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

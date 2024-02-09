@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.dashboard.home.featured.CompleteFeaturedBookModel
@@ -41,6 +42,10 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
@@ -402,7 +407,7 @@ class HomeFragmentViewModel @Inject constructor(
         try {
             val listOfBookInfo = ArrayList<CompleteBookInfoModel>()
 
-            for (items in DataCache.booksFullInfo) {
+            for (items in removeDuplicates(DataCache.booksFullInfo)) {
                 if (items.modelBookStatus == "Available") {
                     listOfBookInfo.add(items)
                 }
@@ -427,6 +432,10 @@ class HomeFragmentViewModel @Inject constructor(
         }
     }
 
+    private fun removeDuplicates(listItem: ArrayList<CompleteBookInfoModel>): ArrayList<CompleteBookInfoModel> {
+        return ArrayList(listItem.distinctBy { it.modelBookCode })
+    }
+
     private fun bottomSheetSeeAllBorrow(hostFragment: Fragment, activity: Activity) {
         com.example.ccc_library_app.ui.account.util.Resources.displayCustomDialog(
             activity,
@@ -436,7 +445,7 @@ class HomeFragmentViewModel @Inject constructor(
         try {
             val listOfBookInfo = ArrayList<CompleteBookInfoModel>()
 
-            for (items in DataCache.booksFullInfo) {
+            for (items in removeDuplicates(DataCache.booksFullInfo)) {
                 if (items.modelBookStatus != "Available") {
                     listOfBookInfo.add(items)
                 }
@@ -459,5 +468,84 @@ class HomeFragmentViewModel @Inject constructor(
             Log.e(TAG, "bottomSheetSeeAllBorrow: ${err.message}", )
             com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
         }
+    }
+
+    fun refreshPersistentData(
+        hostFragment: Fragment,
+        swipeRefreshLayout: SwipeRefreshLayout
+    ) {
+        completeBookInfoModel = ArrayList()
+        //  Clear the current data inside the DataCache
+        DataCache.booksFullInfo.clear()
+
+        //  Loading dialog
+        com.example.ccc_library_app.ui.account.util.Resources.displayCustomDialog(
+            hostFragment.requireActivity(),
+            R.layout.custom_dialog_loading
+        )
+
+        firebaseFireStore.collection("ccc-library-app-book-info")
+            .get()
+            .addOnCompleteListener { querySnapshot ->
+                for (items in querySnapshot.result) {
+                    val modelBookAuthor = items.get("modelBookAuthor").toString()
+                    val modelBookCode = items.get("modelBookCode").toString()
+                    val modelBookDescription = items.get("modelBookDescription").toString()
+                    val modelBookGenre = items.get("modelBookGenre").toString()
+                    val modelBookImage = items.get("modelBookImage").toString()
+                    val modelBookPublicationDate = items.get("modelBookPublicationDate").toString()
+                    val modelBookPublisher = items.get("modelBookPublisher").toString()
+                    val modelBookTitle = items.get("modelBookTitle").toString()
+                    val modelBookStatus = items.get("modelStatus").toString()
+
+                    completeBookInfoModel.add(
+                        CompleteBookInfoModel(
+                            modelBookAuthor,
+                            modelBookCode,
+                            modelBookDescription,
+                            modelBookGenre,
+                            modelBookImage,
+                            modelBookPublicationDate,
+                            modelBookPublisher,
+                            modelBookTitle,
+                            modelBookStatus
+                        )
+                    )
+
+                    //  Storing retrieved data to DataCache
+                    DataCache.booksFullInfo.add(
+                        CompleteBookInfoModel(
+                            modelBookAuthor,
+                            modelBookCode,
+                            modelBookDescription,
+                            modelBookGenre,
+                            modelBookImage,
+                            modelBookPublicationDate,
+                            modelBookPublisher,
+                            modelBookTitle,
+                            modelBookStatus
+                        )
+                    )
+                }
+
+                com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
+                swipeRefreshLayout.isRefreshing = false
+                Toast.makeText(
+                    hostFragment.requireContext(),
+                    "All done! Your data is now up to date.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(500)
+                    hostFragment.findNavController().navigate(R.id.homeFragment)
+                }
+            }.addOnFailureListener { exception ->
+                Log.e("MyTag", "displayTally: ${exception.localizedMessage}")
+                Toast.makeText(
+                    hostFragment.requireContext(),
+                    "An error occurred: ${exception.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 }

@@ -122,6 +122,7 @@ class HomeFragment : Fragment(), CoroutineScope {
     }
 
     private fun initializeViews() {
+        refreshApp()
         initRecyclerView()
         initClickableViews()
         imageSlideshow.startSlideshow(binding.ivSlideshow)
@@ -132,6 +133,17 @@ class HomeFragment : Fragment(), CoroutineScope {
         initBookTally()
         initSeeAllBottomDialog()
         initProfileImage()
+    }
+
+    private fun refreshApp() {
+        binding.apply {
+            swipeDownRefresh.setOnRefreshListener {
+                homeFragmentViewModel.refreshPersistentData(
+                    this@HomeFragment,
+                    swipeDownRefresh
+                )
+            }
+        }
     }
 
     private fun initRecyclerView() {
@@ -170,7 +182,7 @@ class HomeFragment : Fragment(), CoroutineScope {
     }
 
     private fun initBookTally() {
-        if (DataCache.userImageProfile == null) {
+        if (DataCache.booksFullInfo.isEmpty()) {
             binding.apply {
                 homeFragmentViewModel.displayTally(
                     tvInventoryCurrent,

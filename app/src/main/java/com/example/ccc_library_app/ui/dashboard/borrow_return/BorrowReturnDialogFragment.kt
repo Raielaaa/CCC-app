@@ -12,17 +12,21 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentBorrowReturnDialogBinding
 import com.example.ccc_library_app.ui.dashboard.borrow_return.date_time.DateTimeSelectedListener
 import com.example.ccc_library_app.ui.dashboard.borrow_return.date_time.SetDateFragment
 import com.example.ccc_library_app.ui.dashboard.borrow_return.date_time.SetTimeFragment
+import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BorrowReturnDialogFragment(
     private val barcodeValue: String,
     private val firebaseFireStore: FirebaseFirestore,
@@ -31,6 +35,23 @@ class BorrowReturnDialogFragment(
     private val bitmap: Bitmap
 ) : BottomSheetDialogFragment(), DateTimeSelectedListener {
     private lateinit var binding: FragmentBorrowReturnDialogBinding
+    private lateinit var borrowReturnDialogViewModel: BorrowReturnDialogViewModel
+
+    //  User info
+    private lateinit var userFirstName: String
+    private lateinit var userLastName: String
+    private lateinit var userProgram: String
+    private lateinit var userSection: String
+    private lateinit var userUsername: String
+    private lateinit var userYear: String
+    private lateinit var userEmail: String
+
+    //  Book info
+    private lateinit var bookAuthor: String
+    private lateinit var bookCode: String
+    private lateinit var bookGenre: String
+    private lateinit var bookTitle: String
+    private lateinit var bookStatus: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +59,7 @@ class BorrowReturnDialogFragment(
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentBorrowReturnDialogBinding.inflate(inflater, container, false)
+        borrowReturnDialogViewModel = ViewModelProvider(this@BorrowReturnDialogFragment)[BorrowReturnDialogViewModel::class.java]
 
         initViews()
 
@@ -48,10 +70,54 @@ class BorrowReturnDialogFragment(
         initSpinner()
         initDateTimeChooser()
         initContentDisplay()
+        initButtons()
+    }
+
+    private fun initButtons() {
+        binding.apply {
+            btnCancel.setOnClickListener {
+                this@BorrowReturnDialogFragment.dismiss()
+            }
+            btnBRProceed.setOnClickListener {
+                if (spUser2.selectedItem == "BORROW") {
+                    if (tvDate.text == "Set Date" || tvTime.text == "Set Time") {
+                        Toast.makeText(
+                            context,
+                            "Error: Borrow Date and Borrow Time must not be empty",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        //  Check Borrow Availability
+                        borrowReturnDialogViewModel.checkBorrowAvailability(
+                            "${tvDate.text}-${tvTime.text}",
+                            barcodeValue.split(":")[0],
+                            this@BorrowReturnDialogFragment,
+                            this@BorrowReturnDialogFragment,
+                            bookAuthor,
+                            bookCode,
+                            bookGenre,
+                            bookTitle,
+                            bookStatus,
+                            "$userFirstName $userLastName",
+                            userProgram,
+                            userSection,
+                            userUsername,
+                            userYear,
+                            userEmail
+                        )
+                    }
+                } else {
+
+                }
+            }
+        }
     }
 
     private fun initContentDisplay() {
-        Log.d("MyTag", "initContentDisplay: $barcodeValue")
+        com.example.ccc_library_app.ui.account.util.Resources.displayCustomDialog(
+            requireActivity(),
+            R.layout.custom_dialog_loading
+        )
         val bookCodeFromQR = barcodeValue.split(":")[3]
 
         firebaseFireStore.collection("ccc-library-app-book-info")
@@ -60,15 +126,15 @@ class BorrowReturnDialogFragment(
             .addOnCompleteListener { result ->
                 if (result.isSuccessful) {
                     //  Retrieving book value from DB
-                    val bookAuthor = result.result.get("modelBookAuthor")
-                    val bookCode = result.result.get("modelBookCode")
+                    bookAuthor = result.result.get("modelBookAuthor").toString()
+                    bookCode = result.result.get("modelBookCode").toString()
+                    bookGenre = result.result.get("modelBookGenre").toString()
+                    bookTitle = result.result.get("modelBookTitle").toString()
                     val bookDescription = result.result.get("modelBookDescription")
-                    val bookGenre = result.result.get("modelBookGenre")
                     val bookImage = result.result.get("modelBookImage")
                     val bookPublicationDate = result.result.get("modelBookPublicationDate")
                     val bookPublisher = result.result.get("modelBookPublisher")
-                    val bookTitle = result.result.get("modelBookTitle")
-                    val bookStatus = result.result.get("modelStatus")
+                    bookStatus = result.result.get("modelStatus").toString()
 
                     //  Retrieving user information
                     firebaseFireStore.collection("ccc-library-app-user-data")
@@ -76,26 +142,26 @@ class BorrowReturnDialogFragment(
                         .get()
                         .addOnCompleteListener { resultChild ->
                             if (resultChild.isSuccessful) {
-                                val userFirstName = resultChild.result.get("modelFirstName")
-                                val userLastName = resultChild.result.get("modelLastName")
-                                val userProgram = resultChild.result.get("modelProgram")
-                                val userSection = resultChild.result.get("modelSection")
-                                val userUsername = resultChild.result.get("modelUsername")
-                                val userYear = resultChild.result.get("modelYear")
-                                val userEmail = firebaseAuth.currentUser!!.email
+                                userFirstName = resultChild.result.get("modelFirstName").toString()
+                                userLastName = resultChild.result.get("modelLastName").toString()
+                                userProgram = resultChild.result.get("modelProgram").toString()
+                                userSection = resultChild.result.get("modelSection").toString()
+                                userUsername = resultChild.result.get("modelUsername").toString()
+                                userYear = resultChild.result.get("modelYear").toString()
+                                userEmail = firebaseAuth.currentUser!!.email!!
 
                                 binding.apply {
-                                    tvBookName.text = bookTitle.toString()
+                                    tvBookName.text = bookTitle
                                     tvUserEmail.text = "$userLastName-$userYear$userSection-$userEmail"
-                                    tvBookAuthor.text = bookAuthor.toString()
-                                    tvBookGenreBRD.text = bookGenre.toString()
+                                    tvBookAuthor.text = bookAuthor
+                                    tvBookGenreBRD.text = bookGenre
 
                                     tvBookStatus.apply {
-                                        if (bookStatus.toString() == "Available") {
-                                            text = bookStatus.toString()
+                                        if (bookStatus == "Available") {
+                                            text = bookStatus
                                             setTextColor(ContextCompat.getColor(context, R.color.green))
                                         } else {
-                                            text = bookStatus.toString()
+                                            text = bookStatus
                                             setTextColor(ContextCompat.getColor(context, R.color.red))
                                         }
                                     }
@@ -109,8 +175,11 @@ class BorrowReturnDialogFragment(
                                         .error(R.drawable.error_image)
                                         .into(ivBookImageBRD)
                                 }
+
+                                com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
                             }
                         }.addOnFailureListener { exceptionChild ->
+                            com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
                             Toast.makeText(
                                 context,
                                 "An error occurred: ${exceptionChild.localizedMessage}",
@@ -120,6 +189,7 @@ class BorrowReturnDialogFragment(
                         }
                 }
             }.addOnFailureListener { exception ->
+                com.example.ccc_library_app.ui.account.util.Resources.dismissDialog()
                 Toast.makeText(
                     context,
                     "An error occurred: ${exception.localizedMessage}",
