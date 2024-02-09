@@ -1,16 +1,24 @@
 package com.example.ccc_library_app.ui.account.main
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -20,6 +28,7 @@ import com.example.ccc_library_app.databinding.ActivityMainBinding
 import com.example.ccc_library_app.ui.account.register.DataModelGoogle
 import com.example.ccc_library_app.ui.account.util.Resources
 import com.example.ccc_library_app.ui.dashboard.home.main.HomeFragment
+import com.example.ccc_library_app.ui.dashboard.util.Constants
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
@@ -63,6 +72,9 @@ class MainActivity : AppCompatActivity() {
     private var imageBitmap: Bitmap? = null
     private val CAMERA_PERMISSION_CODE = 1
 
+    //  Permission code
+    private val EXACT_ALARM_PERMISSION_CODE = 123
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -70,11 +82,39 @@ class MainActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("GoogleSignInSP", MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
+        //  Disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_account) as NavHostFragment
         navController = navHostFragment.navController
 
         com.example.ccc_library_app.ui.dashboard.util.Resources.setDrawerLayoutRef(binding.drawerLayout)
         initNavDrawerClickEvents()
+
+        //  Notification configurations
+        createNotificationChannel()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkAndRequestExactAlarmPermission()
+        }
+    }
+
+    private fun checkAndRequestExactAlarmPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            val permission = Manifest.permission.SCHEDULE_EXACT_ALARM
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                // Permission not granted, request it
+                ActivityCompat.requestPermissions(this, arrayOf(permission), EXACT_ALARM_PERMISSION_CODE)
+            }
+        }
+    }
+
+    private fun createNotificationChannel() {
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(Constants.channelID, Constants.notificationName, importance)
+        channel.description = Constants.notificationDescription
+        val notificationManager: NotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
 //    private fun getDisplayNameFromFirebase(callback: (String?) -> Unit) {

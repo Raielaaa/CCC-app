@@ -107,7 +107,14 @@ class BorrowReturnDialogFragment(
                         )
                     }
                 } else {
+                    //  If the user want to return a book
 
+                    borrowReturnDialogViewModel.checkReturnAuthenticity(
+                        this@BorrowReturnDialogFragment,
+                        "$userFirstName $userLastName",
+                        userSection,
+                        bookCode
+                    )
                 }
             }
         }

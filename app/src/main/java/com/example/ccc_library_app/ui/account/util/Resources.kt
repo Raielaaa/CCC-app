@@ -175,6 +175,9 @@ object Resources {
 
                     dialog?.apply {
                         findViewById<ConstraintLayout>(R.id.clMain)?.minWidth = minWidth
+                        findViewById<ConstraintLayout>(R.id.clMain)?.setOnClickListener {
+                            dialog?.dismiss()
+                        }
                         findViewById<TextView>(R.id.tvDialogOk)?.setOnClickListener {
                             dialog?.dismiss()
                         }
