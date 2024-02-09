@@ -124,6 +124,16 @@ class BorrowReturnDialogViewModel @Inject constructor(
                             .set(dataToBeInputted)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
+                                    //  Insert borrow data to DB's permanent record list
+                                    firebaseFireStore.collection("ccc-library-app-borrow-data-history")
+                                        .document("$filter-${getCurrentDateTime()}".replace("/", "_"))
+                                        .set(dataToBeInputted)
+                                        .addOnSuccessListener {
+                                            Log.d("MyTag", "insertInfoToFireStore: $filter-${getCurrentDateTime()}\".replace(\"/\", \"_\") was successfully inserted in the history list records")
+                                        }.addOnFailureListener { exception ->
+                                            Log.e("MyTag", "insertInfoToFireStore: ${exception.message} - Failed to insert borrow data to history list records")
+                                        }
+
                                     //  Increase book borrow count
                                     increaseBookBorrowCount(
                                         bookCode,
