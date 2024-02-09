@@ -113,7 +113,11 @@ class BorrowReturnDialogFragment(
                         this@BorrowReturnDialogFragment,
                         "$userFirstName $userLastName",
                         userSection,
-                        bookCode
+                        bookCode,
+                        bookTitle,
+                        bookAuthor,
+                        bookGenre,
+                        userEmail
                     )
                 }
             }

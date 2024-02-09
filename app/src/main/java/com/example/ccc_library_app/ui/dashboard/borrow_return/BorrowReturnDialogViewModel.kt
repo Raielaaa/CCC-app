@@ -343,7 +343,11 @@ class BorrowReturnDialogViewModel @Inject constructor(
         borrowReturnDialogFragment: BorrowReturnDialogFragment,
         userName: String,
         userSection: String,
-        bookCode: String
+        bookCode: String,
+        title: String,
+        author: String,
+        genre: String,
+        email: String
     ) {
         Resources.displayCustomDialog(
             borrowReturnDialogFragment.requireActivity(),
@@ -368,11 +372,32 @@ class BorrowReturnDialogViewModel @Inject constructor(
                             "The scanned item is not currently listed in your active borrowing records."
                         )
                     } else {
-                        //  Delete borrow info
+                        //  Add user's returned info to persistent borrow info list on DB
+                        val dataToBeInserted = PersistentBorrowList(
+                            bookCode,
+                            title,
+                            author,
+                            genre,
+                            filter,
+                            email
+                        )
+
+                        firebaseFireStore.collection("ccc-library-app-return-info")
+                            .document(filter)
+                            .set(dataToBeInserted)
+                            .addOnSuccessListener {
+                                Log.d("MyTag", "checkReturnAuthenticity: Returned item successfully inserted in the persistent return info list on DB")
+                            }.addOnFailureListener { exception ->
+                                Log.e("MyTag", "checkReturnAuthenticity: ${exception.message} - Error on inserting current returned data to persistent return info list on DB")
+                            }
+
+
+                        //  Delete users info from borrow info list
                         for (data in querySnapshot.result.documents) {
                             data.reference.delete()
                         }
 
+                        //  Update book status
                         firebaseFireStore.collection("ccc-library-app-book-info")
                             .document(bookCode)
                             .update("modelStatus", "Available")
