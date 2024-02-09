@@ -133,6 +133,19 @@ class HomeFragment : Fragment(), CoroutineScope {
         initBookTally()
         initSeeAllBottomDialog()
         initProfileImage()
+        disableBackPress()
+    }
+
+    private fun disableBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Toast.makeText(
+                    requireContext(),
+                    "Back press on Homepage unavailable",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 
     private fun refreshApp() {
