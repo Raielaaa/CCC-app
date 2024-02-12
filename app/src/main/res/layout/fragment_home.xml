@@ -380,7 +380,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
-                    android:text="@string/main_inventory_date_placeholder"
+                    android:textStyle="italic"
+                    android:text="Updated as of current date"
                     android:textColor="@color/lightGrey"
                     android:textSize="@dimen/_8ssp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -409,14 +410,14 @@
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:id="@+id/ivInventory1"
+                            android:id="@+id/ivInventoryExpand"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="@dimen/_15sdp"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_10sdp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/home_notification" />
+                            app:srcCompat="@drawable/main_borrow_dots" />
 
                         <TextView
                             android:id="@+id/tvInventoryCurrent"
@@ -495,14 +496,14 @@
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:id="@+id/ivInventory2"
+                            android:id="@+id/ivInventoryExpands"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="@dimen/_15sdp"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_10sdp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/home_notification" />
+                            app:srcCompat="@drawable/main_borrow_dots" />
 
                         <TextView
                             android:id="@+id/tvInventoryBorrowed"
@@ -683,9 +684,9 @@
                         </androidx.cardview.widget.CardView>
 
                         <ImageView
-                            android:id="@+id/imageView7"
+                            android:id="@+id/ivBorrowedStatusExpand"
                             android:layout_width="@dimen/_15sdp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:src="@drawable/main_borrow_dots"
                             app:layout_constraintBottom_toBottomOf="@+id/textView48"
@@ -698,9 +699,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:src="@drawable/main_borrow_right_arrow"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView7"
-                            app:layout_constraintTop_toTopOf="@+id/imageView7" />
+                            app:layout_constraintBottom_toBottomOf="@+id/ivBorrowedStatusExpand"
+                            app:layout_constraintEnd_toStartOf="@+id/ivBorrowedStatusExpand"
+                            app:layout_constraintTop_toTopOf="@+id/ivBorrowedStatusExpand" />
 
                         <ImageView
                             android:id="@+id/imageView14"
@@ -764,20 +765,12 @@
                             android:layout_marginBottom="@dimen/_1sdp"
                             android:text="@string/main_borrow_status"
                             android:textColor="@color/green"
+                            android:textStyle="bold"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintBottom_toBottomOf="@+id/textView51"
                             app:layout_constraintStart_toEndOf="@+id/textView51"
                             app:layout_constraintTop_toTopOf="@+id/textView51" />
 
-                        <ImageView
-                            android:id="@+id/imageView23"
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:src="@drawable/main_borrow_bookmark"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView22"
-                            app:layout_constraintTop_toTopOf="@+id/textView50" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -831,32 +824,22 @@
                             android:id="@+id/imageView24"
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.5"
                             app:srcCompat="@drawable/main_announcement_announcement" />
 
-                        <ImageView
-                            android:id="@+id/imageView25"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/main_announcement_delete"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.5" />
-
                         <TextView
-                            android:id="@+id/textView55"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/tvAnnouncements"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_20sdp"
+                            android:layout_marginEnd="@dimen/_15sdp"
                             android:fontFamily="@font/poppins"
                             android:text="@string/main_announcement_none"
                             android:textColor="@color/lightGrey"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/imageView24"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_bias="0.5" />

@@ -13,14 +13,16 @@ import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentClickedBookBinding
 import com.example.ccc_library_app.ui.account.util.Resources
+import com.example.ccc_library_app.ui.dashboard.home.main.HomeFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class ClickedBookFragment : Fragment() {
     private lateinit var clickedViewModel: ClickedBookViewModel
     private lateinit var binding: FragmentClickedBookBinding
     private val TAG: String = "MyTag"
+
+    private lateinit var homeFragmentViewModel: HomeFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,12 +30,20 @@ class ClickedBookFragment : Fragment() {
     ): View {
         clickedViewModel = ViewModelProvider(this)[ClickedBookViewModel::class.java]
         binding = FragmentClickedBookBinding.inflate(inflater, container, false)
+        homeFragmentViewModel = ViewModelProvider(this@ClickedBookFragment)[HomeFragmentViewModel::class.java]
 
         dismissDialog()
         displayBookInfo()
         initBackButton()
+        initFAB()
 
         return binding.root
+    }
+
+    private fun initFAB() {
+        binding.fabBookmarkCamera.setOnClickListener {
+            homeFragmentViewModel.captureQR(requireActivity())
+        }
     }
 
     private fun initBackButton() {

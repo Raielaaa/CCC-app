@@ -26,6 +26,7 @@ import androidx.core.text.color
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentHomeBinding
 import com.example.ccc_library_app.ui.dashboard.home.popular.FirebaseDataModel
@@ -80,7 +81,6 @@ class HomeFragment : Fragment(), CoroutineScope {
         initializeViews()
         initNavDrawer()
         initOnBackPress()
-        initProfileImage()
         initStatusBar()
 
         return binding.root
@@ -134,6 +134,7 @@ class HomeFragment : Fragment(), CoroutineScope {
     }
 
     private fun initializeViews() {
+        initAnnouncement()
         checkIfPastDuePresent()
         refreshApp()
         initRecyclerView()
@@ -145,8 +146,39 @@ class HomeFragment : Fragment(), CoroutineScope {
         initSeeMoreDesign()
         initBookTally()
         initSeeAllBottomDialog()
-        initProfileImage()
+//        initProfileImage()
         disableBackPress()
+        initExpandButtons()
+    }
+
+    private fun initExpandButtons() {
+        binding.apply {
+            ivBorrowedStatusExpand.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_bookmarkFragment)
+            }
+            ivInventoryExpand.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_bookListFragment)
+            }
+            ivInventoryExpands.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_bookListFragment)
+            }
+        }
+    }
+
+    private fun initAnnouncement() {
+        firebaseFireStore.collection("ccc-library-app-announcement")
+            .document("lircannouncement")
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                binding.tvAnnouncements.text = documentSnapshot.get("modelAnnouncement").toString()
+            }.addOnFailureListener { exception ->
+                Log.e(TAG, "initAnnouncement: ${exception.message}")
+                Toast.makeText(
+                    requireContext(),
+                    "Failed to load announcement: ${exception.localizedMessage}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     private fun checkIfPastDuePresent() {
