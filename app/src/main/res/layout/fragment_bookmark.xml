@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.bookmark.BookmarkFragment">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabBookmarkCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:clickable="true"
+        app:tint="@color/white"
+        app:srcCompat="@drawable/camerawhite"
+        app:backgroundTint="@color/Theme.color"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
@@ -112,6 +125,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeDownRefreshBookmark"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -163,50 +177,49 @@
                     </androidx.cardview.widget.CardView>
 
                     <TextView
-                        android:id="@+id/textView65"
+                        android:id="@+id/tvTopUsername"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/david_libre_bold"
-                        android:textSize="@dimen/_16ssp"
                         android:text="Hello, User!"
                         android:textColor="@color/white"
+                        android:textSize="@dimen/_16ssp"
                         app:layout_constraintStart_toEndOf="@+id/cardView10"
                         app:layout_constraintTop_toTopOf="@+id/cardView10" />
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/cardView13"
+                        android:id="@+id/cvTopStatus"
                         android:layout_width="@dimen/_6sdp"
                         android:layout_height="@dimen/_6sdp"
                         android:layout_marginEnd="@dimen/_20sdp"
+                        app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="100dp"
-                        app:cardBackgroundColor="@color/green"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView65"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvTopUsername"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView65" />
+                        app:layout_constraintTop_toTopOf="@+id/tvTopUsername" />
 
                     <TextView
                         android:id="@+id/textView69"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_2sdp"
                         android:fontFamily="@font/poppins"
                         android:text="Status: "
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10ssp"
-                        android:layout_marginBottom="@dimen/_2sdp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/cardView10"
-                        app:layout_constraintStart_toStartOf="@+id/textView65" />
+                        app:layout_constraintStart_toStartOf="@+id/tvTopUsername" />
 
                     <TextView
-                        android:id="@+id/textView73"
+                        android:id="@+id/tvTopStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="On-Borrow"
-                        android:textColor="@color/green"
-                        android:fontFamily="@font/poppins"
-                        android:textStyle="bold"
                         android:layout_marginStart="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="NA"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_10ssp"
                         app:layout_constraintBottom_toBottomOf="@+id/textView69"
                         app:layout_constraintStart_toEndOf="@+id/textView69"
@@ -225,27 +238,27 @@
                         app:layout_constraintStart_toStartOf="@+id/textView69" />
 
                     <TextView
-                        android:id="@+id/textView76"
+                        android:id="@+id/tvTopBorrowCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2/3"
-                        android:fontFamily="@font/poppins"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_10ssp"
                         android:layout_marginStart="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins"
+                        android:text="0/3"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10ssp"
+                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/textView74"
                         app:layout_constraintStart_toEndOf="@+id/textView74"
                         app:layout_constraintTop_toTopOf="@+id/textView74" />
 
                     <ImageView
-                        android:layout_marginBottom="@dimen/_2sdp"
-                        android:id="@+id/imageView36"
+                        android:id="@+id/ivTopLogout"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
                         android:src="@drawable/power"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView73"
-                        app:layout_constraintEnd_toEndOf="@+id/cardView13" />
+                        app:layout_constraintBottom_toBottomOf="@+id/tvTopStatus"
+                        app:layout_constraintEnd_toEndOf="@+id/cvTopStatus" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -254,36 +267,61 @@
                 android:id="@+id/textView66"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Borrow Info"
-                android:textColor="@color/Theme.color"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/poppins"
+                android:text="Current Borrows"
+                android:textColor="@color/Theme.color"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/_20sdp"
                 app:layout_constraintStart_toStartOf="@+id/cardView11"
                 app:layout_constraintTop_toBottomOf="@+id/cardView11" />
 
             <ImageView
-                android:layout_marginStart="@dimen/_15sdp"
                 android:id="@+id/imageView35"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:src="@drawable/main_body_right_arrow"
                 app:layout_constraintBottom_toBottomOf="@+id/textView66"
                 app:layout_constraintStart_toEndOf="@+id/textView66"
                 app:layout_constraintTop_toTopOf="@+id/textView66" />
 
             <TextView
-                android:id="@+id/textView68"
+                android:id="@+id/tvUpdatedAsOf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
+                android:text="Updated as of current date"
                 android:textSize="@dimen/_8ssp"
                 android:textStyle="italic"
-                android:text="Updated as of current date"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView35"
                 app:layout_constraintEnd_toEndOf="@+id/cardView11"
                 app:layout_constraintTop_toTopOf="@+id/imageView35" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBookmarkMain"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/textView66"
+                tools:listitem="@layout/bookmark_list_items" />
+
+            <ImageView
+                android:visibility="invisible"
+                android:id="@+id/ivNoData"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_200sdp"
+                android:layout_margin="@dimen/_30sdp"
+                app:srcCompat="@drawable/nodata"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvUpdatedAsOf" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

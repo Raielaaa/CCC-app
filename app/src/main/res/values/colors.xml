@@ -13,4 +13,5 @@
     <color name="lightGrey">#7E000000</color>
     <color name="lightGrey2">#d9d9d9</color>
     <color name="dirtyWhite">#f2f5fe</color>
+    <color name="light.red">#ff3200</color>
 </resources>

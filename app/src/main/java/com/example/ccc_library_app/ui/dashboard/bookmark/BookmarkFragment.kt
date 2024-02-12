@@ -5,19 +5,27 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentBookmarkBinding
+import com.example.ccc_library_app.ui.dashboard.home.main.HomeFragmentViewModel
+import com.example.ccc_library_app.ui.dashboard.util.Constants
 import com.example.ccc_library_app.ui.dashboard.util.DataCache
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.firebase.auth.FirebaseAuth
@@ -43,6 +51,8 @@ class BookmarkFragment : Fragment() {
     //  Image chooser
     private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
 
+    private lateinit var homeFragmentViewModel: HomeFragmentViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,14 +60,42 @@ class BookmarkFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentBookmarkBinding.inflate(inflater, container, false)
         bookMarkViewModel = ViewModelProvider(this@BookmarkFragment)[BookmarkViewModel::class.java]
+        homeFragmentViewModel = ViewModelProvider(this@BookmarkFragment)[HomeFragmentViewModel::class.java]
 
         initBottomNavigationBar()
         initNavigationDrawer()
         initStatusBar()
         checkIfPastDuePresent()
         initProfileImage()
+        initRV()
+        initFAB()
+        refreshApp()
 
         return binding.root
+    }
+
+    private fun refreshApp() {
+        binding.swipeDownRefreshBookmark.setOnRefreshListener {
+            findNavController().navigate(R.id.bookmarkFragment)
+        }
+    }
+
+    private fun initFAB() {
+        binding.fabBookmarkCamera.setOnClickListener {
+            homeFragmentViewModel.captureQR(requireActivity())
+        }
+    }
+
+    private fun initRV() {
+        bookMarkViewModel.initRV(
+            binding,
+            this@BookmarkFragment,
+            binding.rvBookmarkMain,
+            firebaseAuth,
+            firebaseFireStore,
+            FirebaseStorage.getInstance(),
+            binding.ivNoData
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
