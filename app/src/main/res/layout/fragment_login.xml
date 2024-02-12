@@ -172,18 +172,6 @@
             android:textSize="@dimen/_10ssp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_30sdp"
-        android:fontFamily="@font/poppins"
-        android:text="@string/login_forgot_password"
-        android:textSize="@dimen/_10ssp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtInputLayoutPW" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLoginLogin"
         android:layout_width="@dimen/_150sdp"
