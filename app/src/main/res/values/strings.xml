@@ -165,7 +165,7 @@
 
     <!-- Book list -->
     <string name="main_booklist_genre">Genre</string>
-    <string name="main_bookList_search">Search in Book List</string>
+    <string name="main_bookList_search">Search in Book List . . .</string>
     <string name="main_bookList_all">All</string>
     <string name="main_bookList_accounting">Accounting</string>
     <string name="main_bookList_literature">Literature</string>

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.ui.dashboard.util.Resources
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 class BookmarkViewModel : ViewModel() {
     fun navigateHome(hostFragment: Fragment, ivHome: ImageView) {

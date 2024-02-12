@@ -9,5 +9,6 @@ class Constants {
         const val messageExtra = "messageExtra"
         const val notificationName = "Past-due notification channel"
         const val notificationDescription = "Notification for past-dues"
+        const val TAG = "MyTag"
     }
 }

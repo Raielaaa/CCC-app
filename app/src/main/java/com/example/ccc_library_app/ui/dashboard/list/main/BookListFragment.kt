@@ -1,5 +1,9 @@
 package com.example.ccc_library_app.ui.dashboard.list.main
 
+import android.animation.Animator
+import android.animation.AnimatorInflater
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.lifecycle.ViewModelProvider
@@ -14,12 +18,24 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentBookListBinding
 import com.example.ccc_library_app.ui.dashboard.util.Resources
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class BookListFragment : Fragment() {
     private lateinit var bookListViewModel: BookListViewModel
     private lateinit var binding: FragmentBookListBinding
+
+    @Inject
+    @Named("FirebaseAuth.Instance")
+    lateinit var firebaseAuth: FirebaseAuth
+
+    @Inject
+    @Named("FirebaseFireStore.Instance")
+    lateinit var firebaseFireStore: FirebaseFirestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +51,41 @@ class BookListFragment : Fragment() {
         initNavigationDrawer()
         initVisitButton()
         initStatusBar()
+        checkIfPastDuePresent()
 
         return binding.root
+    }
+
+    private fun checkIfPastDuePresent() {
+        binding.apply {
+            Resources.checkPastDue(firebaseAuth, firebaseFireStore, cvPastDueNoticee, this@BookListFragment)
+
+            ivRemoveNoticee.setOnClickListener {
+                // Load the fade-out animation
+                val fadeOutAnimation = AnimatorInflater.loadAnimator(this@BookListFragment.requireContext(), R.animator.fade_out)
+
+                // Create an AnimatorSet
+                val animatorSet = AnimatorSet()
+
+                // Set the target view for the animation
+                fadeOutAnimation.setTarget(cvPastDueNoticee)
+
+                // Add the fade-out animation to the AnimatorSet
+                animatorSet.play(fadeOutAnimation)
+
+                // Add an AnimatorListenerAdapter to handle visibility change after the fade
+                animatorSet.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        super.onAnimationEnd(animation)
+                        // Set visibility to INVISIBLE after the fade-out animation
+                        cvPastDueNoticee.visibility = View.GONE
+                    }
+                })
+
+                // Start the AnimatorSet
+                animatorSet.start()
+            }
+        }
     }
 
     private fun initStatusBar() {

@@ -1,8 +1,9 @@
 package com.example.ccc_library_app.ui.dashboard.home.main
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.animation.Animator
+import android.animation.AnimatorInflater
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -32,16 +33,27 @@ import com.example.ccc_library_app.ui.dashboard.home.popular.PopularAdapter
 import com.example.ccc_library_app.ui.dashboard.util.DataCache
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
 import java.util.Timer
 import java.util.TimerTask
+import javax.inject.Inject
+import javax.inject.Named
 import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), CoroutineScope {
+    @Inject
+    @Named("FirebaseAuth.Instance")
+    lateinit var firebaseAuth: FirebaseAuth
+
+    @Inject
+    @Named("FirebaseFireStore.Instance")
+    lateinit var firebaseFireStore: FirebaseFirestore
+
     //  Views
     private lateinit var binding: FragmentHomeBinding
 
@@ -122,6 +134,7 @@ class HomeFragment : Fragment(), CoroutineScope {
     }
 
     private fun initializeViews() {
+        checkIfPastDuePresent()
         refreshApp()
         initRecyclerView()
         initClickableViews()
@@ -134,6 +147,38 @@ class HomeFragment : Fragment(), CoroutineScope {
         initSeeAllBottomDialog()
         initProfileImage()
         disableBackPress()
+    }
+
+    private fun checkIfPastDuePresent() {
+        binding.apply {
+            Resources.checkPastDue(firebaseAuth, firebaseFireStore, cvPastDueNotice, this@HomeFragment)
+
+            ivRemoveNotice.setOnClickListener {
+                // Load the fade-out animation
+                val fadeOutAnimation = AnimatorInflater.loadAnimator(this@HomeFragment.requireContext(), R.animator.fade_out)
+
+                // Create an AnimatorSet
+                val animatorSet = AnimatorSet()
+
+                // Set the target view for the animation
+                fadeOutAnimation.setTarget(cvPastDueNotice)
+
+                // Add the fade-out animation to the AnimatorSet
+                animatorSet.play(fadeOutAnimation)
+
+                // Add an AnimatorListenerAdapter to handle visibility change after the fade
+                animatorSet.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        super.onAnimationEnd(animation)
+                        // Set visibility to INVISIBLE after the fade-out animation
+                        cvPastDueNotice.visibility = View.GONE
+                    }
+                })
+
+                // Start the AnimatorSet
+                animatorSet.start()
+            }
+        }
     }
 
     private fun disableBackPress() {

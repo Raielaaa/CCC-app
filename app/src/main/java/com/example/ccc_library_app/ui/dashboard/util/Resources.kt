@@ -3,30 +3,34 @@ package com.example.ccc_library_app.ui.dashboard.util
 import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.Window
-import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.cardview.widget.CardView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
-import com.example.ccc_library_app.ui.account.util.Resources
 import com.example.ccc_library_app.ui.dashboard.list.BookListItemModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.firestore.FieldPath
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
-import java.lang.reflect.Array
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object Resources {
     fun changeStatusBarColorToBlack(hostFragment: Fragment) {
@@ -178,4 +182,107 @@ object Resources {
     }
 
     fun getDrawerLayoutRef() : DrawerLayout? = this.drawerLayout
+
+    private var userFilter: String = ""
+    fun checkPastDue(
+        firebaseAuth: FirebaseAuth,
+        firebaseFireStore: FirebaseFirestore,
+        cvPastDueNotice: CardView,
+        hostFragment: Fragment
+    ) {
+        if (userFilter.isEmpty()) {
+            val userID = firebaseAuth.currentUser?.uid
+
+            firebaseFireStore.collection("ccc-library-app-user-data")
+                .document(userID.toString())
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    val userFirstName = documentSnapshot.get("modelFirstName").toString()
+                    val userLastName = documentSnapshot.get("modelLastName").toString()
+                    val userSection = documentSnapshot.get("modelSection").toString()
+
+                    val filter = "${userFirstName.replace(" ", "")}${userLastName.replace(" ", "")}-$userSection"
+                    userFilter = filter
+
+                    firebaseFireStore.collection("ccc-library-app-borrow-data")
+                        .whereGreaterThanOrEqualTo(FieldPath.documentId(), userFilter)
+                        .whereLessThan(FieldPath.documentId(), userFilter + '\uF7FF')
+                        .get()
+                        .addOnSuccessListener { querySnapshot ->
+                            if (querySnapshot.documents.isNotEmpty()) {
+                                val itemDeadlines: ArrayList<String> = ArrayList()
+
+                                for (document in querySnapshot.documents) {
+                                    itemDeadlines.add(document.get("modelBorrowDeadline").toString())
+                                }
+
+                                for (itemDeadline in itemDeadlines) {
+                                    if (getBorrowTimeDifference(itemDeadline).toLong() <= 0) {
+                                        cvPastDueNotice.visibility = View.VISIBLE
+                                        cvPastDueNotice.startAnimation(AnimationUtils.loadAnimation(hostFragment.requireActivity(), R.anim.rotate))
+
+                                        CoroutineScope(Dispatchers.Main).launch {
+                                            delay(2000)
+                                            cvPastDueNotice.clearAnimation()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                }
+        } else {
+            firebaseFireStore.collection("ccc-library-app-borrow-data")
+                .whereGreaterThanOrEqualTo(FieldPath.documentId(), userFilter)
+                .whereLessThan(FieldPath.documentId(), userFilter + '\uF7FF')
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    if (querySnapshot.documents.isNotEmpty()) {
+                        val itemDeadlines: ArrayList<String> = ArrayList()
+
+                        for (document in querySnapshot.documents) {
+                            itemDeadlines.add(document.get("modelBorrowDeadline").toString())
+                        }
+
+                        for (itemDeadline in itemDeadlines) {
+                            if (getBorrowTimeDifference(itemDeadline).toLong() <= 0) {
+                                cvPastDueNotice.visibility = View.VISIBLE
+                                cvPastDueNotice.startAnimation(AnimationUtils.loadAnimation(hostFragment.requireActivity(), R.anim.rotate))
+
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    delay(2000)
+                                    cvPastDueNotice.clearAnimation()
+                                }
+                            }
+                        }
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.e(Constants.TAG, "checkPastDue-not-empty: ${exception.message}", )
+                }
+        }
+    }
+
+    private fun getBorrowTimeDifference(modelBorrowDeadlineDateTime: String): String {
+        val borrowDeadlineDateTime = modelBorrowDeadlineDateTime.split("-")
+
+        val borrowDeadlineDateTimeFinal = "${borrowDeadlineDateTime[0]} ${borrowDeadlineDateTime[1].replace("\\s*:\\s*".toRegex(), ":")}"
+        val currentDateTime = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(
+            Date()
+        )
+
+        return calculateDateTimeDifferenceInMinutes(currentDateTime, borrowDeadlineDateTimeFinal).toString()
+    }
+
+    private fun calculateDateTimeDifferenceInMinutes(dateTime1: String, dateTime2: String): Long {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
+
+        // Parse date-time strings to Date objects
+        val parsedDateTime1 = dateFormat.parse(dateTime1)
+        val parsedDateTime2 = dateFormat.parse(dateTime2)
+
+        // Calculate time difference in milliseconds
+        val timeDifference = parsedDateTime2!!.time - parsedDateTime1!!.time
+
+        // Convert milliseconds to minutes
+        return timeDifference / (60 * 1000)
+    }
 }
