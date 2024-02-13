@@ -28,6 +28,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentHomeBinding
 import com.example.ccc_library_app.ui.dashboard.home.popular.FirebaseDataModel
@@ -35,6 +36,7 @@ import com.example.ccc_library_app.ui.dashboard.home.popular.PopularAdapter
 import com.example.ccc_library_app.ui.dashboard.util.DataCache
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -155,6 +157,113 @@ class HomeFragment : Fragment(), CoroutineScope {
         initProfileImage()
         disableBackPress()
         initExpandButtons()
+        initBorrowStatusClicks()
+    }
+
+    private fun initBorrowStatusClicks() {
+        firebaseFireStore.collection("ccc-library-app-user-data")
+            .document(firebaseAuth.uid.toString())
+            .get()
+            .addOnCompleteListener { documentSnapshot ->
+                if (documentSnapshot.isSuccessful) {
+                    val firstName = documentSnapshot.result.get("modelFirstName")
+                    val lastName = documentSnapshot.result.get("modelLastName")
+                    val program = documentSnapshot.result.get("modelSection")
+
+                    val filter = "$firstName$lastName".replace(" ", "") + "-$program"
+
+                    firebaseFireStore.collection("ccc-library-app-return-info")
+                        .whereGreaterThanOrEqualTo(FieldPath.documentId(), filter)
+                        .whereLessThan(FieldPath.documentId(), filter + '\uF7FF')
+                        .get()
+                        .addOnSuccessListener { querySnapshot ->
+                            if (!querySnapshot.isEmpty) {
+                                for (data in querySnapshot.documents) {
+                                    DataCache.totalReturned.add(
+                                        BorrowStatusModel(
+                                            data.get("bookName").toString(),
+                                            data.get("bookGenre").toString(),
+                                            data.get("bookCode").toString()
+                                        )
+                                    )
+                                }
+
+                                val bookInfo = DataCache.totalReturned[0]
+
+                                binding.apply {
+                                    tvReturnedCount.text = DataCache.totalReturned.size.toString()
+                                    tvBSTitle.text = bookInfo.modelBookTitle
+                                    tvBSGenre.text = bookInfo.modelBookGenre
+
+                                    val gsReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://ccc-library-system.appspot.com/book_images/${bookInfo.modelBookCode}.jpg")
+
+                                    Glide.with(requireContext())
+                                        .load(gsReference)
+                                        .placeholder(R.drawable.placeholder_image)
+                                        .error(R.drawable.error_image)
+                                        .into(ivBSImage)
+
+                                    tvBSBorrowCount.text = DataCache.totalOnBorrow.size.toString()
+                                }
+                            } else {
+                                binding.apply {
+                                    tvBSTitle.text = "NA"
+                                    tvBSGenre.text = "NA"
+                                }
+                            }
+                        }.addOnFailureListener { exception ->
+                            Toast.makeText(
+                                requireContext(),
+                                "Failed to load return history: ${exception.localizedMessage}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.e(TAG, "initBorrowStatusClicks: ${exception.message}")
+                        }
+                }
+            }
+
+        binding.apply {
+            ivArrowRight.setOnClickListener {
+                tvBSBorrow.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                tvBSReturned.setTextColor(ContextCompat.getColor(requireContext(), R.color.lightGrey))
+
+                if (DataCache.totalOnBorrow.isNotEmpty()) {
+                    val bookData = DataCache.totalOnBorrow[0]
+                    val gsReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://ccc-library-system.appspot.com/book_images/${bookData.modelBookCode}.jpg")
+
+                    Glide.with(requireContext())
+                        .load(gsReference)
+                        .placeholder(R.drawable.placeholder_image)
+                        .error(R.drawable.error_image)
+                        .into(ivBSImage)
+
+                    tvBSTitle.text = bookData.modelBookTitle
+                    tvBSGenre.text = bookData.modelBookGenre
+                } else {
+                    tvBSTitle.text = "NA"
+                    tvBSGenre.text = "NA"
+                }
+            }
+            ivArrowLeft.setOnClickListener {
+                tvBSBorrow.setTextColor(ContextCompat.getColor(requireContext(), R.color.lightGrey))
+                tvBSReturned.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+
+                if (DataCache.totalReturned.isNotEmpty()) {
+                    val tallyData = DataCache.totalReturned[0]
+
+                    tvBSTitle.text = tallyData.modelBookTitle
+                    tvBSGenre.text = tallyData.modelBookGenre
+
+                    val gsReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://ccc-library-system.appspot.com/book_images/${tallyData.modelBookCode}.jpg")
+
+                    Glide.with(requireContext())
+                        .load(gsReference)
+                        .placeholder(R.drawable.placeholder_image)
+                        .error(R.drawable.error_image)
+                        .into(ivBSImage)
+                }
+            }
+        }
     }
 
     private fun initExpandButtons() {

@@ -3,11 +3,14 @@ package com.example.ccc_library_app.ui.dashboard.util
 import android.app.Activity
 import android.graphics.Bitmap
 import android.net.Uri
+import com.example.ccc_library_app.ui.dashboard.home.main.BorrowStatusModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
 object DataCache {
+    val totalReturned: ArrayList<BorrowStatusModel> = ArrayList()
+    var totalOnBorrow: ArrayList<BorrowStatusModel> = ArrayList()
     var userImageProfile: Bitmap? = null
     val booksFullInfo = ArrayList<CompleteBookInfoModel>()
 

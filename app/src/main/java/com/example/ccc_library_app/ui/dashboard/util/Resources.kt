@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.ccc_library_app.R
+import com.example.ccc_library_app.ui.dashboard.home.main.BorrowStatusModel
 import com.example.ccc_library_app.ui.dashboard.list.BookListItemModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldPath
@@ -214,6 +215,14 @@ object Resources {
 
                                 for (document in querySnapshot.documents) {
                                     itemDeadlines.add(document.get("modelBorrowDeadline").toString())
+
+                                    DataCache.totalOnBorrow.add(
+                                        BorrowStatusModel(
+                                            document.get("modelBookTitle").toString(),
+                                            document.get("modelBookGenre").toString(),
+                                            document.get("modelBookCode").toString()
+                                        )
+                                    )
                                 }
 
                                 for (itemDeadline in itemDeadlines) {

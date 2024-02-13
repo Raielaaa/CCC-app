@@ -59,7 +59,6 @@ class BookmarkViewModel : ViewModel() {
                     val program = documentSnapshot.result.get("modelSection")
 
                     val filter = "$firstName$lastName".replace(" ", "") + "-$program"
-                    Log.d(Constants.TAG, "initRV: $filter")
 
                     firebaseFireStore.collection("ccc-library-app-borrow-data")
                         .whereGreaterThanOrEqualTo(FieldPath.documentId(), filter)

@@ -609,7 +609,7 @@
                         android:paddingBottom="@dimen/_10sdp">
 
                         <TextView
-                            android:id="@+id/textView46"
+                            android:id="@+id/tvBSReturned"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
@@ -630,12 +630,12 @@
                             android:layout_marginStart="@dimen/_5sdp"
                             android:backgroundTint="@color/lightGrey2"
                             app:cardCornerRadius="100dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView46"
-                            app:layout_constraintStart_toEndOf="@+id/textView46"
-                            app:layout_constraintTop_toTopOf="@+id/textView46">
+                            app:layout_constraintBottom_toBottomOf="@+id/tvBSReturned"
+                            app:layout_constraintStart_toEndOf="@+id/tvBSReturned"
+                            app:layout_constraintTop_toTopOf="@+id/tvBSReturned">
 
                             <TextView
-                                android:id="@+id/textView47"
+                                android:id="@+id/tvReturnedCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -647,7 +647,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <TextView
-                            android:id="@+id/textView48"
+                            android:id="@+id/tvBSBorrow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
@@ -668,12 +668,12 @@
                             android:layout_marginStart="@dimen/_5sdp"
                             android:backgroundTint="@color/lightGrey2"
                             app:cardCornerRadius="100dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView48"
-                            app:layout_constraintStart_toEndOf="@+id/textView48"
-                            app:layout_constraintTop_toTopOf="@+id/textView48">
+                            app:layout_constraintBottom_toBottomOf="@+id/tvBSBorrow"
+                            app:layout_constraintStart_toEndOf="@+id/tvBSBorrow"
+                            app:layout_constraintTop_toTopOf="@+id/tvBSBorrow">
 
                             <TextView
-                                android:id="@+id/textView49"
+                                android:id="@+id/tvBSBorrowCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -690,12 +690,12 @@
                             android:layout_height="0dp"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:src="@drawable/main_borrow_dots"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView48"
+                            app:layout_constraintBottom_toBottomOf="@+id/tvBSBorrow"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/textView48" />
+                            app:layout_constraintTop_toTopOf="@+id/tvBSBorrow" />
 
                         <ImageView
-                            android:id="@+id/imageView13"
+                            android:id="@+id/ivArrowRight"
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/_10sdp"
@@ -705,14 +705,14 @@
                             app:layout_constraintTop_toTopOf="@+id/ivBorrowedStatusExpand" />
 
                         <ImageView
-                            android:id="@+id/imageView14"
+                            android:id="@+id/ivArrowLeft"
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:src="@drawable/main_borrow_left_arrow"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView13"
-                            app:layout_constraintEnd_toStartOf="@+id/imageView13"
-                            app:layout_constraintTop_toTopOf="@+id/imageView13" />
+                            app:layout_constraintBottom_toBottomOf="@+id/ivArrowRight"
+                            app:layout_constraintEnd_toStartOf="@+id/ivArrowRight"
+                            app:layout_constraintTop_toTopOf="@+id/ivArrowRight" />
 
                         <View
                             android:id="@+id/view8"
@@ -723,10 +723,10 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView46" />
+                            app:layout_constraintTop_toBottomOf="@+id/tvBSReturned" />
 
                         <ImageView
-                            android:id="@+id/imageView22"
+                            android:id="@+id/ivBSImage"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/_100sdp"
                             android:layout_margin="@dimen/_10sdp"
@@ -738,35 +738,34 @@
                             app:layout_constraintTop_toBottomOf="@+id/view8" />
 
                         <TextView
-                            android:id="@+id/textView50"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/tvBSTitle"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:fontFamily="@font/poppins_medium"
                             android:text="@string/main_borrow_book_title"
                             android:textColor="@color/black"
-                            app:layout_constraintStart_toStartOf="@+id/imageView22"
-                            app:layout_constraintTop_toBottomOf="@+id/imageView22" />
+                            app:layout_constraintEnd_toEndOf="@+id/ivBSImage"
+                            app:layout_constraintStart_toStartOf="@+id/ivBSImage"
+                            app:layout_constraintTop_toBottomOf="@+id/ivBSImage" />
 
                         <TextView
                             android:id="@+id/textView51"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins"
-                            android:text="@string/main_borrow_status_header"
+                            android:text="Genre:"
                             android:textSize="@dimen/_10ssp"
-                            app:layout_constraintStart_toStartOf="@+id/textView50"
-                            app:layout_constraintTop_toBottomOf="@+id/textView50" />
+                            app:layout_constraintStart_toStartOf="@+id/tvBSTitle"
+                            app:layout_constraintTop_toBottomOf="@+id/tvBSTitle" />
 
                         <TextView
-                            android:id="@+id/textView52"
+                            android:id="@+id/tvBSGenre"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_5sdp"
-                            android:layout_marginBottom="@dimen/_1sdp"
+                            android:layout_marginBottom="@dimen/_2sdp"
                             android:text="@string/main_borrow_status"
-                            android:textColor="@color/green"
-                            android:textStyle="bold"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintBottom_toBottomOf="@+id/textView51"
                             app:layout_constraintStart_toEndOf="@+id/textView51"
