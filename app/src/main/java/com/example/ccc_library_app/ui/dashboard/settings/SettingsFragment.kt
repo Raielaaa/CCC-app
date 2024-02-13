@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentSettingsBinding
+import com.example.ccc_library_app.ui.dashboard.home.main.HomeFragmentViewModel
 import com.example.ccc_library_app.ui.dashboard.util.DataCache
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.firebase.auth.FirebaseAuth
@@ -37,6 +38,8 @@ class SettingsFragment : Fragment() {
     @Named("FirebaseFireStore.Instance")
     lateinit var firebaseFireStore: FirebaseFirestore
 
+    private lateinit var homeFragmentViewModel: HomeFragmentViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,6 +47,7 @@ class SettingsFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
         settingsViewModel = ViewModelProvider(this@SettingsFragment)[SettingsViewModel::class.java]
+        homeFragmentViewModel = ViewModelProvider(this@SettingsFragment)[HomeFragmentViewModel::class.java]
 
         initBottomNavigationBar()
         initNavigationDrawer()
@@ -119,6 +123,10 @@ class SettingsFragment : Fragment() {
                 navigateToSettings(this@SettingsFragment, ivHome)
                 navigateToBookList(this@SettingsFragment, ivBookList)
                 navigateToBookmark(this@SettingsFragment, ivBookmark)
+            }
+
+            ivTakeQr.setOnClickListener {
+                homeFragmentViewModel.captureQR(requireActivity())
             }
         }
     }

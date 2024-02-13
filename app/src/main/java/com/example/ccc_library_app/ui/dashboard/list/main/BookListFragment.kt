@@ -17,6 +17,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentBookListBinding
+import com.example.ccc_library_app.ui.dashboard.home.main.HomeFragmentViewModel
 import com.example.ccc_library_app.ui.dashboard.util.DataCache
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.firebase.auth.FirebaseAuth
@@ -38,12 +39,16 @@ class BookListFragment : Fragment() {
     @Named("FirebaseFireStore.Instance")
     lateinit var firebaseFireStore: FirebaseFirestore
 
+    //  ViewModel
+    private lateinit var homeFragmentViewModel: HomeFragmentViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentBookListBinding.inflate(inflater, container, false)
-        bookListViewModel = ViewModelProvider(this)[BookListViewModel::class.java]
+        bookListViewModel = ViewModelProvider(this@BookListFragment)[BookListViewModel::class.java]
+        homeFragmentViewModel = ViewModelProvider(this@BookListFragment)[HomeFragmentViewModel::class.java]
 
         initBottomNavigationBar()
         initRecyclerView()
@@ -54,8 +59,15 @@ class BookListFragment : Fragment() {
         initStatusBar()
         checkIfPastDuePresent()
         initProfileImage()
+        initBottomQR()
 
         return binding.root
+    }
+
+    private fun initBottomQR() {
+        binding.ivTakeQr.setOnClickListener {
+            homeFragmentViewModel.captureQR(requireActivity())
+        }
     }
 
     private fun initProfileImage() {

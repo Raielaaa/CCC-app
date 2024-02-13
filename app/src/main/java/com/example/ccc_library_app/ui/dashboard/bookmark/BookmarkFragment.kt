@@ -194,6 +194,10 @@ class BookmarkFragment : Fragment() {
             bookMarkViewModel.navigateHome(this@BookmarkFragment, ivHome)
             bookMarkViewModel.navigateBookList(this@BookmarkFragment, ivBookList)
             bookMarkViewModel.navigateSettings(this@BookmarkFragment, ivSettings)
+
+            ivTakeQr.setOnClickListener {
+                homeFragmentViewModel.captureQR(requireActivity())
+            }
         }
     }
 }
