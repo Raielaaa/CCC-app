@@ -172,6 +172,7 @@
                             android:id="@+id/ivProfileImage"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:background="@drawable/circle_background"
                             android:scaleType="centerCrop"
                             app:srcCompat="@drawable/freeebooks_bg" />
                     </androidx.cardview.widget.CardView>

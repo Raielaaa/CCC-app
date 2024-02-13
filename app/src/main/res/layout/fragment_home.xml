@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5" />
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivUserImage"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
@@ -43,6 +43,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/home_user_resize_pic"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Image.PILL"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5" />
@@ -928,7 +929,6 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cvPastDueNotice"
         android:visibility="invisible"
-        tools:visibility="visible"
         app:cardCornerRadius="@dimen/_10sdp"
         app:cardBackgroundColor="#ff4d4d"
         android:layout_marginStart="@dimen/_20sdp"

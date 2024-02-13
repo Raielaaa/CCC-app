@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorInflater
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -36,6 +37,7 @@ import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
@@ -54,6 +56,10 @@ class HomeFragment : Fragment(), CoroutineScope {
     @Inject
     @Named("FirebaseFireStore.Instance")
     lateinit var firebaseFireStore: FirebaseFirestore
+
+    @Inject
+    @Named("FirebaseStorage.Instance")
+    lateinit var firebaseStorage: StorageReference
 
     //  Views
     private lateinit var binding: FragmentHomeBinding
@@ -146,7 +152,7 @@ class HomeFragment : Fragment(), CoroutineScope {
         initSeeMoreDesign()
         initBookTally()
         initSeeAllBottomDialog()
-//        initProfileImage()
+        initProfileImage()
         disableBackPress()
         initExpandButtons()
     }
@@ -248,11 +254,19 @@ class HomeFragment : Fragment(), CoroutineScope {
         binding.apply {
             if (DataCache.userImageProfile != null) {
                 ivUserImage.setImageBitmap(DataCache.userImageProfile)
-            }
+            } else {
+                firebaseStorage.child("user_image/${firebaseAuth.currentUser?.uid}")
+                    .getBytes(Long.MAX_VALUE)
+                    .addOnSuccessListener { bytes ->
+                        // Convert the byte array to a Bitmap and set it in the ImageView
+                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
-            ivUserImage.setOnClickListener {
-                // Call the registered launcher here
-                pickMediaLauncher.launch(PickVisualMediaRequest())
+                        DataCache.userImageProfile = bitmap
+                        binding.ivUserImage.setImageBitmap(bitmap)
+                    }.addOnFailureListener { exception ->
+                        // Handle failures
+                        exception.printStackTrace()
+                    }
             }
         }
     }

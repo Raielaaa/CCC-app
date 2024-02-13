@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.ccc_library_app.R
 import com.example.ccc_library_app.databinding.FragmentSettingsBinding
+import com.example.ccc_library_app.ui.dashboard.util.DataCache
 import com.example.ccc_library_app.ui.dashboard.util.Resources
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -48,8 +49,17 @@ class SettingsFragment : Fragment() {
         initNavigationDrawer()
         initStatusBar()
         checkIfPastDuePresent()
+        initProfileImage()
 
         return binding.root
+    }
+
+    private fun initProfileImage() {
+        binding.apply {
+            if (DataCache.userImageProfile != null) {
+                ivUserImage.setImageBitmap(DataCache.userImageProfile)
+            }
+        }
     }
 
     private fun checkIfPastDuePresent() {

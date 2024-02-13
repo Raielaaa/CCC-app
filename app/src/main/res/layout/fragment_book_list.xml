@@ -29,12 +29,13 @@
                 app:layout_constraintTop_toTopOf="@+id/etBookListSearch"
                 app:layout_constraintVertical_bias="0.5" />
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivUserImage"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Image.PILL"
                 android:src="@drawable/home_user_resize_pic"
                 app:layout_constraintBottom_toBottomOf="@+id/etBookListSearch"
                 app:layout_constraintEnd_toEndOf="parent"
